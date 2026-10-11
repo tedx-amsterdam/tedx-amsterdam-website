@@ -59,6 +59,14 @@ describe("security headers on every response", () => {
   });
 });
 
+describe("caching", () => {
+  it(`caches hashed Next.js assets for a year (${SPEC}/performance/cache-control/)`, () => {
+    const cacheControl = headersFor(rules, "/_next/static/*").get("cache-control") ?? "";
+    expect(cacheControl).toContain("immutable");
+    expect(Number(cacheControl.match(/max-age=(\d+)/)?.[1])).toBeGreaterThanOrEqual(31536000);
+  });
+});
+
 describe("pages.dev deployments", () => {
   it(`are kept out of search engines (${SPEC}/seo/meta-robots/)`, () => {
     expect(headersFor(rules, "https://:project.pages.dev/*").get("x-robots-tag")).toBe("noindex");
