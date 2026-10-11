@@ -131,6 +131,7 @@ Most open requirements from [The Website Specification](website-spec.md) land in
 - [x] Cloudflare Pages project with preview deployments per pull request (temporarily on a personal account)
 - [x] `noindex` on all `pages.dev` addresses
 - [x] Lighthouse on every preview deployment
+- [x] Weekly check for changes in The Website Specification
 - [ ] Build command `npm run build` in Cloudflare, so it matches CI
 - [ ] Rebuild on CMS publish (webhook to deploy hook)
 - [ ] Move the Cloudflare project to a foundation account before launch
