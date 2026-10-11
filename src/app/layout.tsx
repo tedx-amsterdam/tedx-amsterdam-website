@@ -3,9 +3,11 @@ import type { ReactNode } from "react";
 import "tedx-amsterdam-design-system/styles.css";
 import "tedx-amsterdam-design-system/index.css";
 import "./globals.css";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SITE_URL } from "@/config/site";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.tedxamsterdam.nl"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "TEDxAmsterdam",
     template: "%s | TEDxAmsterdam",
@@ -15,7 +17,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SiteHeader />
+        {children}
+      </body>
     </html>
   );
 }
