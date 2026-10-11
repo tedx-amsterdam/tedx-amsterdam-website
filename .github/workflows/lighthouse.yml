@@ -1,0 +1,53 @@
+name: Lighthouse
+
+# Runs Lighthouse against the Cloudflare deployment of every pull request
+# and of every commit on main, so performance, accessibility, SEO and best
+# practices are measured on the real build, served with Cloudflare's
+# headers and compression. Pull requests catch regressions before merging;
+# main shows the state of the production build.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  checks: read
+
+concurrency:
+  group: lighthouse-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  lighthouse:
+    # Cloudflare does not build pull requests from forks, so there is no
+    # preview to test. Draft pull requests are skipped until ready.
+    if: >-
+      github.event_name == 'push' ||
+      (github.event.pull_request.head.repo.full_name == github.repository && !github.event.pull_request.draft)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Wait for Cloudflare deployment
+        id: preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          url="$(.github/scripts/cloudflare-preview-url.sh "$GITHUB_REPOSITORY" "$SHA")"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Testing deployment: $url" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          # Add one URL per page type as pages are built.
+          urls: |
+            ${{ steps.preview.outputs.url }}/
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
