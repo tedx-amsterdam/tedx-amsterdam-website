@@ -210,6 +210,7 @@ Follow [Conventional Branch](https://conventional-branch.github.io): `<type>/<de
 - **Required** requirements must be met before launch. **Recommended** ones are the default; skipping one needs a reason in `docs/website-spec.md`. Anything marked **Avoid** must not appear.
 - Before building a feature, look up the requirements that apply to it. In Claude Code, use the `specification-website` MCP server configured in `.mcp.json`.
 - When a change meets or affects a requirement, update its status in `docs/website-spec.md` in the same pull request.
+- A weekly workflow (`.github/workflows/spec-watch.yml`) opens a pull request when the spec changes. Handle it like any other pull request: update `docs/website-spec.md` and the roadmap in that pull request before merging.
 
 ### Conformance tests
 
