@@ -54,7 +54,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
-| [Colour contrast](https://specification.website/spec/accessibility/color-contrast/) | Required | Design system | Verified in Storybook; Lighthouse checks pages |
+| [Colour contrast](https://specification.website/spec/accessibility/color-contrast/) | Required | Design system | Verified in Storybook; Lighthouse checks every preview |
 | [Image alt text](https://specification.website/spec/accessibility/image-alt-text/) | Required | Phase 1 | CMS alt text is often empty; mappers add a meaningful fallback |
 | [Form labels](https://specification.website/spec/accessibility/form-labels/) | Required | Phase 3 | Newsletter form |
 | [Accessible form errors](https://specification.website/spec/accessibility/form-errors/) | Required | Phase 3 | Newsletter form |
@@ -68,7 +68,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [Captions and transcripts](https://specification.website/spec/accessibility/captions-and-transcripts/) | Required | Phase 3 | Only if a video has meaningful audio; the hero video is decorative |
 | [Accessible data tables](https://specification.website/spec/accessibility/data-tables/) | Required | Phase 3 | Applies to the event timetable, if built as a table |
 | [Touch target size](https://specification.website/spec/accessibility/touch-target-size/) | Required | Design system | |
-| [Empty links and buttons](https://specification.website/spec/accessibility/empty-links-buttons/) | Avoid | Checks | Lighthouse flags them |
+| [Empty links and buttons](https://specification.website/spec/accessibility/empty-links-buttons/) | Avoid | Done | Lighthouse fails the pull request if one appears |
 | [Accessibility overlays](https://specification.website/spec/accessibility/accessibility-overlays/) | Avoid | Done | Never add one |
 | [Forced colours](https://specification.website/spec/accessibility/forced-colors/), [focus not obscured](https://specification.website/spec/accessibility/focus-not-obscured/), [native interactive elements](https://specification.website/spec/accessibility/native-interactive-elements/), [status messages](https://specification.website/spec/accessibility/status-messages/) | Recommended | Design system | |
 
@@ -115,7 +115,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
-| [Core Web Vitals](https://specification.website/spec/performance/core-web-vitals/) | Required | Checks | Lighthouse on every preview |
+| [Core Web Vitals](https://specification.website/spec/performance/core-web-vitals/) | Required | Partial | Measured by Lighthouse on every preview; thresholds rise per phase |
 | [Image optimisation](https://specification.website/spec/performance/image-optimization/) | Required | Phase 1 | CMS images are served unoptimized; pick an approach with the speaker pages |
 | [Cache-Control](https://specification.website/spec/performance/cache-control/) | Required | Checks | Long immutable caching for `/_next/static/` in `_headers` |
 | [Compression](https://specification.website/spec/performance/compression/) | Required | Done | Cloudflare |
@@ -124,7 +124,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [Lazy loading](https://specification.website/spec/performance/lazy-loading/) | Recommended | Phase 1 | Speaker portraits |
 | [Web font loading](https://specification.website/spec/performance/font-loading/) | Recommended | Phase 4 | Self host the fallback font instead of Google Fonts |
 | [Critical CSS](https://specification.website/spec/performance/critical-css/), [script loading](https://specification.website/spec/performance/script-loading/) | Recommended | Done | Handled by Next.js; Lighthouse watches regressions |
-| [Back/forward cache](https://specification.website/spec/performance/bfcache/) | Recommended | Checks | Lighthouse audits it |
+| [Back/forward cache](https://specification.website/spec/performance/bfcache/) | Recommended | Done | Audited by Lighthouse on every preview |
 | [Speculation Rules](https://specification.website/spec/performance/speculation-rules/), [preload and preconnect](https://specification.website/spec/performance/preload-prefetch-preconnect/) | Recommended | Phase 4 | |
 | [Dynamic viewport units](https://specification.website/spec/performance/dynamic-viewport-units/), [scrollbar gutter](https://specification.website/spec/performance/scrollbar-gutter/) | Recommended | Design system | |
 
