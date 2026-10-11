@@ -67,11 +67,12 @@ Handle these in the mappers, not in components:
 
 - `npm run dev`: start the dev server
 - `npm run build`: production build (static export to `out/`)
-- `npm test`: run all tests
+- `npm test`: run unit tests
+- `npm run test:output`: check the build in `out/` against the website specification (run after `npm run build`)
 - `npm run typecheck`: TypeScript check
 - `npm run lint`: lint with oxlint
 
-Run `npm run lint && npm run typecheck && npm test` before considering any change complete.
+Run `npm run lint && npm run typecheck && npm test` before considering any change complete. For changes to pages, metadata or `public/_headers`, also run `npm run build && npm run test:output`.
 
 ## Environment
 
@@ -189,6 +190,15 @@ Follow [Conventional Branch](https://conventional-branch.github.io): `<type>/<de
 - **Required** requirements must be met before launch. **Recommended** ones are the default; skipping one needs a reason in `docs/website-spec.md`. Anything marked **Avoid** must not appear.
 - Before building a feature, look up the requirements that apply to it. In Claude Code, use the `specification-website` MCP server configured in `.mcp.json`.
 - When a change meets or affects a requirement, update its status in `docs/website-spec.md` in the same pull request.
+
+### Conformance tests
+
+Requirements that can be checked mechanically are tested, and every test links to its requirement:
+
+- `tests/headers.test.ts` checks `public/_headers` (security headers, caching, `noindex` on `pages.dev`).
+- `tests/output/` checks every HTML page in the build (doctype, language, title, one `h1`, skip link targets, mixed content, the 404 page).
+
+When a change meets a new requirement that can be checked this way, add a test for it in the same pull request.
 
 ### Lighthouse
 
