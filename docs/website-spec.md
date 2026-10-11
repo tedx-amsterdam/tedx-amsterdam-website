@@ -9,9 +9,9 @@ How we apply it:
 - **Avoid**: must not appear in the site.
 - **Optional**: adopted when useful; not tracked here.
 
-This file maps each relevant requirement to its status. Update it in the same pull request that changes a status. The spec itself can be searched from Claude Code through the MCP server in `.mcp.json`.
+This file maps each relevant requirement to its status. "Tested" means a test in `tests/headers.test.ts` (headers) or `tests/output/` (built HTML) fails if the requirement breaks. Update it in the same pull request that changes a status. The spec itself can be searched from Claude Code through the MCP server in `.mcp.json`.
 
-**Status values**: **Done**, **Partial** (started, not complete), a roadmap phase (**Phase 1** to **Phase 6**), **Checks** (covered by the automated checks pull requests), **Design system** (owned by the design system), **N/A** (does not apply, with reason).
+**Status values**: **Done**, **Partial** (started, not complete), a roadmap phase (**Phase 1** to **Phase 6**), **Checks** (to be covered by automated checks), **Design system** (owned by the design system), **N/A** (does not apply, with reason).
 
 Links point to `https://specification.website/spec/<category>/<slug>/`.
 
@@ -19,11 +19,11 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
-| [Doctype](https://specification.website/spec/foundations/doctype/) | Required | Done | Rendered by Next.js |
-| [lang on html](https://specification.website/spec/foundations/html-lang/) | Required | Done | `en` in the root layout |
-| [meta charset](https://specification.website/spec/foundations/meta-charset/) | Required | Done | Rendered by Next.js |
-| [meta viewport](https://specification.website/spec/foundations/meta-viewport/) | Required | Done | Rendered by Next.js |
-| [title](https://specification.website/spec/foundations/title/) | Required | Partial | Site default and template exist; every page sets its own title as it is built |
+| [Doctype](https://specification.website/spec/foundations/doctype/) | Required | Done | Rendered by Next.js; tested on every page |
+| [lang on html](https://specification.website/spec/foundations/html-lang/) | Required | Done | `en` in the root layout; tested on every page |
+| [meta charset](https://specification.website/spec/foundations/meta-charset/) | Required | Done | Rendered by Next.js; tested on every page |
+| [meta viewport](https://specification.website/spec/foundations/meta-viewport/) | Required | Done | Rendered by Next.js; tested on every page |
+| [title](https://specification.website/spec/foundations/title/) | Required | Partial | Tested to be present on every page; each page still needs its own title as it is built |
 | [meta description](https://specification.website/spec/foundations/meta-description/) | Recommended | Phase 4 | |
 | [Canonical URL](https://specification.website/spec/foundations/canonical-url/) | Recommended | Phase 4 | |
 | [Favicons](https://specification.website/spec/foundations/favicons/) | Recommended | Phase 4 | None yet |
@@ -39,8 +39,8 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | --- | --- | --- | --- |
 | [Redirects](https://specification.website/spec/seo/redirects/) | Required | Phase 4 | 301s for legacy Webflow URLs via Cloudflare `_redirects` |
 | [Meta robots and X-Robots-Tag](https://specification.website/spec/seo/meta-robots/) | Required | Partial | `noindex` on all `pages.dev` deployments; production policy in phase 4 |
-| [Heading hierarchy](https://specification.website/spec/seo/heading-hierarchy/) | Required | Partial | One `h1` per page is a CLAUDE.md rule; checked per page |
-| [Soft 404s](https://specification.website/spec/seo/soft-404/) | Avoid | Checks | Cloudflare serves `404.html` with status 404; verify in the checks |
+| [Heading hierarchy](https://specification.website/spec/seo/heading-hierarchy/) | Required | Partial | Exactly one `h1` per page is tested; deeper heading order is checked in review |
+| [Soft 404s](https://specification.website/spec/seo/soft-404/) | Avoid | Done | `404.html` exists (tested) and Cloudflare serves it with status 404 |
 | [robots.txt](https://specification.website/spec/seo/robots-txt/) | Recommended | Phase 4 | Generated from the content layer |
 | [XML sitemaps](https://specification.website/spec/seo/xml-sitemaps/) | Recommended | Phase 4 | Generated from the content layer |
 | [Sitemap index](https://specification.website/spec/seo/sitemap-index/) | Recommended | N/A | One sitemap is enough for a site of this size |
@@ -60,7 +60,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [Accessible form errors](https://specification.website/spec/accessibility/form-errors/) | Required | Phase 3 | Newsletter form |
 | [Keyboard navigation](https://specification.website/spec/accessibility/keyboard-navigation/) | Required | Partial | Design system components are keyboard accessible; checked per page |
 | [Visible focus indicators](https://specification.website/spec/accessibility/focus-indicators/) | Required | Done | Global focus ring from the design system |
-| [Skip links](https://specification.website/spec/accessibility/skip-links/) | Required | Partial | `NavigationBar` renders the link; every page must have `id="main-content"` |
+| [Skip links](https://specification.website/spec/accessibility/skip-links/) | Required | Done | Every skip link has a target on every page (tested); fixed on the 404 page |
 | [Semantic HTML and landmarks](https://specification.website/spec/accessibility/semantic-html/) | Required | Partial | `header`, `nav`, `main`, `footer` in place; checked per page |
 | [Descriptive link text](https://specification.website/spec/accessibility/link-text/) | Required | Partial | Avoid "Learn more" without context, as used on the Webflow partners page |
 | [Document and parts language](https://specification.website/spec/accessibility/document-language/) | Required | Done | `lang="en"`; Dutch passages get `lang="nl"` |
@@ -77,17 +77,17 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
 | [HTTPS and TLS](https://specification.website/spec/security/https-tls/) | Required | Done | Cloudflare |
-| [HSTS](https://specification.website/spec/security/hsts/) | Required | Checks | Header in `_headers`; preload only once the real domain is on Cloudflare |
-| [X-Content-Type-Options](https://specification.website/spec/security/x-content-type-options/) | Required | Checks | Header in `_headers` |
-| [Clickjacking protection](https://specification.website/spec/security/frame-ancestors/) | Required | Checks | `frame-ancestors 'none'` and `X-Frame-Options: DENY` |
+| [HSTS](https://specification.website/spec/security/hsts/) | Required | Partial | One year, tested; `includeSubDomains` and preload are decided at launch |
+| [X-Content-Type-Options](https://specification.website/spec/security/x-content-type-options/) | Required | Done | Header in `_headers`, tested |
+| [Clickjacking protection](https://specification.website/spec/security/frame-ancestors/) | Required | Done | `frame-ancestors 'none'` and `X-Frame-Options: DENY`, tested |
 | [Cookie attributes](https://specification.website/spec/security/cookie-attributes/) | Required | N/A | The site sets no cookies; revisit with analytics in phase 4 |
-| [X-XSS-Protection](https://specification.website/spec/security/x-xss-protection/) | Avoid | Checks | Must stay absent |
-| [Content Security Policy](https://specification.website/spec/security/content-security-policy/) | Recommended | Checks | Next.js inlines scripts, so the policy needs hashes; may start as report only |
-| [Referrer-Policy](https://specification.website/spec/security/referrer-policy/) | Recommended | Checks | `strict-origin-when-cross-origin` |
-| [Permissions-Policy](https://specification.website/spec/security/permissions-policy/) | Recommended | Checks | Disable features the site does not use |
+| [X-XSS-Protection](https://specification.website/spec/security/x-xss-protection/) | Avoid | Done | Tested to stay absent |
+| [Content Security Policy](https://specification.website/spec/security/content-security-policy/) | Recommended | Partial | `frame-ancestors`, `base-uri`, `object-src` and `form-action` set; a script policy needs hashes because Next.js inlines scripts |
+| [Referrer-Policy](https://specification.website/spec/security/referrer-policy/) | Recommended | Done | `strict-origin-when-cross-origin`, tested |
+| [Permissions-Policy](https://specification.website/spec/security/permissions-policy/) | Recommended | Done | Unused features disabled, tested |
 | [security.txt](https://specification.website/spec/security/security-txt/) | Recommended | Checks | Needs a contact address of the foundation |
-| [Mixed content](https://specification.website/spec/security/mixed-content/) | Recommended | Done | All assets load over HTTPS |
-| [Cross-origin isolation](https://specification.website/spec/security/cross-origin-isolation/) | Recommended | Checks | COOP only; COEP would block CMS images from other origins |
+| [Mixed content](https://specification.website/spec/security/mixed-content/) | Recommended | Done | No plain HTTP resources, tested on every page |
+| [Cross-origin isolation](https://specification.website/spec/security/cross-origin-isolation/) | Recommended | Partial | COOP `same-origin`, tested; COEP would block CMS images from other origins |
 | [Subresource Integrity](https://specification.website/spec/security/subresource-integrity/) | Recommended | Phase 4 | Disappears as a concern once Google Fonts is self hosted |
 | [Reporting API](https://specification.website/spec/security/reporting-endpoints/), [Trusted Types](https://specification.website/spec/security/trusted-types/) | Recommended | Phase 4 | After CSP is in place |
 | [Fetch Metadata](https://specification.website/spec/security/fetch-metadata/) | Recommended | N/A | Needs server side request checks; the site is static |
@@ -117,7 +117,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | --- | --- | --- | --- |
 | [Core Web Vitals](https://specification.website/spec/performance/core-web-vitals/) | Required | Partial | Measured by Lighthouse on every preview; thresholds rise per phase |
 | [Image optimisation](https://specification.website/spec/performance/image-optimization/) | Required | Phase 1 | CMS images are served unoptimized; pick an approach with the speaker pages |
-| [Cache-Control](https://specification.website/spec/performance/cache-control/) | Required | Checks | Long immutable caching for `/_next/static/` in `_headers` |
+| [Cache-Control](https://specification.website/spec/performance/cache-control/) | Required | Done | Hashed assets under `/_next/static/` are immutable for a year, tested |
 | [Compression](https://specification.website/spec/performance/compression/) | Required | Done | Cloudflare |
 | [HTTP/1.1 workarounds](https://specification.website/spec/performance/http1-workarounds/) | Avoid | Done | None used |
 | [HTTP/2 and HTTP/3](https://specification.website/spec/performance/http3/) | Recommended | Done | Cloudflare |
@@ -142,7 +142,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
-| [Custom error pages](https://specification.website/spec/resilience/error-pages/) | Required | Partial | Default Next.js 404 exists; a branded 404 in phase 4. No 500 page: the site is static |
+| [Custom error pages](https://specification.website/spec/resilience/error-pages/) | Required | Done | Site specific 404 page, tested. No 500 page: the site is static |
 | [Graceful degradation](https://specification.website/spec/resilience/graceful-degradation/) | Recommended | Partial | Content is static HTML; the mobile menu needs JavaScript |
 | [Web app manifest](https://specification.website/spec/resilience/pwa-manifest/) | Recommended | Phase 4 | With the favicons |
 | [Monitoring and uptime](https://specification.website/spec/resilience/monitoring-uptime/) | Recommended | Phase 6 | |
