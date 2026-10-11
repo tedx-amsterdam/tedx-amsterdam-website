@@ -117,7 +117,7 @@ Footer: value
 
 Visual changes are `feat` (new) or `fix` (broken), not `style`.
 
-**Scopes** are optional but preferred: the area of the codebase, short and lowercase. Current scopes: `layout`, `ui`, `content`, `speakers`, `events`, `partners`, `seo`, `config`, `hosting`, `github`, `lint`, `test`, `deps`, `readme`, `roadmap`, `claude`, `license`. Add a scope when a new area appears.
+**Scopes** are optional but preferred: the area of the codebase, short and lowercase. Current scopes: `layout`, `ui`, `content`, `speakers`, `events`, `partners`, `seo`, `config`, `hosting`, `github`, `lint`, `test`, `deps`, `readme`, `roadmap`, `spec`, `claude`, `license`. Add a scope when a new area appears.
 
 **Subject**: imperative mood ("add", not "added" or "adds"), lowercase start, no trailing period. Keep the whole first line within 72 characters so it is readable in `git log --oneline` and on GitHub.
 
@@ -181,6 +181,14 @@ Follow [Conventional Branch](https://conventional-branch.github.io): `<type>/<de
 - Don't add npm dependencies without a clear reason. State the reason in the commit message.
 - Don't add comments that restate the code. Comment the *why*, especially around CMS quirks.
 - Don't refactor code unrelated to the current task.
+
+## Quality reference
+
+[The Website Specification](https://specification.website) is the quality bar for this site. `docs/website-spec.md` maps its requirements to this project.
+
+- **Required** requirements must be met before launch. **Recommended** ones are the default; skipping one needs a reason in `docs/website-spec.md`. Anything marked **Avoid** must not appear.
+- Before building a feature, look up the requirements that apply to it. In Claude Code, use the `specification-website` MCP server configured in `.mcp.json`.
+- When a change meets or affects a requirement, update its status in `docs/website-spec.md` in the same pull request.
 
 ## URLs and SEO
 
