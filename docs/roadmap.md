@@ -49,6 +49,7 @@ Most open requirements from [The Website Specification](website-spec.md) land in
 - [ ] `sitemap.xml` and `robots.txt`
 - [ ] Redirects for legacy URLs: `/old-home`, `/speakers-new`, `/partners-old`, `/speakers-copy/*`
 - [ ] 404 page
+- [ ] Raise Lighthouse thresholds to best practices 1 (needs the favicon) and SEO 1 (needs meta descriptions)
 - [ ] Self hosted fonts instead of Google Fonts (GDPR)
 - [ ] Analytics loaded only after cookie consent (GDPR)
 
@@ -56,6 +57,7 @@ Most open requirements from [The Website Specification](website-spec.md) land in
 
 - [x] Cloudflare Pages project with preview deployments per pull request (temporarily on a personal account)
 - [x] `noindex` on all `pages.dev` addresses
+- [x] Lighthouse on every preview deployment
 - [ ] Build command `npm run build` in Cloudflare, so it matches CI
 - [ ] Rebuild on CMS publish (webhook to deploy hook)
 - [ ] Move the Cloudflare project to a foundation account before launch
@@ -88,3 +90,4 @@ Tracked here because the website depends on them. Each one removes a workaround 
 - [ ] Publish the TEDx required content constants (then remove `src/config/tedx.ts`)
 - [ ] Mark interactive components with `"use client"` (then remove `src/components/design-system.ts`)
 - [ ] Add a Facebook icon to `SocialLink`
+- [ ] Give logo images explicit `width` and `height` (Lighthouse flags them as unsized)
