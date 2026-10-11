@@ -1,0 +1,10 @@
+html {
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
+
+body {
+  margin: 0;
+  font: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+}

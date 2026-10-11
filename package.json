@@ -19,7 +19,8 @@
   "dependencies": {
     "next": "16.4.0",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "tedx-amsterdam-design-system": "1.2.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "7.0.1",
