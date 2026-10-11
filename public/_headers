@@ -1,0 +1,12 @@
+# Cloudflare Pages response headers.
+# https://developers.cloudflare.com/pages/configuration/headers/
+
+# Keep every pages.dev address out of search engines: the production alias
+# (tedx-amsterdam-website.pages.dev) and all branch and commit previews.
+# Only the real domain should be indexed, otherwise Google sees duplicate
+# content next to tedxamsterdam.nl.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
