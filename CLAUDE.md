@@ -23,6 +23,8 @@ The site is maintained by volunteers who rotate. Optimise for the next person re
 ```
 src/app/              Routes. Pages only compose components and call the content layer.
 src/components/       Site specific components that are not generic enough for the design system.
+  design-system.ts    The only entry point for design system components (see below).
+src/config/           Site settings: navigation, external links, legal text.
 src/content/
   types.ts            Domain types (Speaker, Event, Partner, Pioneer, Talk, BlogPost).
   source.ts           The ContentSource interface every content source implements.
@@ -31,7 +33,17 @@ src/content/
   fixtures/           Fixture source with static data for tests, CI and offline development.
 src/lib/              Small shared utilities (env parsing, HTML sanitising, formatting).
 tests/                Vitest tests and fixtures.
+docs/                 Project documentation, including the roadmap.
+public/assets/        Design system logos and icons (temporary, see public/assets/README.md).
 ```
+
+### Design system workarounds
+
+The published design system (1.2.1) has three gaps. Each has exactly one workaround in this repo, listed in `docs/roadmap.md` under "Design system follow ups". Remove the workaround when the design system fixes the gap.
+
+- **No `"use client"` directive.** Importing the package in a server component crashes the build. Always import from `@/components/design-system`, which re-exports the components behind a client boundary. A lint rule blocks direct imports; type only imports are allowed.
+- **Assets not in the npm package.** Logos and icons are copied into `public/assets/`. Components receive `base="/"` so they resolve `/assets/...` on every route.
+- **TEDx required texts not exported.** They live in `src/config/tedx.ts` until the package exports them.
 
 ### The content layer is the core rule
 
@@ -83,7 +95,7 @@ Run `npm run lint && npm run typecheck && npm test` before considering any chang
 
 - **Named exports only**, except where Next.js requires a default export (`page.tsx`, `layout.tsx`, `not-found.tsx`).
 - **Server components by default.** Add `"use client"` only for real interactivity, as low in the tree as possible.
-- Use design system components before writing new ones. If a new component is generic, propose it for the design system instead of building it here.
+- Use design system components before writing new ones, imported from `@/components/design-system`. If a new component is generic, propose it for the design system instead of building it here.
 - Styling via CSS Modules and design system tokens. No hardcoded colors, spacing or font sizes, no inline styles, no `!important`.
 - No `any`. Prefer types inferred from Zod schemas for raw API data.
 - Don't add npm dependencies without a clear reason. State the reason in the commit message.
@@ -107,7 +119,7 @@ Run `npm run lint && npm run typecheck && npm test` before considering any chang
 
 ## TEDx brand rules
 
-- The license disclaimer (`TEDX_DISCLAIMER` from the design system) appears on every page. The About page includes `TEDX_ABOUT_TEDX` and `TEDX_ABOUT_TED`. Always import these constants; never retype the text.
+- The license disclaimer (`TEDX_DISCLAIMER`) appears on every page through the site footer. The About page includes `TEDX_ABOUT_TEDX` and `TEDX_ABOUT_TED`. Always import these constants (currently from `src/config/tedx.ts`); never retype the text.
 - Always write "TEDx" and "TEDxAmsterdam": lowercase x, attached.
 - Sponsor logos are always smaller than the TEDxAmsterdam logo.
 - No TED logo and no imagery from TED conferences.
