@@ -23,6 +23,8 @@ The site is maintained by volunteers who rotate. Optimise for the next person re
 ```
 src/app/              Routes. Pages only compose components and call the content layer.
 src/components/       Site specific components that are not generic enough for the design system.
+  design-system.ts    The only entry point for design system components (see below).
+src/config/           Site settings: navigation, external links, legal text.
 src/content/
   types.ts            Domain types (Speaker, Event, Partner, Pioneer, Talk, BlogPost).
   source.ts           The ContentSource interface every content source implements.
@@ -31,7 +33,17 @@ src/content/
   fixtures/           Fixture source with static data for tests, CI and offline development.
 src/lib/              Small shared utilities (env parsing, HTML sanitising, formatting).
 tests/                Vitest tests and fixtures.
+docs/                 Project documentation, including the roadmap.
+public/assets/        Design system logos and icons (temporary, see public/assets/README.md).
 ```
+
+### Design system workarounds
+
+The published design system (1.2.1) has three gaps. Each has exactly one workaround in this repo, listed in `docs/roadmap.md` under "Design system follow ups". Remove the workaround when the design system fixes the gap.
+
+- **No `"use client"` directive.** Importing the package in a server component crashes the build. Always import from `@/components/design-system`, which re-exports the components behind a client boundary. A lint rule blocks direct imports; type only imports are allowed.
+- **Assets not in the npm package.** Logos and icons are copied into `public/assets/`. Components receive `base="/"` so they resolve `/assets/...` on every route.
+- **TEDx required texts not exported.** They live in `src/config/tedx.ts` until the package exports them.
 
 ### The content layer is the core rule
 
@@ -72,18 +84,98 @@ Run `npm run lint && npm run typecheck && npm test` before considering any chang
 
 - Always make small, focused commits: one logical change per commit.
 - Do not batch unrelated changes into a single commit.
-- All commits in English.
-- Use conventional commit prefixes: `feat:`, `fix:`, `chore:`, `test:`, `refactor:`, `docs:`, `ci:`.
-- Keep messages concise and explain *why*, not *what*.
+- All commits in English (American spelling, matching the code).
 - Every commit leaves the project in a working state: lint, typecheck and tests pass.
-- Work on feature branches and merge to `main` through a pull request. Do not push directly to `main`.
+
+### Commit messages
+
+Follow [Conventional Commits 1.0](https://www.conventionalcommits.org), with the type list and rules of [commitlint config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional):
+
+```
+type(scope): subject
+
+Body explaining why.
+
+Footer: value
+```
+
+**Types**
+
+| Type | Use for | Example |
+| --- | --- | --- |
+| `feat` | A new capability visitors or editors notice | `feat(speakers): add speaker detail page` |
+| `fix` | A bug that reached `main` | `fix(layout): keep mobile menu above the hero` |
+| `perf` | Faster or lighter, same behavior | `perf(speakers): lazy load speaker portraits` |
+| `refactor` | Restructured code, same behavior | `refactor(content): extract rich text sanitizer` |
+| `style` | Formatting only (whitespace, quotes); never CSS or visual changes | `style: apply editorconfig to config files` |
+| `test` | Adding or correcting tests only | `test(content): cover speakers without a photo` |
+| `docs` | Documentation only | `docs(readme): explain fixture mode` |
+| `build` | Build setup, tooling and dependencies | `build(deps): update next to 16.5.0` |
+| `ci` | GitHub Actions and other CI config | `ci: cache Next.js build output` |
+| `chore` | Maintenance that fits nothing above | `chore(hosting): add Cloudflare headers` |
+| `revert` | Reverting an earlier commit | `revert: feat(speakers): add speaker detail page` |
+
+Visual changes are `feat` (new) or `fix` (broken), not `style`.
+
+**Scopes** are optional but preferred: the area of the codebase, short and lowercase. Current scopes: `layout`, `ui`, `content`, `speakers`, `events`, `partners`, `seo`, `config`, `hosting`, `github`, `lint`, `test`, `deps`, `readme`, `roadmap`, `claude`, `license`. Add a scope when a new area appears.
+
+**Subject**: imperative mood ("add", not "added" or "adds"), lowercase start, no trailing period. Keep the whole first line within 72 characters so it is readable in `git log --oneline` and on GitHub.
+
+**Body**: required for anything beyond a trivial change. Separate it from the subject with a blank line. Explain *why* and any trade off; the diff already shows *what*. Wrap at 72 characters.
+
+**Footer**: git trailers, separated from the body by a blank line.
+
+- `BREAKING CHANGE: <what breaks and how to migrate>` for breaking changes, or `!` before the colon (`feat(content)!: ...`).
+- `Refs: #123` for related issues; `Closes #123` belongs in the pull request description.
+- `Co-Authored-By: Name <email>` to credit everyone who worked on the commit.
+- A `revert` commit names the reverted commit: `Refs: <sha>`.
+
+**Fixing your own unmerged work**: do not add a `fix:` commit for a mistake made earlier in the same branch. Fold it into the commit it belongs to with `git commit --fixup <sha>` and `git rebase -i --autosquash main` before review. `fix:` is reserved for bugs that reached `main`.
+
+### Branches
+
+Follow [Conventional Branch](https://conventional-branch.github.io): `<type>/<description>`.
+
+| Prefix | Use for |
+| --- | --- |
+| `feature/` | A new feature or page |
+| `bugfix/` | A bug fix |
+| `hotfix/` | An urgent fix for the live site that skips the normal queue |
+| `chore/` | Tooling, dependencies, documentation, refactors without new behavior |
+| `release/` | Not used: the site deploys continuously from `main` |
+
+- Lowercase letters, numbers and hyphens only: `feature/speaker-pages`, `bugfix/footer-links`.
+- Add the issue number when there is one: `feature/12-speaker-pages`.
+- One branch per pull request. Keep branches short lived and delete them after merging.
+
+### Pull requests
+
+**Scope**: one pull request is one complete unit of work: one feature, one bug fix or one chore. Not a bundle of unrelated changes, and not one pull request per commit.
+
+- **Size**: aim for a diff a reviewer can read in one sitting, roughly under 400 changed lines excluding lock files and fixtures. Split larger features into a sequence of pull requests that each work on their own, for example the content layer first and the pages second.
+- **Refactors separate**: do refactoring that a feature needs in its own pull request first, or at least in its own commits, so behavior changes stay easy to review.
+- **Tests and docs travel with the change** in the same pull request.
+
+**Title**: same format as a commit subject, describing the whole change: `feat(speakers): add speaker overview and detail pages`. Mark breaking changes with `!`.
+
+**Description**: use the template in `.github/pull_request_template.md`. Explain what and why, how to test, add screenshots for visual changes, and link the issue with `Closes #123`. Keep the description about the change itself: leave out anything a reviewer does not need, such as tool, generator or session footers.
+
+**Preview link**: every pull request description starts with a link to its Cloudflare preview, so reviewers test the real build instead of reading code only. Cloudflare deploys every branch to `https://<branch>.tedx-amsterdam-website.pages.dev`, where `<branch>` is the branch name in lowercase with `/` and other special characters replaced by `-` (`feature/speaker-pages` becomes `feature-speaker-pages`). Cloudflare shortens long branch names, so copy the branch preview URL from the Cloudflare bot comment on the pull request when in doubt. Update the link if the branch is renamed.
+
+**Process**
+
+- Open a **draft** pull request early for work in progress; mark it ready when it is complete.
+- Before asking for review: rebase on `main`, squash fixups, review your own diff, check that CI and the Cloudflare preview are green, and open the preview link yourself.
+- Merge with **rebase and merge**. Do not squash: the atomic commits are the project history.
+- Delete the branch after merging.
+- Never push directly to `main`, including for small fixes.
 - Never commit secrets, tokens or `.env.local`. If one is committed by accident, revoke it in Webflow immediately; removing it from history is not enough.
 
 ## Code conventions
 
 - **Named exports only**, except where Next.js requires a default export (`page.tsx`, `layout.tsx`, `not-found.tsx`).
 - **Server components by default.** Add `"use client"` only for real interactivity, as low in the tree as possible.
-- Use design system components before writing new ones. If a new component is generic, propose it for the design system instead of building it here.
+- Use design system components before writing new ones, imported from `@/components/design-system`. If a new component is generic, propose it for the design system instead of building it here.
 - Styling via CSS Modules and design system tokens. No hardcoded colors, spacing or font sizes, no inline styles, no `!important`.
 - No `any`. Prefer types inferred from Zod schemas for raw API data.
 - Don't add npm dependencies without a clear reason. State the reason in the commit message.
@@ -107,7 +199,7 @@ Run `npm run lint && npm run typecheck && npm test` before considering any chang
 
 ## TEDx brand rules
 
-- The license disclaimer (`TEDX_DISCLAIMER` from the design system) appears on every page. The About page includes `TEDX_ABOUT_TEDX` and `TEDX_ABOUT_TED`. Always import these constants; never retype the text.
+- The license disclaimer (`TEDX_DISCLAIMER`) appears on every page through the site footer. The About page includes `TEDX_ABOUT_TEDX` and `TEDX_ABOUT_TED`. Always import these constants (currently from `src/config/tedx.ts`); never retype the text.
 - Always write "TEDx" and "TEDxAmsterdam": lowercase x, attached.
 - Sponsor logos are always smaller than the TEDxAmsterdam logo.
 - No TED logo and no imagery from TED conferences.
