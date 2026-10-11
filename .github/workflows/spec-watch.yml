@@ -1,0 +1,67 @@
+name: Spec watch
+
+# Checks The Website Specification once a week. When its checklist differs
+# from the copy in docs/spec-checklist.md, this opens (or updates) a pull
+# request with the new version, so the diff shows exactly which
+# requirements changed. The first run creates the initial copy.
+
+on:
+  schedule:
+    - cron: "17 6 * * 1" # Mondays 06:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: spec-watch
+  cancel-in-progress: false
+
+env:
+  CHECKLIST_URL: https://specification.website/checklist.md
+  SNAPSHOT: docs/spec-checklist.md
+  BRANCH: chore/spec-checklist-update
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download the checklist
+        run: |
+          curl --fail --silent --show-error --location "$CHECKLIST_URL" --output /tmp/checklist.md
+          test -s /tmp/checklist.md
+
+      - name: Compare with the snapshot
+        id: compare
+        run: |
+          if [[ -f "$SNAPSHOT" ]] && cmp --silent /tmp/checklist.md "$SNAPSHOT"; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "The checklist matches $SNAPSHOT." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "The checklist changed; opening a pull request." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Open or update the pull request
+        if: steps.compare.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch --create "$BRANCH"
+          cp /tmp/checklist.md "$SNAPSHOT"
+          git add "$SNAPSHOT"
+          git commit --message "docs(spec): update The Website Specification checklist" \
+            --message "Weekly snapshot from $CHECKLIST_URL."
+          git push --force origin "$BRANCH"
+
+          if [[ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')" ]]; then
+            gh pr create --base main --head "$BRANCH" \
+              --title "docs(spec): update The Website Specification checklist" \
+              --body-file .github/spec-watch-pr.md
+          fi
