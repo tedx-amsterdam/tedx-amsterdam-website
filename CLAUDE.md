@@ -190,6 +190,14 @@ Follow [Conventional Branch](https://conventional-branch.github.io): `<type>/<de
 - Before building a feature, look up the requirements that apply to it. In Claude Code, use the `specification-website` MCP server configured in `.mcp.json`.
 - When a change meets or affects a requirement, update its status in `docs/website-spec.md` in the same pull request.
 
+### Lighthouse
+
+Every pull request runs Lighthouse against its Cloudflare preview (`.github/workflows/lighthouse.yml`, thresholds in `lighthouserc.json`).
+
+- When adding a new page type, add one URL for it to the workflow.
+- Thresholds only go up. Lowering one needs a reason in the commit message.
+- A failing Lighthouse check blocks merging, like a failing test.
+
 ## URLs and SEO
 
 - Keep existing URLs from the Webflow site (for example `/speakers/[slug]`). Any URL that changes gets a 301 redirect.
