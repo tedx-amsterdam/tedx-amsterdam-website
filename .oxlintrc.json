@@ -32,6 +32,18 @@
           "@testing-library/jest-dom/vitest"
         ]
       }
+    ],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "tedx-amsterdam-design-system",
+            "message": "Import from @/components/design-system so components render behind a client boundary.",
+            "allowTypeImports": true
+          }
+        ]
+      }
     ]
   },
   "overrides": [
@@ -46,6 +58,14 @@
       ],
       "rules": {
         "import/no-default-export": "off"
+      }
+    },
+    {
+      "files": [
+        "src/components/design-system.ts"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
       }
     }
   ],

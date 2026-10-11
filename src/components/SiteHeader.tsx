@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { NavigationBar } from "tedx-amsterdam-design-system";
+import { NavigationBar } from "@/components/design-system";
 import { MAIN_NAV, TICKETS } from "@/config/site";
 
 // NavigationBar uses React state for the mobile menu, so it has to render in
