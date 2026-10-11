@@ -42,6 +42,8 @@ How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly i
 
 ## Phase 4: SEO and parity with the Webflow site
 
+Most open requirements from [The Website Specification](website-spec.md) land in this phase.
+
 - [ ] Metadata and Open Graph on every page
 - [ ] JSON-LD on speaker pages
 - [ ] `sitemap.xml` and `robots.txt`
