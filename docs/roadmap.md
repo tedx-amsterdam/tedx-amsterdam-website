@@ -52,9 +52,11 @@ How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly i
 
 ## Phase 5: Hosting and deployment
 
-- [ ] Cloudflare Pages project with preview deployments per pull request
+- [x] Cloudflare Pages project with preview deployments per pull request (temporarily on a personal account)
+- [x] `noindex` on all `pages.dev` addresses
+- [ ] Build command `npm run build` in Cloudflare, so it matches CI
 - [ ] Rebuild on CMS publish (webhook to deploy hook)
-- [ ] Staging domain with `noindex`
+- [ ] Move the Cloudflare project to a foundation account before launch
 
 ## Phase 6: QA and launch (after 12 November)
 
