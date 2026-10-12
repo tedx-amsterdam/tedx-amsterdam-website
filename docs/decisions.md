@@ -52,7 +52,7 @@ Small commits in Conventional Commits format, one pull request per feature, bug 
 
 ## 11. Stacked pull requests merge bottom up (October 2026)
 
-When pull requests are stacked, merge the lowest first and delete its branch before merging the next, so GitHub retargets the next one to `main`. Learned the hard way: a stacked pull request was once merged into its stale base branch instead of `main` and had to be reopened.
+When pull requests are stacked, merge the lowest first and delete its branch before merging the next, so GitHub retargets the next one to `main`. Learned the hard way: a stacked pull request was once merged into its stale base branch instead of `main` and had to be reopened, and #4 and #5 later went the same way and had to be restored with cherry picks. Before every merge, check that the base is `main`.
 
 ## 12. HSTS without includeSubDomains for now (October 2026)
 
