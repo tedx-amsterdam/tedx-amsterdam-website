@@ -3,7 +3,8 @@ import type { Speaker } from "../types";
 
 // Fictional speakers for tests, CI and offline development. They cover the
 // cases pages must handle: no photo, no order, a long name, a session title,
-// and rich text with the empty paragraphs Webflow leaves behind.
+// no rich text, rich text with headings, and the empty paragraphs Webflow
+// leaves behind.
 
 // An inline grey portrait, so fixtures work offline and never hit a CDN.
 const PORTRAIT =
@@ -22,7 +23,15 @@ export const FIXTURE_SPEAKERS: readonly Speaker[] = [
       "<p>What if the city itself could breathe? Amara shows how <strong>green corridors</strong> turn streets into ecosystems, and why growth does not have to mean more concrete.</p><p>‍</p>",
     ),
     bio: sanitizeHtml("<p><em>Amara studies how cities and nature share space.</em></p>"),
-    photo: { url: PORTRAIT, alt: "Portrait of Amara Okafor" },
+    // Variants exercise srcset in the build; real ones come from the CMS.
+    photo: {
+      url: PORTRAIT,
+      alt: "Portrait of Amara Okafor",
+      variants: [
+        { url: PORTRAIT, width: 400 },
+        { url: PORTRAIT, width: 800 },
+      ],
+    },
     order: 1,
   },
   {
@@ -51,15 +60,20 @@ export const FIXTURE_SPEAKERS: readonly Speaker[] = [
     name: "Pieter de Wit",
     sessionTitle: "The quiet economy",
     role: "Philosopher",
-    sessionBlurb: sanitizeHtml("<p>A talk with a title of its own, as 2025 speakers had.</p><p>&nbsp;</p>"),
+    // Headings as an editor might pick them: they must not skip a level on the page.
+    sessionBlurb: sanitizeHtml(
+      "<p>A talk with a title of its own, as 2025 speakers had.</p><p>&nbsp;</p><h4>Why it matters</h4><p>Because quiet work adds up.</p>",
+    ),
+    bio: sanitizeHtml("<h3>Background</h3><p><em>Pieter writes about what economies leave unsaid.</em></p>"),
     photo: { url: PORTRAIT, alt: "Portrait of Pieter de Wit" },
     order: 4,
   },
   {
     slug: "lin-chen",
     name: "Lin Chen",
+    // No order, so Lin is listed last. No bio or blurb either, so the page
+    // falls back to a description built from the name.
     role: "Designer",
-    sessionBlurb: sanitizeHtml("<p>No order set, so Lin is listed last.</p>"),
     photo: { url: PORTRAIT, alt: "Portrait of Lin Chen" },
   },
 ];
