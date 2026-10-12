@@ -42,6 +42,15 @@
             "message": "Import from @/components/design-system so components render behind a client boundary.",
             "allowTypeImports": true
           }
+        ],
+        "patterns": [
+          {
+            "group": [
+              "@/content/*",
+              "**/content/*"
+            ],
+            "message": "Import content from @/content only. Sources, mappers and fixtures are internal to the content layer."
+          }
         ]
       }
     ]
@@ -66,6 +75,26 @@
       ],
       "rules": {
         "no-restricted-imports": "off"
+      }
+    },
+    {
+      "files": [
+        "src/content/**",
+        "tests/**"
+      ],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              {
+                "name": "tedx-amsterdam-design-system",
+                "message": "Import from @/components/design-system so components render behind a client boundary.",
+                "allowTypeImports": true
+              }
+            ]
+          }
+        ]
       }
     }
   ],
