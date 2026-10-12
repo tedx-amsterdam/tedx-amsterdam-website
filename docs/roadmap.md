@@ -8,13 +8,9 @@ How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly i
 
 Update this section in every pull request that changes the state of the project.
 
-**State (12 October 2026)**: phase 0 is merged. The Website Specification is adopted (#2). Three pull requests are open and stacked:
+**State (12 October 2026)**: phase 0 is merged, and so are The Website Specification (#2), Lighthouse on every deployment (#6) and the project documents (#7). The official review plugins (`code-review`, `pr-review-toolkit`, `claude-md-management`, `typescript-lsp`) are enabled for everyone in `.claude/settings.json`.
 
-1. #6 `chore/lighthouse-ci`: Lighthouse on every deployment, plus a CI fix (base `main`)
-2. #4 `feature/spec-conformance-tests`: conformance tests, security headers, caching, 404 skip link fix (base #6)
-3. #5 `chore/spec-watch`: weekly check for spec changes (base #4)
-
-Merge them in that order with rebase and merge, deleting each branch before merging the next (see decision 11 in [decisions.md](decisions.md)).
+#4 (conformance tests, security headers, caching, 404 skip link fix) and #5 (spec watch) were merged into their stacked base branches instead of `main`, so their commits never reached `main`. #8 (`chore/restore-spec-conformance`) brings the same commits to `main` unchanged. Merge it before anything else.
 
 **Next**: phase 1, starting with pull request 1a below.
 
@@ -34,11 +30,11 @@ Decisions that block or shape upcoming work. Record the outcome in [decisions.md
 Things outside the code that someone with admin access has to do.
 
 - [ ] GitHub settings: only "Allow rebase merging", "Automatically delete head branches" on, "Allow GitHub Actions to create and approve pull requests" on
-- [ ] Delete stale branches: `feat/project-setup`, `feature/project-setup`, `chore/website-spec`
+- [ ] Delete stale branches: `feat/project-setup`, `feature/project-setup`, `chore/website-spec`, `chore/lighthouse-ci`, `chore/project-context-docs`, and after the restore is merged `feature/spec-conformance-tests` and `chore/spec-watch`
+- [ ] Branch ruleset on `main` (pull request required, CI and Lighthouse must pass, no force push): no longer optional, two stacked merges have now gone wrong
 - [ ] Add a second owner to the GitHub organisation
-- [ ] Optional: branch ruleset on `main` (pull request required, CI and Lighthouse must pass, no force push)
 - [ ] Cloudflare: set the build command to `npm run build` (it is `npx next build`)
-- [ ] After #5 is merged: run the Spec watch workflow once by hand to create the initial snapshot
+- [ ] After #8 is merged: run the Spec watch workflow once by hand to create the initial snapshot
 - [ ] Before phase 1b: create a Webflow site token with **CMS read** only for the site build, and add it to Cloudflare as a secret (see 1b)
 
 ## Key dates
