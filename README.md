@@ -2,7 +2,7 @@
 
 The website for [tedxamsterdam.nl](https://www.tedxamsterdam.nl), built with [Next.js](https://nextjs.org) and the [TEDxAmsterdam design system](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system).
 
-> **Status:** work in progress. This project will replace the current Webflow site. Until then, content is read from the Webflow CMS. See the [roadmap](docs/roadmap.md) for what is done and what comes next.
+> **Status:** proof of concept. This project will replace the current Webflow site, which stays live until then. Content is read from the Webflow CMS and never written back: do not change or publish anything in Webflow from this project. See the [roadmap](docs/roadmap.md) for what is done and what comes next.
 
 ## Getting started
 
