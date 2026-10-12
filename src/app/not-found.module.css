@@ -1,0 +1,28 @@
+.main {
+  max-width: var(--frame-max);
+  margin: 0 auto;
+  padding: var(--space-20) var(--gutter);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.title {
+  margin: 0;
+  font: var(--text-h1);
+  letter-spacing: var(--ls-display);
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.text {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--text-primary);
+}
+
+@media (max-width: 767px) {
+  .title {
+    font-size: var(--fs-h1-m);
+  }
+}

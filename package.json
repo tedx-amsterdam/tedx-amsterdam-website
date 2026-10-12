@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "oxlint --deny-warnings",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:output": "vitest run --config vitest.output.config.ts"
   },
   "dependencies": {
     "next": "16.4.0",

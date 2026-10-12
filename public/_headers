@@ -1,5 +1,26 @@
 # Cloudflare Pages response headers.
 # https://developers.cloudflare.com/pages/configuration/headers/
+# Each header maps to a requirement in docs/website-spec.md and is checked
+# by tests/headers.test.ts.
+
+# Security headers for every response.
+# HSTS leaves out includeSubDomains until all subdomains of the real
+# domain are known to serve HTTPS; decide at launch.
+# The CSP only sets directives that are safe with Next.js inline scripts;
+# a script policy with hashes is planned separately.
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin
+
+# Next.js puts a content hash in every file name under /_next/static/, so
+# a changed file always gets a new URL and can be cached for a year.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
 
 # Keep every pages.dev address out of search engines: the production alias
 # (tedx-amsterdam-website.pages.dev) and all branch and commit previews.
