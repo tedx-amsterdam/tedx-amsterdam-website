@@ -1,4 +1,4 @@
-import type { Speaker } from "./types";
+import type { TedxEvent, Speaker } from "./types";
 
 // Implemented by every content source (fixtures, Webflow, later Sanity).
 // Sources return validated, sanitised domain objects and throw on bad data,
@@ -7,4 +7,6 @@ export interface ContentSource {
   // Published speakers of the current edition, in display order.
   getSpeakers(): Promise<Speaker[]>;
   getSpeaker(slug: string): Promise<Speaker | undefined>;
+  // Every published event, upcoming and past, earliest first.
+  getEvents(): Promise<TedxEvent[]>;
 }
