@@ -8,11 +8,11 @@ How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly i
 
 Update this section in every pull request that changes the state of the project.
 
-**State (12 October 2026)**: phases 0 and 1a are on `main`; 1b is in review on `feature/webflow-speakers`. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the project agents and the `/next` and `/ship` commands are described in CLAUDE.md, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
+**State (12 October 2026)**: phases 0, 1a and 1b are on `main`: the Webflow adapter for speakers (#19), checked by the `content-layer-reviewer` agent. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the project agents and the `/next` and `/ship` commands are described in CLAUDE.md, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
 
 #4, #5, #9 and #10 were merged into stacked base branches instead of `main`; #8 and #11 restored their commits unchanged. GitHub now allows only rebase merging and deletes head branches on merge, so stacking is safe again (decision 18). Older history on `main` contains merge commits and one commit pushed directly; do not copy them.
 
-**Next**: the `content-layer-reviewer` agent (the last 1b item), then phase 1c, the speaker pages. The Cloudflare variables for 1b are a maintainer action and block 1c, because the speaker pages make the build call Webflow.
+**Next**: phase 1c, the speaker pages, on `feature/speaker-pages` from `main`. It is blocked by the Cloudflare variables for 1b (a maintainer action), because the speaker pages make the build call Webflow.
 
 ## Open decisions
 
@@ -81,7 +81,7 @@ Done when: the app builds and tests pass without any token, and nothing outside 
 - [x] Unit tests with the recorded responses in `tests/fixtures/webflow/`, plus a hand edited copy with a broken field that must fail with a readable error
 - [ ] Cloudflare (maintainer): `WEBFLOW_API_TOKEN` as an encrypted secret and `CONTENT_SOURCE=webflow` for production and preview builds
 - [x] Update `docs/website-spec.md` for image alt text
-- [ ] `content-layer-reviewer` agent in `.claude/agents/`, based on the finished adapter: every content model quirk handled and tested, no Webflow slugs outside `src/content/webflow/`, rich text through `sanitizeHtml`, every response parsed with Zod; run by `/ship` on content layer changes
+- [x] `content-layer-reviewer` agent in `.claude/agents/`, based on the finished adapter: every content model quirk handled and tested, no Webflow slugs outside `src/content/webflow/`, rich text through `sanitizeHtml`, every response parsed with Zod; run by `/ship` on content layer changes
 
 Done when: unit tests on the recorded responses cover every speaker quirk in the content model, an invalid response makes `getSpeakers()` throw a readable error, and with a token in `.env.local` a one off script described in the pull request fetches and maps every published speaker. No page reads content yet, so the build itself starts calling Webflow in 1c.
 
