@@ -1,0 +1,61 @@
+{
+  "items": [
+    {
+      "id": "6aba720c6e318af59ab2add2",
+      "cmsLocaleId": "6874c72679138fea0389db24",
+      "lastPublished": "2026-10-03T10:21:15.179Z",
+      "lastUpdated": "2026-10-03T10:14:33.246Z",
+      "createdOn": "2026-09-28T13:56:28.950Z",
+      "isArchived": false,
+      "isDraft": false,
+      "fieldData": {
+        "photo": {
+          "fileId": "6aba71bba8d781fe9845eef5",
+          "url": "https://cdn.prod.website-files.com/6874c72679138fea0389db28/6aba71bba8d781fe9845eef5_joe-wilson.jpg",
+          "alt": null
+        },
+        "name-of-speaker": "Joe Wilson",
+        "occupation": "Entrepreneur, Global Citizen, Chief Evangelist at bunq, Former Microsoft Executive",
+        "role-for-tedx": null,
+        "session-blurb-2": "<p>Joe Wilson is an entrepreneur, former Microsoft executive and Chief Evangelist at bunq whose career spans startups, global technology and sustainable investment. He has founded five companies, achieved two successful exits and lived with his family across multiple countries and cultures. A lifelong traveler, Joe brings a global perspective to questions of identity, belonging and connection.</p><p>‍</p>",
+        "speaker-bio-2": "<p><em>Entrepreneur, global citizen and Chief Evangelist at bunq, with a career spanning startups, technology, sustainable investment and life across cultures.</em></p>",
+        "show-hide-speaker": false,
+        "pronounce": null,
+        "order": 95,
+        "name": "Joe Wilson",
+        "slug": "joe-wilson"
+      }
+    },
+    {
+      "id": "6aba70f65e1b2e1850a1a255",
+      "cmsLocaleId": "6874c72679138fea0389db24",
+      "lastPublished": "2026-10-03T10:21:15.179Z",
+      "lastUpdated": "2026-10-03T10:12:51.178Z",
+      "createdOn": "2026-09-28T13:51:50.854Z",
+      "isArchived": false,
+      "isDraft": false,
+      "fieldData": {
+        "photo": {
+          "fileId": "6aba70e0c6d01aa467706dff",
+          "url": "https://cdn.prod.website-files.com/6874c72679138fea0389db28/6aba70e0c6d01aa467706dff_dr-lucy-van-de-wiel.jpg",
+          "alt": null
+        },
+        "name-of-speaker": null,
+        "occupation": "Fertility Technology Researcher & International Speaker",
+        "role-for-tedx": null,
+        "session-blurb-2": "<p>Dr Lucy van de Wiel studies what happens when Silicon Valley and venture capital enter the world of fertility. A Senior Lecturer at King’s College London and international speaker on reproductive technology, she researches developments from egg freezing to embryo selection and reproductive optimisation. Her work looks beyond what these technologies can do, considering how they might change our ideas about reproduction.</p>",
+        "speaker-bio-2": "<p><em>Fertility technology researcher and international speaker examining how technology and finance are reshaping reproductive medicine, from egg freezing to embryo selection</em></p>",
+        "show-hide-speaker": false,
+        "pronounce": null,
+        "order": 85,
+        "name": null,
+        "slug": "dr-lucy-van-de-wiel"
+      }
+    }
+  ],
+  "pagination": {
+    "limit": 100,
+    "offset": 0,
+    "total": 2
+  }
+}
