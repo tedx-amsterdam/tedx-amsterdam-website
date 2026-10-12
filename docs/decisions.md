@@ -69,3 +69,7 @@ Every `pages.dev` address, including the production alias, sends `X-Robots-Tag: 
 ## 15. The content source is always chosen explicitly (October 2026)
 
 `CONTENT_SOURCE` must be `fixtures` or `webflow`; there is no default. A fallback to fixtures would let a misconfigured production build publish fake speakers without failing. Variables are read when content is first requested, so builds that do not touch content need none. `.env.example` leaves `CONTENT_SOURCE` blank for the same reason: copying it never picks a source silently.
+
+## 16. Rich text is sanitised with sanitize-html (October 2026)
+
+CMS rich text goes through `sanitizeHtml` in `src/lib/sanitize-html.ts`, which uses the `sanitize-html` package with an allowlist of tags (paragraphs, emphasis, links, lists, quotes, `h2` to `h4`) and link schemes (`https`, `http`, `mailto`). A hand written allowlist would need its own HTML parser to be safe, and regular expressions are not one. DOMPurify needs a DOM, which means jsdom at build time. `sanitize-html` runs in Node, is widely used and maintained, and only runs during the build, so it adds nothing to the pages visitors download. The result has the type `SafeHtml`, so a domain type cannot hold unsanitised HTML.
