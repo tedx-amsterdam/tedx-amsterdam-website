@@ -44,6 +44,7 @@ When a rule in this file changes, check whether a command or agent repeats it an
 ## Stack
 
 - **Next.js** (App Router) with **static export** (`output: "export"`). No server runtime, no ISR. Content changes trigger a rebuild.
+  Next.js 16 differs from older versions in APIs and conventions. Before using a Next.js API, read its guide for the installed version in `node_modules/next/dist/docs/` and heed deprecation notices.
 - **TypeScript** in strict mode.
 - **tedx-amsterdam-design-system** from npm for all UI components and design tokens.
 - **Zod** to validate every response from an external API.

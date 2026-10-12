@@ -5,6 +5,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: false,
+  // next dev writes an AGENTS.md otherwise. Its one rule lives in CLAUDE.md,
+  // so there is a single file of agent instructions.
+  agentRules: false,
   images: {
     // next/image optimisation needs a server. CMS images are served as is
     // from their CDN until we pick an image pipeline.
