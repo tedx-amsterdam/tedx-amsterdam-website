@@ -202,7 +202,7 @@ Follow [Conventional Branch](https://conventional-branch.github.io): `<type>/<de
 - Open a **draft** pull request early for work in progress; mark it ready when it is complete.
 - Before asking for review: rebase on `main`, squash fixups, review your own diff, check that CI and the Cloudflare preview are green, and open the preview link yourself.
 - Merge with **rebase and merge**. Do not squash: the atomic commits are the project history.
-- **Stacked pull requests** (one based on another's branch): merge the lowest first and delete its branch before merging the next, so GitHub retargets the next one to `main`. Check that the base is `main` before every merge.
+- **Stacked pull requests** (one based on another's branch): merge the lowest first. GitHub deletes its branch on merge and retargets the next one to `main`. Check that the base is `main` before every merge.
 - Delete the branch after merging.
 - Never push directly to `main`, including for small fixes.
 - Never commit secrets, tokens or `.env.local`. If one is committed by accident, revoke it in Webflow immediately; removing it from history is not enough.
