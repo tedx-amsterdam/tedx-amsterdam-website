@@ -5,6 +5,10 @@ export type NavItem = {
 
 export const SITE_URL = "https://www.tedxamsterdam.nl";
 
+// Spread into every page's openGraph: Next.js replaces nested metadata
+// objects instead of merging them, so the root layout cannot set these.
+export const OPEN_GRAPH_DEFAULTS = { siteName: "TEDxAmsterdam", locale: "en_GB" } as const;
+
 export const MAIN_NAV: readonly NavItem[] = [
   { label: "After Growth", href: "/after-growth" },
   { label: "Impact Program", href: "/impact" },
