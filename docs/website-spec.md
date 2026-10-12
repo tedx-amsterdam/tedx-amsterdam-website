@@ -55,7 +55,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
 | [Colour contrast](https://specification.website/spec/accessibility/color-contrast/) | Required | Design system | Verified in Storybook; Lighthouse checks every preview |
-| [Image alt text](https://specification.website/spec/accessibility/image-alt-text/) | Required | Phase 1 | CMS alt text is often empty; mappers add a meaningful fallback |
+| [Image alt text](https://specification.website/spec/accessibility/image-alt-text/) | Required | Partial | Webflow alt text is null on every speaker photo; the mapper falls back to the speaker name (tested). Per component alt text follows with the pages in 1c |
 | [Form labels](https://specification.website/spec/accessibility/form-labels/) | Required | Phase 3 | Newsletter form |
 | [Accessible form errors](https://specification.website/spec/accessibility/form-errors/) | Required | Phase 3 | Newsletter form |
 | [Keyboard navigation](https://specification.website/spec/accessibility/keyboard-navigation/) | Required | Partial | Design system components are keyboard accessible; checked per page |
