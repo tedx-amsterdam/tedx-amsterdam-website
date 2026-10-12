@@ -36,7 +36,7 @@ The speaker adapter in `src/content/webflow/` (`client.ts`, `schemas.ts`, `speak
    - It returns items in the shared display order (`src/content/sort.ts`).
    - It fetches each collection once per build.
    - It fails loudly: no fallback to fixtures or to an empty list when a request or parse fails (decision 15).
-   - It only reads from Webflow. Only GET requests, no write endpoints: the live site still runs on Webflow (`CLAUDE.md`, project overview).
+   - It only reads from Webflow: GET requests to the API, and GET or HEAD requests to the public CDN (image variants, decision 21). No write endpoints: the live site still runs on Webflow (`CLAUDE.md`, project overview).
 6. **Fixtures**
    - When a domain type changes, the fixture source in `src/content/fixtures/` is updated and still covers the edge cases (missing photo, missing order, long names).
 7. **Tests**
