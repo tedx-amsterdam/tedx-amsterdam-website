@@ -54,7 +54,7 @@ When a rule in this file changes, check whether a command or agent repeats it an
 
 ## Architecture
 
-The tree shows the target layout. `src/content/webflow/` arrives in phase 1b, the other domain types with their collections in phase 2.
+The tree shows the target layout. The other domain types arrive with their collections in phase 2.
 
 ```
 src/app/              Routes. Pages only compose components and call the content layer.
