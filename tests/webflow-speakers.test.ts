@@ -39,9 +39,9 @@ describe("Webflow speakers on the recorded response", () => {
     expect(liveItems.map(mapSpeaker).filter((s) => s.sessionTitle)).toEqual([]);
   });
 
-  it("falls back to the speaker name when a photo has no alt text", () => {
+  it("falls back to a portrait description when a photo has no alt text", () => {
     expect(rawFields("joe-wilson").photo.alt).toBeNull();
-    expect(mapped("joe-wilson").photo).toEqual({ url: rawFields("joe-wilson").photo.url, alt: "Joe Wilson" });
+    expect(mapped("joe-wilson").photo).toEqual({ url: rawFields("joe-wilson").photo.url, alt: "Portrait of Joe Wilson" });
   });
 
   it("drops paragraphs that hold only a zero width joiner", () => {
@@ -98,8 +98,8 @@ describe("mapSpeaker", () => {
     expect(mapSpeaker(item({ order: null })).order).toBeUndefined();
   });
 
-  it("falls back to the name when alt text is blank", () => {
-    expect(mapSpeaker(item({ photo: { url: "https://cdn.example/ada.jpg", alt: " " } })).photo?.alt).toBe("Ada Lovelace");
+  it("falls back to a portrait description when alt text is blank", () => {
+    expect(mapSpeaker(item({ photo: { url: "https://cdn.example/ada.jpg", alt: " " } })).photo?.alt).toBe("Portrait of Ada Lovelace");
   });
 
   it("treats whitespace only text as empty", () => {

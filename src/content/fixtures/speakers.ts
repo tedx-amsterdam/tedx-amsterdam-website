@@ -22,7 +22,7 @@ export const FIXTURE_SPEAKERS: readonly Speaker[] = [
       "<p>What if the city itself could breathe? Amara shows how <strong>green corridors</strong> turn streets into ecosystems, and why growth does not have to mean more concrete.</p><p>‍</p>",
     ),
     bio: sanitizeHtml("<p><em>Amara studies how cities and nature share space.</em></p>"),
-    photo: { url: PORTRAIT, alt: "Amara Okafor" },
+    photo: { url: PORTRAIT, alt: "Portrait of Amara Okafor" },
     order: 1,
   },
   {
@@ -35,7 +35,7 @@ export const FIXTURE_SPEAKERS: readonly Speaker[] = [
       '<p>Joost started fixing bikes on a street corner. Today his <a href="https://example.org/repair">repair network</a> keeps 40,000 products a year out of the waste stream.</p>',
     ),
     bio: sanitizeHtml("<p><em>Joost believes the most sustainable product is the one you already own.</em></p>"),
-    photo: { url: PORTRAIT, alt: "Joost van der Meulen" },
+    photo: { url: PORTRAIT, alt: "Portrait of Joost van der Meulen" },
     order: 2,
   },
   {
@@ -52,7 +52,7 @@ export const FIXTURE_SPEAKERS: readonly Speaker[] = [
     sessionTitle: "The quiet economy",
     role: "Philosopher",
     sessionBlurb: sanitizeHtml("<p>A talk with a title of its own, as 2025 speakers had.</p><p>&nbsp;</p>"),
-    photo: { url: PORTRAIT, alt: "Pieter de Wit" },
+    photo: { url: PORTRAIT, alt: "Portrait of Pieter de Wit" },
     order: 4,
   },
   {
@@ -60,6 +60,6 @@ export const FIXTURE_SPEAKERS: readonly Speaker[] = [
     name: "Lin Chen",
     role: "Designer",
     sessionBlurb: sanitizeHtml("<p>No order set, so Lin is listed last.</p>"),
-    photo: { url: PORTRAIT, alt: "Lin Chen" },
+    photo: { url: PORTRAIT, alt: "Portrait of Lin Chen" },
   },
 ];

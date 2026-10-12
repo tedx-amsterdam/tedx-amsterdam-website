@@ -59,7 +59,7 @@ Speakers of the current edition. Shown on `/speakers` and `/after-growth`, with 
 - Do not filter on `show-hide-speaker`; publishing state decides visibility.
 - Rich text contains empty paragraphs, including `<p>&zwj;</p>` (zero width joiner). Drop them.
 - Sort by `order` ascending, items without `order` last.
-- Alt text fallback: the speaker name.
+- Alt text fallback: "Portrait of {speaker name}". The name alone would only repeat the heading next to the photo.
 
 ### Past speakers
 
