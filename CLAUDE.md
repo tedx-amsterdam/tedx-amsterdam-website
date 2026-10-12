@@ -2,7 +2,9 @@
 
 ## Project overview
 
-The website for [tedxamsterdam.nl](https://www.tedxamsterdam.nl), built with Next.js and the [TEDxAmsterdam design system](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system). It replaces the current Webflow site.
+The website for [tedxamsterdam.nl](https://www.tedxamsterdam.nl), built with Next.js and the [TEDxAmsterdam design system](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system). It is meant to replace the current Webflow site.
+
+**This is still a proof of concept.** The live site at tedxamsterdam.nl runs on Webflow and stays the real site until launch (roadmap phase 6). Webflow is read only for this project: never create, change, publish or delete anything in Webflow (CMS items, collections, fields, pages, settings), through the API or otherwise. When the site needs different content, ask the maintainer.
 
 During the transition, Webflow stays the content source: content is read from the Webflow CMS through its REST API. The site must be able to switch to another CMS (likely Sanity) later without rewriting pages or components. Everything below serves that goal.
 
@@ -112,7 +114,7 @@ Run `npm run lint && npm run typecheck && npm test` before considering any chang
 ## Environment
 
 - Secrets live in `.env.local`, which is git ignored. `.env.example` lists every variable without values and must be updated whenever a variable is added.
-- The Webflow token used by the site has **CMS read** permission only.
+- The Webflow token used by the site has **CMS read** permission only, so the build cannot change the live site. Only `GET` requests to the Webflow API, also in scripts.
 - `CONTENT_SOURCE=fixtures` runs the site without any token. CI uses this.
 - Environment variables are parsed and validated in one place (`src/lib/env.ts`). No `process.env` access elsewhere.
 
