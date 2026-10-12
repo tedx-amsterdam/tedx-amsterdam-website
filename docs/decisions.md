@@ -81,3 +81,7 @@ Decision 11 assumed each lower branch is deleted before the next merge. It was n
 ## 18. Stacked pull requests are allowed again (October 2026)
 
 Reverses decision 17. The repository now allows only rebase merging and deletes head branches on merge, also with "Allow GitHub Actions to create and approve pull requests" on for the spec watch. Merging the lowest pull request of a stack deletes its branch, and GitHub retargets the next one to `main`, which is what went wrong three times. `/ship` still refuses to stack if the setting is ever turned off.
+
+## 19. CMS images stay on the Webflow CDN until the CMS migration (October 2026)
+
+Webflow returns image URLs without dimensions. Images are served from the Webflow CDN as they are. Components give each image an explicit `width` and `height` from their own layout, with a fixed aspect ratio and `object-fit: cover`, and lazy load images below the fold, so pages do not shift while images load. Downloading and optimising images at build time would add a large native dependency (`sharp`) and slow down every build, for a pipeline that phase 7 replaces: Sanity has its own image CDN with resizing. The `Image` domain type therefore holds only `url` and `alt`. The Webflow CDN stops working when the plan ends, so images move with the content before 7 August 2027.
