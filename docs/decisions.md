@@ -65,3 +65,15 @@ Next.js inlines scripts, so a script policy needs hashes per page. The current C
 ## 14. pages.dev deployments are never indexed (October 2026)
 
 Every `pages.dev` address, including the production alias, sends `X-Robots-Tag: noindex`, so search engines never see a copy of the site next to tedxamsterdam.nl. Lighthouse skips the `is-crawlable` audit for this reason.
+
+## 15. The content source is always chosen explicitly (October 2026)
+
+`CONTENT_SOURCE` must be `fixtures` or `webflow`; there is no default. A fallback to fixtures would let a misconfigured production build publish fake speakers without failing. Variables are read when content is first requested, so builds that do not touch content need none. `.env.example` leaves `CONTENT_SOURCE` blank for the same reason: copying it never picks a source silently.
+
+## 16. Rich text is sanitised with sanitize-html (October 2026)
+
+CMS rich text goes through `sanitizeHtml` in `src/lib/sanitize-html.ts`, which uses the `sanitize-html` package with an allowlist of tags (paragraphs, emphasis, links, lists, quotes, `h2` to `h4`) and link schemes (`https`, `http`, `mailto`). A hand written allowlist would need its own HTML parser to be safe, and regular expressions are not one. DOMPurify needs a DOM, which means jsdom at build time. `sanitize-html` runs in Node, is widely used and maintained, and only runs during the build, so it adds nothing to the pages visitors download. The result has the type `SafeHtml`, so a domain type cannot hold unsanitised HTML.
+
+## 17. No stacked pull requests until GitHub retargets them (October 2026)
+
+Decision 11 assumed each lower branch is deleted before the next merge. It was not, three times: #4 and #5, then #9 and #10, were merged into their base branches instead of `main`, and had to be restored with new pull requests. Stacking stops until "Automatically delete head branches" is on, so that GitHub retargets the next pull request to `main` by itself. Until then, open a pull request only from `main`, and start the next one after the previous is merged.

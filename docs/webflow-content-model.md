@@ -22,6 +22,7 @@ The workspace also contains an older project, `tedxamsterdam-43f866` (the 2025 s
 - Authenticate with a site API token in the `Authorization: Bearer` header. The token used by the site has **CMS read** only.
 - Rate limit on the Premium plan: 120 requests per minute per token. A full build needs fewer than 20 requests.
 - `api-cdn.webflow.com` serves the same live items from a cache and does not count towards the rate limit; usable as an optimisation later.
+- Response shape: `{ items: Item[], pagination: { limit, offset, total } }`.
 - Item shape: `{ id, isDraft, isArchived, lastPublished, fieldData: { ...fields } }`. Images in `fieldData` are `{ fileId, url, alt }`, with `alt` often `null`. Rich text is an HTML string.
 
 ## Collections

@@ -27,6 +27,17 @@ Keep these documents current in the same pull request as the change that affects
 - Ask before anything that is hard to undo or that changes accounts, settings or shared infrastructure (GitHub settings, Cloudflare, Webflow, DNS). Never create tokens or handle secrets; the maintainer does that.
 - Ask when a decision belongs to the foundation or the maintainer instead of guessing; add it to "Open decisions" in the roadmap.
 
+## Claude Code setup
+
+Shared through `.claude/` so every contributor gets the same tools. Personal settings go in `.claude/settings.local.json`, which is not committed.
+
+- **`/next`**: compares "Now" in the roadmap with the real git and pull request state, and proposes the next pull request with a plan. It does not start work.
+- **`/ship`**: checks, tidies and pushes the current branch and opens or updates its draft pull request. It never marks a pull request ready and never merges.
+- **Agents** in `.claude/agents/`, read only, each returns a report: `spec-auditor` (The Website Specification and `docs/website-spec.md`), `a11y-reviewer` (WCAG 2.1 AA), `newcomer` (reads the repository as a new volunteer and reports gaps in the docs). `/ship` runs them when the change calls for it (`spec-auditor` when what the build serves changed, `newcomer` only when onboarding changed); you can also ask for one by name.
+- **Plugins** enabled in `.claude/settings.json`: `code-review`, `pr-review-toolkit`, `claude-md-management` and `typescript-lsp` from the official marketplace.
+
+When a rule in this file changes, check whether a command or agent repeats it and update it in the same pull request.
+
 ## Stack
 
 - **Next.js** (App Router) with **static export** (`output: "export"`). No server runtime, no ISR. Content changes trigger a rebuild.
@@ -39,6 +50,8 @@ Keep these documents current in the same pull request as the change that affects
 
 ## Architecture
 
+The tree shows the target layout. `src/content/webflow/` arrives in phase 1b, the other domain types with their collections in phase 2.
+
 ```
 src/app/              Routes. Pages only compose components and call the content layer.
 src/components/       Site specific components that are not generic enough for the design system.
@@ -48,10 +61,12 @@ src/content/
   types.ts            Domain types (Speaker, Event, Partner, Pioneer, Talk, BlogPost).
   source.ts           The ContentSource interface every content source implements.
   index.ts            Selects the active source. The only import pages may use.
+  sort.ts             Display order shared by every source.
   webflow/            Webflow adapter: API client, Zod schemas, mappers.
   fixtures/           Fixture source with static data for tests, CI and offline development.
 src/lib/              Small shared utilities (env parsing, HTML sanitising, formatting).
-tests/                Vitest tests and fixtures.
+tests/                Vitest tests. Recorded API responses go in tests/fixtures/webflow/
+                      (not to be confused with the fixture source in src/content/fixtures/).
 docs/                 Roadmap, decisions, content model, current site inventory, spec status.
 public/assets/        Design system logos and icons (temporary, see public/assets/README.md).
 ```
@@ -66,11 +81,11 @@ The published design system (1.2.1) has three gaps. Each has exactly one workaro
 
 ### The content layer is the core rule
 
-- Pages and components **never** import from `src/content/webflow/` or call any CMS API directly. They import from `@/content` and work with domain types only.
+- Pages and components **never** import from `src/content/webflow/` or call any CMS API directly. They import from `@/content` and work with domain types only. A lint rule blocks imports of `@/content/*` (and relative paths into `content/*`) outside `src/content/` and `tests/`. Tests are exempt so they can unit test sources and mappers directly.
 - Domain types use clean names that describe the content, not the CMS. Webflow field slugs (`name-of-speaker`, `session-blurb-2`, `descpiption`) appear **only** inside `src/content/webflow/`.
 - Every Webflow response is parsed with a Zod schema before mapping. Unknown or malformed data fails the build with a clear error instead of rendering broken pages.
 - Mappers are pure functions (Webflow item in, domain object out) and are unit tested with real response shapes.
-- Rich text from the CMS is sanitised in the content layer, never rendered raw.
+- Rich text from the CMS is sanitised in the content layer with `sanitizeHtml` from `src/lib/sanitize-html.ts`, never rendered raw. Domain types hold it as `SafeHtml`.
 
 ### Known Webflow data quirks
 

@@ -6,14 +6,17 @@ The website for [tedxamsterdam.nl](https://www.tedxamsterdam.nl), built with [Ne
 
 ## Getting started
 
-Requirements: Node.js 22 (see `.nvmrc`) and npm.
+Requirements: Node.js 22.22.2 or later (`.nvmrc` pins the version CI uses; run `nvm install` and `nvm use`) and npm. Older Node 22 releases install with `EBADENGINE` warnings, after which lint and tests fail with "Cannot find native binding". After switching Node versions, run `rm -rf node_modules && npm ci`.
 
 ```bash
 git clone https://github.com/tedx-amsterdam/tedx-amsterdam-website.git
 cd tedx-amsterdam-website
-npm install
+npm ci
+cp .env.example .env.local   # then set CONTENT_SOURCE=fixtures
 npm run dev
 ```
+
+`CONTENT_SOURCE=fixtures` runs the site on static test data without any token. `CONTENT_SOURCE=webflow` reads the live Webflow CMS and needs `WEBFLOW_API_TOKEN`; ask the maintainer for it.
 
 Open [http://localhost:3000](http://localhost:3000).
 
@@ -27,8 +30,9 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run test:watch` | Run the tests on every change |
 | `npm run typecheck` | Check types |
 | `npm run lint` | Lint the code |
+| `npm run test:output` | Check the build in `out/` against the website specification (run after `npm run build`) |
 
-Before opening a pull request, run `npm run lint && npm run typecheck && npm test`. CI runs the same checks plus a build.
+Before opening a pull request, run `npm run lint && npm run typecheck && npm test`. CI runs the same checks plus `npm run build && npm run test:output`.
 
 To preview the production build locally, serve the `out/` folder with any static file server, for example `npx serve out`.
 
@@ -38,6 +42,8 @@ To preview the production build locally, serve the `out/` folder with any static
 src/app/          Routes and pages
 src/components/   Site components, including the design system entry point
 src/config/       Site settings: navigation, links, legal text
+src/content/      Content layer: domain types, content sources (import only from @/content)
+src/lib/          Shared utilities: environment parsing, HTML sanitising
 public/           Static files
 tests/            Tests
 docs/             Project documentation
@@ -46,7 +52,7 @@ docs/             Project documentation
 Two rules matter most:
 
 1. **UI comes from the design system.** Import its components from `@/components/design-system`, never from the package directly. The lint setup enforces this; the file explains why.
-2. **Pages never talk to a CMS directly.** Content goes through a content layer, so the CMS can change without rewriting pages.
+2. **Pages never talk to a CMS directly.** Content goes through the content layer in `src/content/` (`import { getSpeakers } from "@/content"`), so the CMS can change without rewriting pages. A lint rule enforces this.
 
 The full set of conventions, including the reasoning behind them, is in [CLAUDE.md](CLAUDE.md). It is written for both human contributors and AI assistants.
 
