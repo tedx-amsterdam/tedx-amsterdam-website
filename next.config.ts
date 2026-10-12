@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   agentRules: false,
   images: {
     // next/image optimisation needs a server. CMS images are served as is
-    // from their CDN until we pick an image pipeline.
+    // from the Webflow CDN until the CMS migration (decision 19).
     unoptimized: true,
   },
 };

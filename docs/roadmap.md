@@ -19,7 +19,7 @@ Update this section in every pull request that changes the state of the project.
 Decisions that block or shape upcoming work. Record the outcome in [decisions.md](decisions.md) and remove the line here.
 
 - [ ] **Security contact** for `/.well-known/security.txt`: which foundation address (for example `security@tedxamsterdam.nl`)?
-- [ ] **Image approach** for CMS images (needed before phase 1b settles the `Image` type, because Webflow returns no image dimensions): keep the Webflow CDN with explicit sizes and lazy loading until the CMS migration, or download and optimise images at build time.
+- [ ] **Image formats at launch**: decision 19 keeps CMS images as original JPEGs on the Webflow CDN until the CMS migration (phase 7), which is after launch. The Website Specification requires modern formats and responsive sizes. Accept that at launch on purpose (record why in `docs/website-spec.md`), or resize at build time before launch (phase 6), which adds `sharp` to the build.
 - [ ] **Copyright holder** in `LICENSE`: Stichting TEDxAmsterdam (current) or the maintainer, as in the design system?
 - [ ] **Past talks**: detail pages, or redirect `/speakers-copy/*` to `/speakers` (phase 2)?
 - [ ] **Analytics**: GA4 with a consent banner, or cookieless analytics without one (phase 4)?
@@ -91,7 +91,7 @@ Done when: unit tests on the recorded responses cover every speaker quirk in the
 - [ ] `/speakers/[slug]`: detail page per speaker via `generateStaticParams`, same slugs as Webflow
 - [ ] Metadata per page: title, description, canonical, Open Graph
 - [ ] JSON-LD for each speaker and breadcrumbs on detail pages
-- [ ] Images with explicit dimensions and lazy loading, following the image decision above
+- [ ] Images with explicit dimensions and lazy loading, following decision 19
 - [ ] Alt text per component: the speaker name on the detail page, `alt=""` on an overview card whose link already shows the name
 - [ ] Rich text headings (`h2` to `h4` from the CMS) never skip a level where they are rendered; add a check to `tests/output/`
 - [ ] Add one speaker detail URL to the Lighthouse workflow; extend `tests/output/` where useful

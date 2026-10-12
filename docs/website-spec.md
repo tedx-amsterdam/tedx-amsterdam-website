@@ -122,7 +122,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
 | [Core Web Vitals](https://specification.website/spec/performance/core-web-vitals/) | Required | Partial | Measured by Lighthouse on every preview; thresholds rise per phase |
-| [Image optimisation](https://specification.website/spec/performance/image-optimization/) | Required | Phase 1 | CMS images are served unoptimized; pick an approach with the speaker pages |
+| [Image optimisation](https://specification.website/spec/performance/image-optimization/) | Required | Phase 1 | Explicit dimensions and lazy loading on Webflow CDN images in 1c (decision 19). Modern formats and responsive `srcset` are not covered until the CMS migration (phase 7), after launch: an open decision in the roadmap |
 | [Cache-Control](https://specification.website/spec/performance/cache-control/) | Required | Done | Hashed assets under `/_next/static/` are immutable for a year, tested |
 | [Compression](https://specification.website/spec/performance/compression/) | Required | Done | Cloudflare |
 | [HTTP/1.1 workarounds](https://specification.website/spec/performance/http1-workarounds/) | Avoid | Done | None used |
