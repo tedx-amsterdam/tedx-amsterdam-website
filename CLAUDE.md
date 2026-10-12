@@ -62,10 +62,11 @@ src/components/       Site specific components that are not generic enough for t
   design-system.ts    The only entry point for design system components (see below).
 src/config/           Site settings: navigation, external links, legal text.
 src/content/
-  types.ts            Domain types (Speaker, Event, Partner, Pioneer, Talk, BlogPost).
+  types.ts            Domain types (Speaker, TedxEvent, Partner, Pioneer, Talk, BlogPost).
   source.ts           The ContentSource interface every content source implements.
   index.ts            Selects the active source. The only import pages may use.
   sort.ts             Display order shared by every source.
+  events.ts           Splits events into upcoming and past, in Amsterdam time.
   webflow/            Webflow adapter: API client, Zod schemas, mappers.
   fixtures/           Fixture source with static data for tests, CI and offline development.
 src/lib/              Small shared utilities (env parsing, HTML sanitising, formatting).

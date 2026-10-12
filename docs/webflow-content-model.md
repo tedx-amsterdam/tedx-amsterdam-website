@@ -97,14 +97,24 @@ All events, upcoming and past. Shown on `/events`; links go to Eventbrite or ted
 | --- | --- | --- | --- |
 | `name` | PlainText, required | `title` | |
 | `slug` | PlainText, required | `slug` | No detail pages |
-| `event-date` | DateTime | `date` | The only reliable date; use it for sorting and the upcoming/past split |
+| `event-date` | DateTime | `startsAt` | The only reliable date; use it for sorting and the upcoming/past split |
 | `date` | PlainText | not mapped | Free text duplicate of the date; ignore |
 | `descpiption` | PlainText | `description` | Typo in the slug is real; do not fix it in Webflow |
 | `location` | PlainText | `location` | |
 | `link` | Link | `url` | Ticket or event page |
 | `tag` | PlainText | `tag` | |
 | `image` | Image | `image` | |
-| `show-hide` | Switch | not mapped | |
+| `show-hide` | Switch | not mapped | `false` on every item, also on published ones; not used |
+
+**Quirks**
+
+- Date: `event-date` is an ISO date and time in UTC (18:00Z is 20:00 in Amsterdam in summer). The plain text `date` duplicates it in free text; ignore it. An event without `event-date` fails the build.
+- Upcoming or past is decided on the Amsterdam calendar day, so an event stays upcoming on its own day.
+- `location` sometimes starts or ends with a space. Trim it.
+- `descpiption` is plain text, not rich text.
+- `image` and `tag` are empty on every current item; the alt text fallback is the event title.
+- Do not filter on `show-hide`; publishing state decides visibility.
+- Recorded responses: `events-live.json` (12 October 2026, 8 events) and `events-broken.json`, a two item excerpt in which one event has its date as free text.
 
 ### Partners
 
