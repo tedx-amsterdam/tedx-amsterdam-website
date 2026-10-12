@@ -6,12 +6,12 @@ The website for [tedxamsterdam.nl](https://www.tedxamsterdam.nl), built with [Ne
 
 ## Getting started
 
-Requirements: Node.js 22 (see `.nvmrc`) and npm.
+Requirements: Node.js 22.22.2 or later (`.nvmrc` pins the version CI uses; run `nvm install` and `nvm use`) and npm. Older Node 22 releases install with `EBADENGINE` warnings, after which lint and tests fail with "Cannot find native binding". After switching Node versions, run `rm -rf node_modules && npm ci`.
 
 ```bash
 git clone https://github.com/tedx-amsterdam/tedx-amsterdam-website.git
 cd tedx-amsterdam-website
-npm install
+npm ci
 cp .env.example .env.local   # then set CONTENT_SOURCE=fixtures
 npm run dev
 ```
