@@ -8,6 +8,25 @@ During the transition, Webflow stays the content source: content is read from th
 
 The site is maintained by volunteers who rotate. Optimise for the next person reading the code: plain solutions over clever ones, few dependencies, and documentation that stays current.
 
+## Start here
+
+This file holds the conventions. The project's state and history live in `docs/`:
+
+1. **`docs/roadmap.md`**: read the "Now" section first. It says where the project stands, which pull requests are open and what to build next.
+2. **`docs/decisions.md`**: why things are the way they are. Read it before changing architecture, tooling or process; reverse a decision only by adding a new entry.
+3. **`docs/webflow-content-model.md`**: collection IDs, fields and data quirks. Read it before working in `src/content/`.
+4. **`docs/current-site.md`**: the Webflow site being replaced, legacy URLs, integrations and where the target designs live.
+5. **`docs/website-spec.md`**: the status of every quality requirement.
+
+Keep these documents current in the same pull request as the change that affects them, especially "Now" in the roadmap.
+
+## Working with the maintainer
+
+- The maintainer usually writes in Dutch. Reply in the language of the conversation; code, commits, pull requests and documentation are always in English.
+- Before a larger change, explain what you are about to do and why. After it, report what changed and what is still open.
+- Ask before anything that is hard to undo or that changes accounts, settings or shared infrastructure (GitHub settings, Cloudflare, Webflow, DNS). Never create tokens or handle secrets; the maintainer does that.
+- Ask when a decision belongs to the foundation or the maintainer instead of guessing; add it to "Open decisions" in the roadmap.
+
 ## Stack
 
 - **Next.js** (App Router) with **static export** (`output: "export"`). No server runtime, no ISR. Content changes trigger a rebuild.
@@ -33,7 +52,7 @@ src/content/
   fixtures/           Fixture source with static data for tests, CI and offline development.
 src/lib/              Small shared utilities (env parsing, HTML sanitising, formatting).
 tests/                Vitest tests and fixtures.
-docs/                 Project documentation, including the roadmap.
+docs/                 Roadmap, decisions, content model, current site inventory, spec status.
 public/assets/        Design system logos and icons (temporary, see public/assets/README.md).
 ```
 
@@ -167,6 +186,7 @@ Follow [Conventional Branch](https://conventional-branch.github.io): `<type>/<de
 - Open a **draft** pull request early for work in progress; mark it ready when it is complete.
 - Before asking for review: rebase on `main`, squash fixups, review your own diff, check that CI and the Cloudflare preview are green, and open the preview link yourself.
 - Merge with **rebase and merge**. Do not squash: the atomic commits are the project history.
+- **Stacked pull requests** (one based on another's branch): merge the lowest first and delete its branch before merging the next, so GitHub retargets the next one to `main`. Check that the base is `main` before every merge.
 - Delete the branch after merging.
 - Never push directly to `main`, including for small fixes.
 - Never commit secrets, tokens or `.env.local`. If one is committed by accident, revoke it in Webflow immediately; removing it from history is not enough.
