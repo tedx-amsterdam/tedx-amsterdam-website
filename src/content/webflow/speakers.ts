@@ -26,8 +26,9 @@ export function mapSpeaker({ fieldData: fields }: WebflowSpeakerItem): Speaker {
     pronouns: text(fields.pronounce),
     sessionBlurb: richText(fields["session-blurb-2"]),
     bio: richText(fields["speaker-bio-2"]),
-    // Webflow alt text is null on every current photo; the name describes a portrait.
-    photo: photo ? { url: photo.url, alt: text(photo.alt) ?? name } : undefined,
+    // Webflow alt text is null on every current photo. "Portrait of" keeps
+    // the alt text from only repeating the name in the h1 next to it.
+    photo: photo ? { url: photo.url, alt: text(photo.alt) ?? `Portrait of ${name}` } : undefined,
     order: fields.order ?? undefined,
   };
 }
