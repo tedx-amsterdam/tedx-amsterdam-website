@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { sanitizeHtml } from "@/lib/sanitize-html";
+import { sanitizeHtml, withHeadingsFrom } from "@/lib/sanitize-html";
 
 describe("sanitizeHtml", () => {
   it("keeps allowed formatting", () => {
@@ -42,5 +42,25 @@ describe("sanitizeHtml", () => {
 
   it("returns an empty string for empty input", () => {
     expect(sanitizeHtml("  ")).toBe("");
+  });
+});
+
+describe("withHeadingsFrom", () => {
+  it("moves the highest heading to the given level and keeps the rest in step", () => {
+    expect(withHeadingsFrom(sanitizeHtml("<h3>A</h3><p>x</p><h4>B</h4>"), 2)).toBe("<h2>A</h2><p>x</p><h3>B</h3>");
+    expect(withHeadingsFrom(sanitizeHtml("<h2>A</h2><h3>B</h3>"), 3)).toBe("<h3>A</h3><h4>B</h4>");
+  });
+
+  it("closes gaps between levels", () => {
+    expect(withHeadingsFrom(sanitizeHtml("<h2>A</h2><h4>B</h4>"), 2)).toBe("<h2>A</h2><h3>B</h3>");
+  });
+
+  it("never starts more than one level below the page", () => {
+    expect(withHeadingsFrom(sanitizeHtml("<h4>A</h4><h2>B</h2>"), 2)).toBe("<h2>A</h2><h2>B</h2>");
+  });
+
+  it("leaves text without headings alone", () => {
+    const html = sanitizeHtml("<p>Only <em>text</em></p>");
+    expect(withHeadingsFrom(html, 3)).toBe(html);
   });
 });

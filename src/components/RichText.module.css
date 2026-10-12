@@ -1,0 +1,22 @@
+.richText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  font: var(--text-body);
+  color: var(--text-primary);
+}
+
+.richText > * {
+  margin: 0;
+}
+
+.richText a {
+  color: var(--text-accent);
+}
+
+.richText h2,
+.richText h3,
+.richText h4 {
+  font: var(--text-h4);
+  text-transform: uppercase;
+}
