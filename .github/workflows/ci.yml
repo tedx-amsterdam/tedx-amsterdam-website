@@ -17,6 +17,9 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    # CI never sees a CMS token: it builds and tests on fixture content.
+    env:
+      CONTENT_SOURCE: fixtures
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
