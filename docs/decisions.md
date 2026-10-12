@@ -77,3 +77,7 @@ CMS rich text goes through `sanitizeHtml` in `src/lib/sanitize-html.ts`, which u
 ## 17. No stacked pull requests until GitHub retargets them (October 2026)
 
 Decision 11 assumed each lower branch is deleted before the next merge. It was not, three times: #4 and #5, then #9 and #10, were merged into their base branches instead of `main`, and had to be restored with new pull requests. Stacking stops until "Automatically delete head branches" is on, so that GitHub retargets the next pull request to `main` by itself. Until then, open a pull request only from `main`, and start the next one after the previous is merged.
+
+## 18. Stacked pull requests are allowed again (October 2026)
+
+Reverses decision 17. The repository now allows only rebase merging and deletes head branches on merge, also with "Allow GitHub Actions to create and approve pull requests" on for the spec watch. Merging the lowest pull request of a stack deletes its branch, and GitHub retargets the next one to `main`, which is what went wrong three times. `/ship` still refuses to stack if the setting is ever turned off.
