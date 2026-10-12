@@ -41,6 +41,20 @@ jobs:
           url="$(.github/scripts/cloudflare-preview-url.sh "$GITHUB_REPOSITORY" "$SHA")"
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Testing deployment: $url" >> "$GITHUB_STEP_SUMMARY"
+          # Speakers come and go in the CMS, so test whichever detail page
+          # the overview links to first instead of a fixed slug.
+          # Fetched on its own line, so a failed request stops the step with
+          # curl's error instead of reporting a missing link.
+          html="$(curl -fsSL "$url/speakers")"
+          # The page is one line of HTML, so grep would return every link;
+          # a regex match keeps exactly the first.
+          if [[ $html =~ href=\"(/speakers/[a-z0-9-]+)\" ]]; then
+            speaker="${BASH_REMATCH[1]}"
+          else
+            echo "No speaker detail link found on $url/speakers" >&2
+            exit 1
+          fi
+          echo "speaker=$speaker" >> "$GITHUB_OUTPUT"
 
       - name: Run Lighthouse
         uses: treosh/lighthouse-ci-action@v12
@@ -48,6 +62,8 @@ jobs:
           # Add one URL per page type as pages are built.
           urls: |
             ${{ steps.preview.outputs.url }}/
+            ${{ steps.preview.outputs.url }}/speakers
+            ${{ steps.preview.outputs.url }}${{ steps.preview.outputs.speaker }}
           configPath: ./lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
