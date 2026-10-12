@@ -10,15 +10,13 @@ Update this section in every pull request that changes the state of the project.
 
 **State (12 October 2026)**: phase 0 is merged, and so are The Website Specification (#2), Lighthouse on every deployment (#6) and the project documents (#7). The official review plugins (`code-review`, `pr-review-toolkit`, `claude-md-management`, `typescript-lsp`) are enabled for everyone in `.claude/settings.json`.
 
-#4 (conformance tests, security headers, caching, 404 skip link fix) and #5 (spec watch) were merged into their stacked base branches instead of `main`, so their commits never reached `main`. #8 (`chore/restore-spec-conformance`) brings the same commits to `main` unchanged. Merge it before anything else.
+#8 restored the conformance tests, security headers, caching, 404 skip link fix and spec watch from #4 and #5, which had been merged into their stacked base branches instead of `main`.
 
-#9 (`chore/claude-agents`, stacked on #8) adds the `spec-auditor`, `a11y-reviewer` and `newcomer` agents and the `/next` and `/ship` commands. Merge it after #8, once its base shows `main`.
-
-#10 (`feature/content-layer`, stacked on #9) is phase 1a: environment parsing, rich text sanitising, the `Speaker` type, the `ContentSource` interface and a fixture source. Merge it after #9.
+The same happened to #9 (Claude Code agents and commands) and #10 (phase 1a, the content layer): they were merged into the branches of #8 and #9, because those branches still existed. `chore/restore-agents-and-content-layer` brings their commits to `main` unchanged. Until "Automatically delete head branches" is on, pull requests are not stacked (decision 17).
 
 Older history on `main` contains merge commits and one commit pushed directly, from before rebase only merging was set up. Do not copy them.
 
-**Next**: phase 1b, the Webflow adapter for speakers, on `feature/webflow-speakers`. Branch from `main` once #10 is merged; until then, branch from `feature/content-layer` and open a draft pull request with that base. It needs the recorded responses from "Maintainer actions" and the image decision first.
+**Next**: phase 1b, the Webflow adapter for speakers, on `feature/webflow-speakers`. Branch from `main` once the restore is merged. It needs the recorded responses from "Maintainer actions" and the image decision first.
 
 ## Open decisions
 
@@ -35,9 +33,9 @@ Decisions that block or shape upcoming work. Record the outcome in [decisions.md
 
 Things outside the code that someone with admin access has to do.
 
-- [ ] GitHub settings: only "Allow rebase merging", "Automatically delete head branches" on, "Allow GitHub Actions to create and approve pull requests" on
+- [ ] **First**: GitHub settings: only "Allow rebase merging", "Automatically delete head branches" on (its absence caused three lost merges), "Allow GitHub Actions to create and approve pull requests" on
 - [ ] Delete stale branches: `feat/project-setup`, `feature/project-setup`, `chore/website-spec`, `chore/lighthouse-ci`, `chore/project-context-docs`, and after the restore is merged `feature/spec-conformance-tests` and `chore/spec-watch`
-- [ ] Branch ruleset on `main` (pull request required, CI and Lighthouse must pass, no force push): no longer optional, two stacked merges have now gone wrong
+- [ ] Branch ruleset on `main` (pull request required, CI and Lighthouse must pass, no force push): no longer optional, three stacked merges have now gone wrong
 - [ ] Add a second owner to the GitHub organisation
 - [ ] Cloudflare: set the build command to `npm run build` (it is `npx next build`)
 - [ ] After #8 is merged: run the Spec watch workflow once by hand to create the initial snapshot
