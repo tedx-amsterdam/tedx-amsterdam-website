@@ -1,0 +1,37 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.photo,
+.placeholder {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: var(--grad-tile);
+}
+
+.name {
+  margin: var(--space-2) 0 0;
+  font: var(--text-h4);
+  letter-spacing: var(--ls-display);
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.card:hover .name,
+.card:focus-visible .name {
+  color: var(--text-accent);
+}
+
+.role {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  color: var(--text-secondary);
+}
