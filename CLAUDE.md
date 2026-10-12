@@ -27,6 +27,17 @@ Keep these documents current in the same pull request as the change that affects
 - Ask before anything that is hard to undo or that changes accounts, settings or shared infrastructure (GitHub settings, Cloudflare, Webflow, DNS). Never create tokens or handle secrets; the maintainer does that.
 - Ask when a decision belongs to the foundation or the maintainer instead of guessing; add it to "Open decisions" in the roadmap.
 
+## Claude Code setup
+
+Shared through `.claude/` so every contributor gets the same tools. Personal settings go in `.claude/settings.local.json`, which is not committed.
+
+- **`/next`**: compares "Now" in the roadmap with the real git and pull request state, and proposes the next pull request with a plan. It does not start work.
+- **`/ship`**: checks, tidies and pushes the current branch and opens or updates its draft pull request. It never marks a pull request ready and never merges.
+- **Agents** in `.claude/agents/`, read only, each returns a report: `spec-auditor` (The Website Specification and `docs/website-spec.md`), `a11y-reviewer` (WCAG 2.1 AA), `newcomer` (reads the repository as a new volunteer and reports gaps in the docs). `/ship` runs them when the change calls for it (`spec-auditor` when what the build serves changed, `newcomer` only when onboarding changed); you can also ask for one by name.
+- **Plugins** enabled in `.claude/settings.json`: `code-review`, `pr-review-toolkit`, `claude-md-management` and `typescript-lsp` from the official marketplace.
+
+When a rule in this file changes, check whether a command or agent repeats it and update it in the same pull request.
+
 ## Stack
 
 - **Next.js** (App Router) with **static export** (`output: "export"`). No server runtime, no ISR. Content changes trigger a rebuild.
