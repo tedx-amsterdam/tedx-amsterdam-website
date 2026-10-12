@@ -85,3 +85,7 @@ Reverses decision 17. The repository now allows only rebase merging and deletes 
 ## 19. CMS images stay on the Webflow CDN until the CMS migration (October 2026)
 
 Webflow returns image URLs without dimensions. Images are served from the Webflow CDN as they are. Components give each image an explicit `width` and `height` from their own layout, with a fixed aspect ratio and `object-fit: cover`, and lazy load images below the fold, so pages do not shift while images load. Downloading and optimising images at build time would add a large native dependency (`sharp`) and slow down every build, for a pipeline that phase 7 replaces: Sanity has its own image CDN with resizing. The `Image` domain type therefore holds only `url` and `alt`. The Webflow CDN stops working when the plan ends, so images move with the content before 7 August 2027.
+
+## 20. One collection end to end before the others (October 2026)
+
+Phase 1 builds speakers through the whole chain (Webflow API, Zod schema, mapper, domain type, page, metadata, structured data, Lighthouse) before any other collection. Mistakes in the shared parts, such as the API client, error handling or the `Image` type, are then fixed in one place instead of six. Speakers come first because they have the most data quirks. Phase 2 reuses the client and the schema and mapper pattern, so each further collection is mostly a schema, a mapper and a page, small enough for one pull request and for volunteers to build in parallel.
