@@ -2,6 +2,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { getSpeaker, getSpeakers, type Speaker } from "@/content";
 import { fixtureSource } from "@/content/fixtures";
 import { sortSpeakers } from "@/content/sort";
+import { createWebflowSource } from "@/content/webflow";
+import type { WebflowClient } from "@/content/webflow/client";
+import { itemsPageSchema, speakerItemSchema } from "@/content/webflow/schemas";
+import broken from "./fixtures/webflow/speakers-broken.json";
+import live from "./fixtures/webflow/speakers-live.json";
+
+const webflowItems = itemsPageSchema(speakerItemSchema).parse(live).items;
 
 const speaker = (name: string, order?: number): Speaker => ({ slug: name.toLowerCase(), name, order });
 
@@ -56,6 +63,7 @@ describe("fixture source", () => {
 describe("@/content", () => {
   afterEach(() => {
     vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
   });
 
   it("reads from the fixture source when CONTENT_SOURCE=fixtures", async () => {
@@ -69,9 +77,64 @@ describe("@/content", () => {
     await expect(getSpeakers()).rejects.toThrow(/CONTENT_SOURCE/);
   });
 
-  it("says the Webflow source is not built yet", async () => {
+  it("reads from Webflow when CONTENT_SOURCE=webflow, fetching once for every page", async () => {
     vi.stubEnv("CONTENT_SOURCE", "webflow");
     vi.stubEnv("WEBFLOW_API_TOKEN", "token");
-    await expect(getSpeakers()).rejects.toThrow(/phase 1b/);
+    const fetch = vi.fn<typeof globalThis.fetch>(async () => new Response(JSON.stringify(live)));
+    vi.stubGlobal("fetch", fetch);
+    const speakers = await getSpeakers();
+    expect(speakers).toHaveLength(live.items.length);
+    expect(speakers).toEqual(sortSpeakers(speakers));
+    expect((await getSpeaker("fieke-opdam"))?.name).toBe("Fieke Opdam");
+    expect(fetch).toHaveBeenCalledOnce();
+  });
+
+  it("fails getSpeakers with a readable error when Webflow sends a broken response", async () => {
+    vi.stubEnv("CONTENT_SOURCE", "webflow");
+    // A token no other test uses, so no cached source from another test answers.
+    vi.stubEnv("WEBFLOW_API_TOKEN", "broken-response-token");
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify(broken))));
+    await expect(getSpeakers()).rejects.toThrow(/does not match the expected schema[\s\S]*items\.1\.fieldData\.name/);
+    await expect(getSpeaker("joe-wilson")).rejects.toThrow(/does not match the expected schema/);
+  });
+
+  it("builds a new source when the token changes", async () => {
+    vi.stubEnv("CONTENT_SOURCE", "webflow");
+    const fetch = vi.fn(async () => new Response(JSON.stringify(live)));
+    vi.stubGlobal("fetch", fetch);
+    vi.stubEnv("WEBFLOW_API_TOKEN", "token-a");
+    await getSpeakers();
+    vi.stubEnv("WEBFLOW_API_TOKEN", "token-b");
+    await getSpeakers();
+    expect(fetch).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("Webflow source", () => {
+  const client = (items = webflowItems): WebflowClient => ({ getLiveItems: vi.fn(async () => items) as WebflowClient["getLiveItems"] });
+
+  it("returns speakers in display order, lowest order first", async () => {
+    const speakers = await createWebflowSource(client()).getSpeakers();
+    expect(speakers.map((s) => s.order)).toEqual(webflowItems.map((i) => i.fieldData.order).toSorted((a, b) => a! - b!));
+  });
+
+  it("finds a speaker by slug and returns undefined for an unknown one", async () => {
+    const source = createWebflowSource(client());
+    expect((await source.getSpeaker("joe-wilson"))?.name).toBe("Joe Wilson");
+    expect(await source.getSpeaker("nobody")).toBeUndefined();
+  });
+
+  it("tries again after a failed fetch instead of keeping the error", async () => {
+    const getLiveItems = vi.fn().mockRejectedValueOnce(new Error("offline")).mockResolvedValueOnce(webflowItems);
+    const source = createWebflowSource({ getLiveItems } as unknown as WebflowClient);
+    await expect(source.getSpeakers()).rejects.toThrow("offline");
+    expect(await source.getSpeakers()).toHaveLength(webflowItems.length);
+  });
+
+  it("fetches the collection once and shares it", async () => {
+    const webflow = client();
+    const source = createWebflowSource(webflow);
+    await Promise.all([source.getSpeakers(), source.getSpeaker("joe-wilson"), source.getSpeaker("fieke-opdam")]);
+    expect(webflow.getLiveItems).toHaveBeenCalledOnce();
   });
 });
