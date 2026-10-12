@@ -29,3 +29,22 @@ function isBlank(text: string): boolean {
 export function sanitizeHtml(html: string): SafeHtml {
   return sanitize(html, OPTIONS).trim() as SafeHtml;
 }
+
+export type HeadingLevel = 2 | 3 | 4;
+
+// Renumbers the headings in sanitised rich text to fit where the page puts
+// it: the highest heading becomes `top`, and no heading is more than one
+// level below the one before it. Editors pick heading levels for their
+// size, but the page decides the outline. Sanitised headings never carry
+// attributes or nest, so matching the plain tags is safe.
+export function withHeadingsFrom(html: SafeHtml, top: HeadingLevel): SafeHtml {
+  const levels = [...new Set([...html.matchAll(/<h([2-4])>/g)].map(([, level]) => Number(level)))].toSorted();
+  if (levels.length === 0) return html;
+  const rank = new Map(levels.map((level, index) => [level, top + index]));
+  let previous = top - 1;
+  return html.replace(/<h([2-4])>([\s\S]*?)<\/h\1>/g, (_, level: string, inner: string) => {
+    const out = Math.min(rank.get(Number(level)) ?? top, previous + 1);
+    previous = out;
+    return `<h${out}>${inner}</h${out}>`;
+  }) as SafeHtml;
+}
