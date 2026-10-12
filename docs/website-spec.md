@@ -71,6 +71,11 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [Empty links and buttons](https://specification.website/spec/accessibility/empty-links-buttons/) | Avoid | Done | Lighthouse fails the pull request if one appears |
 | [Accessibility overlays](https://specification.website/spec/accessibility/accessibility-overlays/) | Avoid | Done | Never add one |
 | [Forced colours](https://specification.website/spec/accessibility/forced-colors/), [focus not obscured](https://specification.website/spec/accessibility/focus-not-obscured/), [native interactive elements](https://specification.website/spec/accessibility/native-interactive-elements/), [status messages](https://specification.website/spec/accessibility/status-messages/) | Recommended | Design system | |
+| [ARIA: first rule of ARIA](https://specification.website/spec/accessibility/aria-usage/) | Recommended | Partial | Native elements first is a rule in CLAUDE.md; `a11y-reviewer` checks each change |
+| [inert](https://specification.website/spec/accessibility/inert-attribute/), [hidden until found](https://specification.website/spec/accessibility/hidden-until-found/), [CSS state selectors](https://specification.website/spec/accessibility/css-state-selectors/) | Recommended | Design system | Overlays, collapsibles and form state live in components |
+| [Consistent help](https://specification.website/spec/accessibility/consistent-help/) | Recommended | Phase 3 | Contact and social links stay in the site footer on every page |
+| [Mobile-friendly form inputs](https://specification.website/spec/accessibility/mobile-form-inputs/) | Recommended | Phase 3 | Newsletter form: `type="email"`, `autocomplete`, input text at 16px or larger |
+| [Accessible authentication](https://specification.website/spec/accessibility/accessible-authentication/), [redundant entry](https://specification.website/spec/accessibility/redundant-entry/), [dragging movements](https://specification.website/spec/accessibility/dragging-movements/) | Recommended | N/A | No login, no multi step forms and nothing to drag |
 
 ## Security
 
@@ -104,6 +109,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
+| [Agent readiness](https://specification.website/spec/agent-readiness/agent-readiness-overview/) | Recommended | Phase 4 | Overview; covered by the rows below |
 | [Stable URLs](https://specification.website/spec/agent-readiness/stable-urls/) | Required | Phase 4 | Keep Webflow URLs; redirect anything that changes |
 | [llms.txt](https://specification.website/spec/agent-readiness/llms-txt/) | Recommended | Phase 4 | Generated from the content layer |
 | [robots.txt for AI crawlers](https://specification.website/spec/agent-readiness/robots-for-ai-crawlers/) | Recommended | Phase 4 | Policy is a decision for the foundation |
@@ -125,7 +131,9 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [Web font loading](https://specification.website/spec/performance/font-loading/) | Recommended | Phase 4 | Self host the fallback font instead of Google Fonts |
 | [Critical CSS](https://specification.website/spec/performance/critical-css/), [script loading](https://specification.website/spec/performance/script-loading/) | Recommended | Done | Handled by Next.js; Lighthouse watches regressions |
 | [Back/forward cache](https://specification.website/spec/performance/bfcache/) | Recommended | Done | Audited by Lighthouse on every preview |
-| [Speculation Rules](https://specification.website/spec/performance/speculation-rules/), [preload and preconnect](https://specification.website/spec/performance/preload-prefetch-preconnect/) | Recommended | Phase 4 | |
+| [Conditional requests](https://specification.website/spec/performance/conditional-requests/) | Recommended | Partial | Cloudflare sends an ETag and answers 304 for static assets, but sends no validator for HTML pages |
+| [Vary](https://specification.website/spec/performance/vary/) | Recommended | Partial | The site does no content negotiation; compressed HTML comes without `Vary: Accept-Encoding`. Check with Cloudflare in phase 5 |
+| [Speculation Rules](https://specification.website/spec/performance/speculation-rules/), [preload and preconnect](https://specification.website/spec/performance/preload-prefetch-preconnect/), [resource hints](https://specification.website/spec/performance/resource-hints/), [No-Vary-Search](https://specification.website/spec/performance/no-vary-search/) | Recommended | Phase 4 | |
 | [Dynamic viewport units](https://specification.website/spec/performance/dynamic-viewport-units/), [scrollbar gutter](https://specification.website/spec/performance/scrollbar-gutter/) | Recommended | Design system | |
 
 ## Privacy
@@ -157,4 +165,6 @@ The site is English only. Most requirements in this category apply to multilingu
 | --- | --- | --- | --- |
 | [lang on inline content](https://specification.website/spec/i18n/lang-attribute/) | Required | Partial | Dutch names and quotes get `lang="nl"` where they appear |
 | [Automatic IP-based language redirects](https://specification.website/spec/i18n/avoid-auto-geo-redirects/) | Avoid | Done | None used |
+| [Locale-aware content](https://specification.website/spec/i18n/locale-content/), [plural rules](https://specification.website/spec/i18n/plural-rules/) | Recommended | Phase 2 | Event dates through `Intl.DateTimeFormat`, counts through `Intl.PluralRules` |
+| [RTL and bidirectional text](https://specification.website/spec/i18n/rtl-support/) | Recommended | N/A | English only, no right to left content |
 | [hreflang](https://specification.website/spec/i18n/hreflang/), [international URLs](https://specification.website/spec/i18n/international-url-structure/), [language switcher](https://specification.website/spec/i18n/language-switcher/), [localised metadata](https://specification.website/spec/i18n/localised-metadata/) | Recommended | N/A | Single language |
