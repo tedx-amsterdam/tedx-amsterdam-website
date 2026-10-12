@@ -1,5 +1,5 @@
 import type { Speaker } from "@/content/types";
-import { sanitizeHtml, type SafeHtml } from "@/lib/sanitize-html";
+import { richText, text } from "./fields";
 import type { WebflowSpeakerItem } from "./schemas";
 
 export const SPEAKERS_COLLECTION_ID = "6874c72605e8d57abb48e751";
@@ -31,14 +31,4 @@ export function mapSpeaker({ fieldData: fields }: WebflowSpeakerItem): Speaker {
     photo: photo ? { url: photo.url, alt: text(photo.alt) ?? `Portrait of ${name}` } : undefined,
     order: fields.order ?? undefined,
   };
-}
-
-function text(value: string | null | undefined): string | undefined {
-  return value?.trim() || undefined;
-}
-
-function richText(value: string | null | undefined): SafeHtml | undefined {
-  // sanitizeHtml drops empty paragraphs, including <p>&zwj;</p>, so rich
-  // text that held only those becomes undefined instead of an empty string.
-  return value ? sanitizeHtml(value) || undefined : undefined;
 }
