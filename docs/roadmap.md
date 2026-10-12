@@ -8,11 +8,11 @@ How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly i
 
 Update this section in every pull request that changes the state of the project.
 
-**State (12 October 2026)**: phases 0, 1a and 1b are on `main`: the Webflow adapter for speakers (#19), checked by the `content-layer-reviewer` agent. 1c, the speaker pages, is in review on `feature/speaker-pages`; with it, phase 1 is complete. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the project agents and the `/next` and `/ship` commands are described in CLAUDE.md, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
+**State (12 October 2026)**: phases 0 and 1 are on `main`: the content layer, the Webflow adapter and the speaker pages (#19 to #22), checked by the `content-layer-reviewer` agent. Phase 2 has started: events in the content layer are in review on `feature/webflow-events`. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the project agents and the `/next` and `/ship` commands are described in CLAUDE.md, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
 
 #4, #5, #9 and #10 were merged into stacked base branches instead of `main`; #8 and #11 restored their commits unchanged. GitHub now allows only rebase merging and deletes head branches on merge, so stacking is safe again (decision 18). Older history on `main` contains merge commits and one commit pushed directly; do not copy them.
 
-**Next**: phase 2, the remaining collections, starting with events (decision 20: one collection per pull request, following the speaker adapter).
+**Next**: the `/events` page on `feature/events-page`, stacked on `feature/webflow-events`. Then partners, pioneers, past talks and the blog, one collection per pull request (decision 20).
 
 ## Open decisions
 
@@ -136,6 +136,7 @@ Most open requirements from [The Website Specification](website-spec.md) land in
 - [x] Weekly check for changes in The Website Specification
 - [x] Build command `npm run build` in Cloudflare, so it matches CI
 - [ ] Rebuild on CMS publish (webhook to deploy hook)
+- [ ] Rebuild daily, so past events move out of "upcoming" (decision 22)
 - [ ] Move the Cloudflare project to a foundation account before launch
 
 ## Phase 6: QA and launch (after 12 November)
