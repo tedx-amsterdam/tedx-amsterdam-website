@@ -34,7 +34,7 @@ Things outside the code that someone with admin access has to do.
 - [ ] Branch ruleset on `main` (pull request required, CI and Lighthouse must pass, no force push): recommended: CI and Lighthouse are not yet required before merging
 - [ ] Add a second owner to the GitHub organisation
 - [ ] Cloudflare: set the build command to `npm run build` (it is `npx next build`)
-- [ ] Run the Spec watch workflow once by hand to create the initial snapshot
+- [x] Run the Spec watch workflow once by hand to create the initial snapshot (#14)
 - [ ] Before phase 1b: create a Webflow site token with **CMS read** only for the site build, and add it to Cloudflare as a secret (see 1b)
 - [ ] Before phase 1b: record the live speakers response unchanged into `tests/fixtures/webflow/speakers-live.json` (`GET /v2/collections/6874c72605e8d57abb48e751/items/live?limit=100`). It contains no secrets, so contributors without a token can build and test 1b from it
 
