@@ -12,6 +12,8 @@ Update this section in every pull request that changes the state of the project.
 
 #4 (conformance tests, security headers, caching, 404 skip link fix) and #5 (spec watch) were merged into their stacked base branches instead of `main`, so their commits never reached `main`. #8 (`chore/restore-spec-conformance`) brings the same commits to `main` unchanged. Merge it before anything else.
 
+#9 (`chore/claude-agents`, stacked on #8) adds the `spec-auditor`, `a11y-reviewer` and `newcomer` agents and the `/next` and `/ship` commands. Merge it after #8, once its base shows `main`.
+
 **Next**: phase 1, starting with pull request 1a below.
 
 ## Open decisions
