@@ -23,13 +23,13 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [lang on html](https://specification.website/spec/foundations/html-lang/) | Required | Done | `en` in the root layout; tested on every page |
 | [meta charset](https://specification.website/spec/foundations/meta-charset/) | Required | Done | Rendered by Next.js; tested on every page |
 | [meta viewport](https://specification.website/spec/foundations/meta-viewport/) | Required | Done | Rendered by Next.js; tested on every page |
-| [title](https://specification.website/spec/foundations/title/) | Required | Partial | Tested to be present on every page; each page still needs its own title as it is built |
-| [meta description](https://specification.website/spec/foundations/meta-description/) | Recommended | Phase 4 | |
-| [Canonical URL](https://specification.website/spec/foundations/canonical-url/) | Recommended | Phase 4 | |
+| [title](https://specification.website/spec/foundations/title/) | Required | Partial | Tested to be present on every page. Speaker pages have their own title; other pages get theirs as they are built |
+| [meta description](https://specification.website/spec/foundations/meta-description/) | Recommended | Partial | Speaker pages, tested; the rest in phase 4 |
+| [Canonical URL](https://specification.website/spec/foundations/canonical-url/) | Recommended | Partial | Speaker pages, tested; the rest in phase 4 |
 | [Favicons](https://specification.website/spec/foundations/favicons/) | Recommended | Phase 4 | None yet |
 | [theme-color](https://specification.website/spec/foundations/theme-color/) | Recommended | Phase 4 | Black, matching the dark first design |
 | [color-scheme](https://specification.website/spec/foundations/color-scheme/) | Recommended | Phase 4 | `dark` |
-| [Open Graph](https://specification.website/spec/foundations/open-graph/) | Recommended | Phase 4 | |
+| [Open Graph](https://specification.website/spec/foundations/open-graph/) | Recommended | Partial | Speaker pages: title, description, URL, type and site name, tested. A speaker's image is the 1080 pixel Webflow variant, portrait shaped and without `og:image:width`/`height`; `/speakers` has no image yet. The rest, and a share image, in phase 4 |
 | [Feed discovery](https://specification.website/spec/foundations/feed-discovery/), [feed hygiene](https://specification.website/spec/foundations/feed-hygiene/) | Recommended | Phase 2 | With the blog, once it has content |
 | [Popover API](https://specification.website/spec/foundations/popover-api/), [anchor positioning](https://specification.website/spec/foundations/anchor-positioning/), [text-wrap](https://specification.website/spec/foundations/text-wrap/), [container queries](https://specification.website/spec/foundations/container-queries/) | Recommended | Design system | Component level CSS |
 
@@ -39,7 +39,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | --- | --- | --- | --- |
 | [Redirects](https://specification.website/spec/seo/redirects/) | Required | Phase 4 | 301s for legacy Webflow URLs via Cloudflare `_redirects` |
 | [Meta robots and X-Robots-Tag](https://specification.website/spec/seo/meta-robots/) | Required | Partial | `noindex` on all `pages.dev` deployments; production policy in phase 4 |
-| [Heading hierarchy](https://specification.website/spec/seo/heading-hierarchy/) | Required | Partial | Exactly one `h1` per page is tested; deeper heading order is checked in review |
+| [Heading hierarchy](https://specification.website/spec/seo/heading-hierarchy/) | Required | Done | Exactly one `h1` and no skipped heading level are tested on every page. `RichText` renumbers CMS headings to fit under the heading they sit below, so Webflow content cannot skip a level either (tested with fixture headings) |
 | [Soft 404s](https://specification.website/spec/seo/soft-404/) | Avoid | Done | `404.html` exists (tested) and Cloudflare serves it with status 404 |
 | [robots.txt](https://specification.website/spec/seo/robots-txt/) | Recommended | Phase 4 | Generated from the content layer |
 | [XML sitemaps](https://specification.website/spec/seo/xml-sitemaps/) | Recommended | Phase 4 | Generated from the content layer |
@@ -47,15 +47,15 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [URL structure](https://specification.website/spec/seo/url-structure/) | Recommended | Phase 4 | Keep the existing Webflow URLs |
 | [Server side rendering](https://specification.website/spec/seo/server-side-rendering/) | Recommended | Done | Static export: every page is complete HTML |
 | [Internal linking](https://specification.website/spec/seo/internal-linking/) | Recommended | Partial | Header and footer navigation; grows with the pages |
-| [Structured data](https://specification.website/spec/seo/structured-data/) | Recommended | Phase 1 | JSON-LD on speaker pages first |
-| [Breadcrumbs](https://specification.website/spec/seo/breadcrumbs/) | Recommended | Phase 1 | Design system `Breadcrumb` on detail pages |
+| [Structured data](https://specification.website/spec/seo/structured-data/) | Recommended | Partial | `ItemList` on `/speakers`, `Person` and `BreadcrumbList` on speaker pages; valid JSON-LD is tested. Events and partners in phase 2 |
+| [Breadcrumbs](https://specification.website/spec/seo/breadcrumbs/) | Recommended | Done | Design system `Breadcrumb` and `BreadcrumbList` JSON-LD on speaker pages, tested to match; later detail pages follow the same pattern |
 
 ## Accessibility
 
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
 | [Colour contrast](https://specification.website/spec/accessibility/color-contrast/) | Required | Design system | Verified in Storybook; Lighthouse checks every preview |
-| [Image alt text](https://specification.website/spec/accessibility/image-alt-text/) | Required | Partial | Webflow alt text is null on every speaker photo; the mapper falls back to the speaker name (tested). Per component alt text follows with the pages in 1c |
+| [Image alt text](https://specification.website/spec/accessibility/image-alt-text/) | Required | Partial | Webflow alt text is null on every speaker photo; the mapper falls back to "Portrait of {name}" (tested). Overview card portraits are decorative (`alt=""`): the link names the speaker. Every image in the build has an `alt` attribute (tested). Other pages follow |
 | [Form labels](https://specification.website/spec/accessibility/form-labels/) | Required | Phase 3 | Newsletter form |
 | [Accessible form errors](https://specification.website/spec/accessibility/form-errors/) | Required | Phase 3 | Newsletter form |
 | [Keyboard navigation](https://specification.website/spec/accessibility/keyboard-navigation/) | Required | Partial | Design system components are keyboard accessible; checked per page |
@@ -122,12 +122,12 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
 | [Core Web Vitals](https://specification.website/spec/performance/core-web-vitals/) | Required | Partial | Measured by Lighthouse on every preview; thresholds rise per phase |
-| [Image optimisation](https://specification.website/spec/performance/image-optimization/) | Required | Phase 1 | Explicit dimensions and lazy loading on Webflow CDN images in 1c (decision 19). Modern formats and responsive `srcset` are not covered until the CMS migration (phase 7), after launch: an open decision in the roadmap |
+| [Image optimisation](https://specification.website/spec/performance/image-optimization/) | Required | Partial | Speaker photos have explicit dimensions (tested) and a `srcset` from Webflow's own variants (decisions 19 and 21). Modern formats (AVIF, WebP) are not covered until the CMS migration (phase 7), after launch: an open decision in the roadmap |
 | [Cache-Control](https://specification.website/spec/performance/cache-control/) | Required | Done | Hashed assets under `/_next/static/` are immutable for a year, tested |
 | [Compression](https://specification.website/spec/performance/compression/) | Required | Done | Cloudflare |
 | [HTTP/1.1 workarounds](https://specification.website/spec/performance/http1-workarounds/) | Avoid | Done | None used |
 | [HTTP/2 and HTTP/3](https://specification.website/spec/performance/http3/) | Recommended | Done | Cloudflare |
-| [Lazy loading](https://specification.website/spec/performance/lazy-loading/) | Recommended | Phase 1 | Speaker portraits |
+| [Lazy loading](https://specification.website/spec/performance/lazy-loading/) | Recommended | Done | Speaker photos below the first row of the overview load lazily; the first content image on every page is never lazy (tested) |
 | [Web font loading](https://specification.website/spec/performance/font-loading/) | Recommended | Phase 4 | Self host the fallback font instead of Google Fonts |
 | [Critical CSS](https://specification.website/spec/performance/critical-css/), [script loading](https://specification.website/spec/performance/script-loading/) | Recommended | Done | Handled by Next.js; Lighthouse watches regressions |
 | [Back/forward cache](https://specification.website/spec/performance/bfcache/) | Recommended | Done | Audited by Lighthouse on every preview |

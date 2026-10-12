@@ -8,18 +8,18 @@ How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly i
 
 Update this section in every pull request that changes the state of the project.
 
-**State (12 October 2026)**: phases 0, 1a and 1b are on `main`: the Webflow adapter for speakers (#19), checked by the `content-layer-reviewer` agent. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the project agents and the `/next` and `/ship` commands are described in CLAUDE.md, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
+**State (12 October 2026)**: phases 0, 1a and 1b are on `main`: the Webflow adapter for speakers (#19), checked by the `content-layer-reviewer` agent. 1c, the speaker pages, is in review on `feature/speaker-pages`; with it, phase 1 is complete. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the project agents and the `/next` and `/ship` commands are described in CLAUDE.md, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
 
 #4, #5, #9 and #10 were merged into stacked base branches instead of `main`; #8 and #11 restored their commits unchanged. GitHub now allows only rebase merging and deletes head branches on merge, so stacking is safe again (decision 18). Older history on `main` contains merge commits and one commit pushed directly; do not copy them.
 
-**Next**: phase 1c, the speaker pages, on `feature/speaker-pages` from `main`. It is blocked by the Cloudflare variables for 1b (a maintainer action), because the speaker pages make the build call Webflow.
+**Next**: phase 2, the remaining collections, starting with events (decision 20: one collection per pull request, following the speaker adapter).
 
 ## Open decisions
 
 Decisions that block or shape upcoming work. Record the outcome in [decisions.md](decisions.md) and remove the line here.
 
 - [ ] **Security contact** for `/.well-known/security.txt`: which foundation address (for example `security@tedxamsterdam.nl`)?
-- [ ] **Image formats at launch**: decision 19 keeps CMS images as original JPEGs on the Webflow CDN until the CMS migration (phase 7), which is after launch. The Website Specification requires modern formats and responsive sizes. Accept that at launch on purpose (record why in `docs/website-spec.md`), or resize at build time before launch (phase 6), which adds `sharp` to the build.
+- [ ] **Image formats at launch**: CMS images are JPEGs on the Webflow CDN until the CMS migration (phase 7), which is after launch. Responsive sizes are covered by Webflow's own variants (decision 21), but The Website Specification also requires modern formats (AVIF, WebP). Accept JPEG at launch on purpose (record why in `docs/website-spec.md`), or convert at build time before launch (phase 6), which adds `sharp` to the build.
 - [ ] **Copyright holder** in `LICENSE`: Stichting TEDxAmsterdam (current) or the maintainer, as in the design system?
 - [ ] **Past talks**: detail pages, or redirect `/speakers-copy/*` to `/speakers` (phase 2)?
 - [ ] **Analytics**: GA4 with a consent banner, or cookieless analytics without one (phase 4)?
@@ -33,9 +33,9 @@ Things outside the code that someone with admin access has to do.
 - [x] Delete stale branches: `feat/project-setup`, `feature/project-setup`, `chore/website-spec`, `chore/lighthouse-ci`, `chore/project-context-docs`, `feature/spec-conformance-tests`, `chore/spec-watch`, `chore/restore-spec-conformance`, `chore/claude-agents`, `feature/content-layer`, `chore/restore-agents-and-content-layer`
 - [ ] Branch ruleset on `main` (pull request required, CI and Lighthouse must pass, no force push): recommended: CI and Lighthouse are not yet required before merging
 - [ ] Add a second owner to the GitHub organisation
-- [ ] Cloudflare: set the build command to `npm run build` (it is `npx next build`)
+- [x] Cloudflare: set the build command to `npm run build`, `NODE_VERSION` to `22.23.3` and the content variables for production and preview
 - [x] Run the Spec watch workflow once by hand to create the initial snapshot (#14)
-- [ ] Before phase 1b: create a Webflow site token with **CMS read** only for the site build, and add it to Cloudflare as a secret (see 1b)
+- [x] Before phase 1b: create a Webflow site token with **CMS read** only for the site build, and add it to Cloudflare as a secret (see 1b)
 - [x] Before phase 1b: record the live speakers response unchanged into `tests/fixtures/webflow/speakers-live.json` (`GET /v2/collections/6874c72605e8d57abb48e751/items/live?limit=100`). It contains no secrets, so contributors without a token can build and test 1b from it
 
 ## Key dates
@@ -79,7 +79,7 @@ Done when: the app builds and tests pass without any token, and nothing outside 
 - [x] `src/content/webflow/speakers.ts`: mapper with every speaker quirk from the content model, as a pure function, rich text through `sanitizeHtml`
 - [x] `src/content/webflow/index.ts`: `createWebflowSource` implementing `ContentSource`, sorted with `sortSpeakers`; wire it into the `webflow` case of `src/content/index.ts`
 - [x] Unit tests with the recorded responses in `tests/fixtures/webflow/`, plus a hand edited copy with a broken field that must fail with a readable error
-- [ ] Cloudflare (maintainer): `WEBFLOW_API_TOKEN` as an encrypted secret and `CONTENT_SOURCE=webflow` for production and preview builds
+- [x] Cloudflare (maintainer): `WEBFLOW_API_TOKEN` as an encrypted secret and `CONTENT_SOURCE=webflow` for production and preview builds
 - [x] Update `docs/website-spec.md` for image alt text
 - [x] `content-layer-reviewer` agent in `.claude/agents/`, based on the finished adapter: every content model quirk handled and tested, no Webflow slugs outside `src/content/webflow/`, rich text through `sanitizeHtml`, every response parsed with Zod; run by `/ship` on content layer changes
 
@@ -87,15 +87,15 @@ Done when: unit tests on the recorded responses cover every speaker quirk in the
 
 ### 1c. Speaker pages (`feature/speaker-pages`)
 
-- [ ] `/speakers`: overview of current speakers, sorted by `order`
-- [ ] `/speakers/[slug]`: detail page per speaker via `generateStaticParams`, same slugs as Webflow
-- [ ] Metadata per page: title, description, canonical, Open Graph
-- [ ] JSON-LD for each speaker and breadcrumbs on detail pages
-- [ ] Images with explicit dimensions and lazy loading, following decision 19
-- [ ] Alt text per component: the speaker name on the detail page, `alt=""` on an overview card whose link already shows the name
-- [ ] Rich text headings (`h2` to `h4` from the CMS) never skip a level where they are rendered; add a check to `tests/output/`
-- [ ] Add one speaker detail URL to the Lighthouse workflow; extend `tests/output/` where useful
-- [ ] Update `docs/website-spec.md` (title, structured data, breadcrumbs, lazy loading)
+- [x] `/speakers`: overview of current speakers, sorted by `order`
+- [x] `/speakers/[slug]`: detail page per speaker via `generateStaticParams`, same slugs as Webflow
+- [x] Metadata per page: title, description, canonical, Open Graph
+- [x] JSON-LD for each speaker and breadcrumbs on detail pages
+- [x] Images with explicit dimensions and lazy loading, following decision 19, plus a `srcset` from Webflow's variants (decision 21)
+- [x] Alt text per component: "Portrait of {name}" on the detail page, `alt=""` on an overview card whose link already shows the name
+- [x] Rich text headings (`h2` to `h4` from the CMS) never skip a level where they are rendered; add a check to `tests/output/`
+- [x] Add one speaker detail URL to the Lighthouse workflow; extend `tests/output/` where useful
+- [x] Update `docs/website-spec.md` (title, structured data, breadcrumbs, lazy loading)
 
 Done when: a build with `CONTENT_SOURCE=webflow` fetches the live speakers, every Webflow speaker URL works on the preview with the real content, Lighthouse and the conformance tests pass, and the pages match the design system's speaker designs.
 
@@ -134,7 +134,7 @@ Most open requirements from [The Website Specification](website-spec.md) land in
 - [x] `noindex` on all `pages.dev` addresses
 - [x] Lighthouse on every preview deployment
 - [x] Weekly check for changes in The Website Specification
-- [ ] Build command `npm run build` in Cloudflare, so it matches CI
+- [x] Build command `npm run build` in Cloudflare, so it matches CI
 - [ ] Rebuild on CMS publish (webhook to deploy hook)
 - [ ] Move the Cloudflare project to a foundation account before launch
 
