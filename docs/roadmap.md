@@ -8,15 +8,11 @@ How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly i
 
 Update this section in every pull request that changes the state of the project.
 
-**State (12 October 2026)**: phase 0 is merged, and so are The Website Specification (#2), Lighthouse on every deployment (#6) and the project documents (#7). The official review plugins (`code-review`, `pr-review-toolkit`, `claude-md-management`, `typescript-lsp`) are enabled for everyone in `.claude/settings.json`.
+**State (12 October 2026)**: phases 0 and 1a are on `main`. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the project agents and the `/next` and `/ship` commands are described in CLAUDE.md.
 
-#8 restored the conformance tests, security headers, caching, 404 skip link fix and spec watch from #4 and #5, which had been merged into their stacked base branches instead of `main`.
+#4, #5, #9 and #10 were merged into stacked base branches instead of `main`; #8 and #11 restored their commits unchanged. Pull requests are not stacked until "Automatically delete head branches" is on (decision 17). Older history on `main` contains merge commits and one commit pushed directly; do not copy them.
 
-The same happened to #9 (Claude Code agents and commands) and #10 (phase 1a, the content layer): they were merged into the branches of #8 and #9, because those branches still existed. `chore/restore-agents-and-content-layer` brings their commits to `main` unchanged. Until "Automatically delete head branches" is on, pull requests are not stacked (decision 17).
-
-Older history on `main` contains merge commits and one commit pushed directly, from before rebase only merging was set up. Do not copy them.
-
-**Next**: phase 1b, the Webflow adapter for speakers, on `feature/webflow-speakers`. Branch from `main` once the restore is merged. It needs the recorded responses from "Maintainer actions" and the image decision first.
+**Next**: phase 1b, the Webflow adapter for speakers, on `feature/webflow-speakers` from `main`. It is blocked by the image decision and the recorded speakers response (see below).
 
 ## Open decisions
 
@@ -34,11 +30,11 @@ Decisions that block or shape upcoming work. Record the outcome in [decisions.md
 Things outside the code that someone with admin access has to do.
 
 - [ ] **First**: GitHub settings: only "Allow rebase merging", "Automatically delete head branches" on (its absence caused three lost merges), "Allow GitHub Actions to create and approve pull requests" on
-- [ ] Delete stale branches: `feat/project-setup`, `feature/project-setup`, `chore/website-spec`, `chore/lighthouse-ci`, `chore/project-context-docs`, and after the restore is merged `feature/spec-conformance-tests` and `chore/spec-watch`
+- [ ] Delete stale branches: `feat/project-setup`, `feature/project-setup`, `chore/website-spec`, `chore/lighthouse-ci`, `chore/project-context-docs`, `feature/spec-conformance-tests`, `chore/spec-watch`, `chore/restore-spec-conformance`, `chore/claude-agents`, `feature/content-layer`, `chore/restore-agents-and-content-layer`
 - [ ] Branch ruleset on `main` (pull request required, CI and Lighthouse must pass, no force push): no longer optional, three stacked merges have now gone wrong
 - [ ] Add a second owner to the GitHub organisation
 - [ ] Cloudflare: set the build command to `npm run build` (it is `npx next build`)
-- [ ] After #8 is merged: run the Spec watch workflow once by hand to create the initial snapshot
+- [ ] Run the Spec watch workflow once by hand to create the initial snapshot
 - [ ] Before phase 1b: create a Webflow site token with **CMS read** only for the site build, and add it to Cloudflare as a secret (see 1b)
 - [ ] Before phase 1b: record the live speakers response unchanged into `tests/fixtures/webflow/speakers-live.json` (`GET /v2/collections/6874c72605e8d57abb48e751/items/live?limit=100`). It contains no secrets, so contributors without a token can build and test 1b from it
 
