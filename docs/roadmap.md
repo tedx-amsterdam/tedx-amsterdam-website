@@ -8,11 +8,11 @@ How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly i
 
 Update this section in every pull request that changes the state of the project.
 
-**State (12 October 2026)**: phases 0 and 1a are on `main`. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the project agents and the `/next` and `/ship` commands are described in CLAUDE.md.
+**State (12 October 2026)**: phases 0 and 1a are on `main`. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the project agents and the `/next` and `/ship` commands are described in CLAUDE.md, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
 
 #4, #5, #9 and #10 were merged into stacked base branches instead of `main`; #8 and #11 restored their commits unchanged. GitHub now allows only rebase merging and deletes head branches on merge, so stacking is safe again (decision 18). Older history on `main` contains merge commits and one commit pushed directly; do not copy them.
 
-**Next**: phase 1b, the Webflow adapter for speakers, on `feature/webflow-speakers` from `main`. It is blocked by the image decision and the recorded speakers response (see below).
+**Next**: phase 1b, the Webflow adapter for speakers, on `feature/webflow-speakers` from `main`. The image approach is decided (Webflow CDN, recorded as a decision in that pull request) and the live speakers response is recorded; both land in that pull request.
 
 ## Open decisions
 
@@ -81,6 +81,7 @@ Done when: the app builds and tests pass without any token, and nothing outside 
 - [ ] Unit tests with the recorded responses in `tests/fixtures/webflow/`, plus a hand edited copy with a broken field that must fail with a readable error
 - [ ] Cloudflare (maintainer): `WEBFLOW_API_TOKEN` as an encrypted secret and `CONTENT_SOURCE=webflow` for production and preview builds
 - [ ] Update `docs/website-spec.md` for image alt text
+- [ ] `content-layer-reviewer` agent in `.claude/agents/`, based on the finished adapter: every content model quirk handled and tested, no Webflow slugs outside `src/content/webflow/`, rich text through `sanitizeHtml`, every response parsed with Zod; run by `/ship` on content layer changes
 
 Done when: unit tests on the recorded responses cover every speaker quirk in the content model, an invalid response makes `getSpeakers()` throw a readable error, and with a token in `.env.local` a one off script described in the pull request fetches and maps every published speaker. No page reads content yet, so the build itself starts calling Webflow in 1c.
 
