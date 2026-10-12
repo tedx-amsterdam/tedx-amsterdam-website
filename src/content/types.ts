@@ -39,3 +39,20 @@ export type Speaker = {
   // Lower shows first; speakers without an order come last.
   order?: number;
 };
+
+// Named TedxEvent, not Event, so it never shadows the DOM Event type.
+export type TedxEvent = {
+  // Identifies the event; events have no pages of their own.
+  slug: string;
+  title: string;
+  // Start as an ISO 8601 instant in UTC, as toISOString() writes it, so
+  // starts sort as text. Show it in the Europe/Amsterdam time zone.
+  startsAt: string;
+  location?: string;
+  // Plain text, not rich text: the CMS field is plain.
+  description?: string;
+  // Tickets or the event page, on another site.
+  url?: string;
+  tag?: string;
+  image?: Image;
+};

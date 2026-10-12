@@ -37,6 +37,32 @@ export const speakerItemSchema = z.object({
 
 export type WebflowSpeakerItem = z.infer<typeof speakerItemSchema>;
 
+// Upcoming events collection (68763edeb9e4be2376b75976). The plain text
+// `date` field duplicates event-date in free text and is left out.
+export const eventItemSchema = z.object({
+  id: z.string(),
+  fieldData: z.object({
+    name: z.string().trim().min(1),
+    slug,
+    // Required: without it an event cannot be sorted or placed as upcoming
+    // or past, so a missing date fails the build and names the event.
+    "event-date": z.iso.datetime({ offset: true }),
+    // The typo is Webflow's own field slug.
+    descpiption: optionalText,
+    location: optionalText,
+    // Trimmed like every text field; Webflow sends an empty string for a
+    // cleared link.
+    link: z.preprocess(
+      (value) => (typeof value === "string" ? value.trim() || null : value),
+      z.url({ protocol: /^https?$/ }).nullish(),
+    ),
+    tag: optionalText,
+    image: image.nullish(),
+  }),
+});
+
+export type WebflowEventItem = z.infer<typeof eventItemSchema>;
+
 // One page of GET /v2/collections/{id}/items/live.
 export function itemsPageSchema<Item extends z.ZodType>(item: Item) {
   return z.object({

@@ -1,13 +1,14 @@
 import { getEnv } from "@/lib/env";
 import { fixtureSource } from "./fixtures";
 import type { ContentSource } from "./source";
-import type { Speaker } from "./types";
+import type { TedxEvent, Speaker } from "./types";
 import { createWebflowClient, createWebflowSource } from "./webflow";
 
 // The only module pages and components import content from. Which source
 // is active is decided here, from CONTENT_SOURCE, and nowhere else.
 
-export type { Image, ImageVariant, SafeHtml, Speaker } from "./types";
+export { splitEvents } from "./events";
+export type { TedxEvent, Image, ImageVariant, SafeHtml, Speaker } from "./types";
 
 // One Webflow source per build process, so its fetched collections are
 // shared by every page. Keyed by token, so a changed token is never served
@@ -34,4 +35,8 @@ export async function getSpeakers(): Promise<Speaker[]> {
 
 export async function getSpeaker(slug: string): Promise<Speaker | undefined> {
   return activeSource().getSpeaker(slug);
+}
+
+export async function getEvents(): Promise<TedxEvent[]> {
+  return activeSource().getEvents();
 }

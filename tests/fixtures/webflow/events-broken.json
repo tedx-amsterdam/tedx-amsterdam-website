@@ -1,0 +1,51 @@
+{
+  "items": [
+    {
+      "id": "6aa51e40d5c8ef1b016fd32a",
+      "cmsLocaleId": "6874c72679138fea0389db24",
+      "lastPublished": "2026-09-12T09:42:32.278Z",
+      "lastUpdated": "2026-09-12T09:41:42.955Z",
+      "createdOn": "2026-09-12T09:41:20.333Z",
+      "isArchived": false,
+      "isDraft": false,
+      "fieldData": {
+        "image": null,
+        "tag": null,
+        "show-hide": false,
+        "date": "Thursday, November 12, 2026",
+        "descpiption": "What Comes After Growth? We're in between worlds, at the cusp of change. For our 16th edition, we open the floor to the ideas that could shape what comes next. Technology is redefining what it means to be human. Growth isn't a given anymore. And who gets to decide what we build next, is wide ope",
+        "location": "Pakhuis de Zwijger, Amsterdam",
+        "link": "https://www.eventbrite.com/e/tedxamsterdam-2026-after-growth-tickets-1999762520531",
+        "event-date": "2026-11-12T13:00:00.000Z",
+        "name": "TEDxAmsterdam 2026: After Growth",
+        "slug": "tedxamsterdam-2026-after-growth"
+      }
+    },
+    {
+      "id": "6a85ca94ae81d435ad919760",
+      "cmsLocaleId": "6874c72679138fea0389db24",
+      "lastPublished": "2026-08-31T09:36:27.556Z",
+      "lastUpdated": "2026-08-28T13:02:28.813Z",
+      "createdOn": "2026-08-19T15:24:04.397Z",
+      "isArchived": false,
+      "isDraft": false,
+      "fieldData": {
+        "image": null,
+        "tag": null,
+        "show-hide": false,
+        "date": "Wednesday, September 16, 2026",
+        "descpiption": "What happens when we rethink the spaces we live, work and move through? TEDxAmsterdam Conversations is a series of interactive events exploring the ideas shaping our world. This official TEDxAmsterdam Salon, in collaboration with Sir Adam and Dentsu Lab, explores how we can rethink space for a rapidly changing world. From homes and workplaces to digital and natural environments, join us to explore how smarter use of limited space can create a better-distributed future. Speakers announced soon.",
+        "location": "Sir Adam",
+        "link": "https://www.ted.com/tedx/events/70681",
+        "event-date": "Thursday, November 12, 2026",
+        "name": "TEDxAmsterdam Conversations: The Role of Spaces in an Expanding World",
+        "slug": "tedxamsterdam-conversations-the-role-of-spaces-in-an-expanding-world"
+      }
+    }
+  ],
+  "pagination": {
+    "limit": 100,
+    "offset": 0,
+    "total": 2
+  }
+}
