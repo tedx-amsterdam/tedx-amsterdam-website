@@ -50,6 +50,8 @@ When a rule in this file changes, check whether a command or agent repeats it an
 
 ## Architecture
 
+The tree shows the target layout. `src/content/webflow/` arrives in phase 1b, the other domain types with their collections in phase 2.
+
 ```
 src/app/              Routes. Pages only compose components and call the content layer.
 src/components/       Site specific components that are not generic enough for the design system.
@@ -59,10 +61,12 @@ src/content/
   types.ts            Domain types (Speaker, Event, Partner, Pioneer, Talk, BlogPost).
   source.ts           The ContentSource interface every content source implements.
   index.ts            Selects the active source. The only import pages may use.
+  sort.ts             Display order shared by every source.
   webflow/            Webflow adapter: API client, Zod schemas, mappers.
   fixtures/           Fixture source with static data for tests, CI and offline development.
 src/lib/              Small shared utilities (env parsing, HTML sanitising, formatting).
-tests/                Vitest tests and fixtures.
+tests/                Vitest tests. Recorded API responses go in tests/fixtures/webflow/
+                      (not to be confused with the fixture source in src/content/fixtures/).
 docs/                 Roadmap, decisions, content model, current site inventory, spec status.
 public/assets/        Design system logos and icons (temporary, see public/assets/README.md).
 ```
@@ -77,11 +81,11 @@ The published design system (1.2.1) has three gaps. Each has exactly one workaro
 
 ### The content layer is the core rule
 
-- Pages and components **never** import from `src/content/webflow/` or call any CMS API directly. They import from `@/content` and work with domain types only.
+- Pages and components **never** import from `src/content/webflow/` or call any CMS API directly. They import from `@/content` and work with domain types only. A lint rule blocks imports of `@/content/*` (and relative paths into `content/*`) outside `src/content/` and `tests/`. Tests are exempt so they can unit test sources and mappers directly.
 - Domain types use clean names that describe the content, not the CMS. Webflow field slugs (`name-of-speaker`, `session-blurb-2`, `descpiption`) appear **only** inside `src/content/webflow/`.
 - Every Webflow response is parsed with a Zod schema before mapping. Unknown or malformed data fails the build with a clear error instead of rendering broken pages.
 - Mappers are pure functions (Webflow item in, domain object out) and are unit tested with real response shapes.
-- Rich text from the CMS is sanitised in the content layer, never rendered raw.
+- Rich text from the CMS is sanitised in the content layer with `sanitizeHtml` from `src/lib/sanitize-html.ts`, never rendered raw. Domain types hold it as `SafeHtml`.
 
 ### Known Webflow data quirks
 
