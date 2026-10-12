@@ -12,8 +12,11 @@ Requirements: Node.js 22 (see `.nvmrc`) and npm.
 git clone https://github.com/tedx-amsterdam/tedx-amsterdam-website.git
 cd tedx-amsterdam-website
 npm install
+cp .env.example .env.local   # then set CONTENT_SOURCE=fixtures
 npm run dev
 ```
+
+`CONTENT_SOURCE=fixtures` runs the site on static test data without any token. `CONTENT_SOURCE=webflow` reads the live Webflow CMS and needs `WEBFLOW_API_TOKEN`; ask the maintainer for it.
 
 Open [http://localhost:3000](http://localhost:3000).
 

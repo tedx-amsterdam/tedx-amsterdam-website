@@ -65,3 +65,7 @@ Next.js inlines scripts, so a script policy needs hashes per page. The current C
 ## 14. pages.dev deployments are never indexed (October 2026)
 
 Every `pages.dev` address, including the production alias, sends `X-Robots-Tag: noindex`, so search engines never see a copy of the site next to tedxamsterdam.nl. Lighthouse skips the `is-crawlable` audit for this reason.
+
+## 15. The content source is always chosen explicitly (October 2026)
+
+`CONTENT_SOURCE` must be `fixtures` or `webflow`; there is no default. A fallback to fixtures would let a misconfigured production build publish fake speakers without failing. Variables are read when content is first requested, so builds that do not touch content need none. `.env.example` leaves `CONTENT_SOURCE` blank for the same reason: copying it never picks a source silently.
