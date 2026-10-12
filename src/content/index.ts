@@ -7,7 +7,7 @@ import { createWebflowClient, createWebflowSource } from "./webflow";
 // The only module pages and components import content from. Which source
 // is active is decided here, from CONTENT_SOURCE, and nowhere else.
 
-export type { Image, SafeHtml, Speaker } from "./types";
+export type { Image, ImageVariant, SafeHtml, Speaker } from "./types";
 
 // One Webflow source per build process, so its fetched collections are
 // shared by every page. Keyed by token, so a changed token is never served
