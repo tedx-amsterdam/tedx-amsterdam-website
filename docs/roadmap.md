@@ -25,6 +25,12 @@ Decisions that block or shape upcoming work. Record the outcome in [decisions.md
 - [ ] **Analytics**: GA4 with a consent banner, or cookieless analytics without one (phase 4)?
 - [ ] **AI crawlers** in `robots.txt`: allow or block (phase 4)?
 - [ ] **Design owner** (after the proof of concept): who approves design system changes next to the maintainer (decision 23)? Until then the maintainer is the only owner, and nothing that needs a second reviewer is turned on.
+- [ ] **One repository for the website and the design system?** Decision 23 keeps two repositories, linked through npm releases, and names the trigger to revisit. Stage B is that trigger: every pattern that moves into the design system (`PageHero`, a card grid) then takes four steps across two repositories (a design system pull request, a release pull request, a tag and npm publish, an upgrade pull request here), and a component cannot be tried on a real page before it is published. Options:
+  - **Keep two repositories.** Nothing to migrate; a release step for every visual change.
+  - **One repository with npm workspaces** (recommended): the design system moves to `packages/design-system/` with its history, and the site imports the same package name from the workspace. A component and the page that uses it change in one pull request with one preview; `CODEOWNERS` on `packages/design-system/` keeps the design boundary. Costs about four pull requests: first align the design system's React 18, Vitest 2 and jsdom 25 with this repository, then import it with `git subtree` or `git filter-repo`, then CI, `CODEOWNERS` and docs (a new decision updating 23), then point Vercel at the subfolder and archive the old repository. The site can no longer pin an older design system version.
+  - **Fold it into `src/`.** Simplest code, but Storybook, the showcase and the design boundary go.
+
+  Decide before stage B starts. First answer whether anything outside this site uses the design system: the Vercel showcase (Storybook, `ui_kits/`, `guidelines/`), the CDN bundle `_ds_bundle.js` or the Claude skill (`SKILL.md`). They can stay in a workspace too, but if nobody uses them, the move is simpler.
 - [ ] **Design source of truth**: Figma or the design system code? When a design changes, which one changes first, and who keeps the other in sync?
 - [ ] **Design system 2.0** (stage C) is a breaking release: before launch, while this site is its only user, or after?
 
