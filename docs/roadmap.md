@@ -24,6 +24,9 @@ Decisions that block or shape upcoming work. Record the outcome in [decisions.md
 - [ ] **Past talks**: detail pages, or redirect `/speakers-copy/*` to `/speakers` (phase 2)?
 - [ ] **Analytics**: GA4 with a consent banner, or cookieless analytics without one (phase 4)?
 - [ ] **AI crawlers** in `robots.txt`: allow or block (phase 4)?
+- [ ] **Design owner** (after the proof of concept): who approves design system changes next to the maintainer (decision 23)? Until then the maintainer is the only owner, and nothing that needs a second reviewer is turned on.
+- [ ] **Design source of truth**: Figma or the design system code? When a design changes, which one changes first, and who keeps the other in sync?
+- [ ] **Design system 2.0** (stage C) is a breaking release: before launch, while this site is its only user, or after?
 
 ## Maintainer actions
 
@@ -160,12 +163,42 @@ Most open requirements from [The Website Specification](website-spec.md) land in
 - [ ] Second admin on GitHub, Cloudflare, the CMS and the domain registrar
 - [ ] Documentation reviewed by someone who did not build the site
 
-## Design system follow ups
+## Design system
 
-Tracked here because the website depends on them. Each one removes a workaround in this repo.
+The design system enforces the design and the website only composes it (decision 23). Each stage starts on its trigger, not on a date. Everything that works without a second person is turned on now; what needs one is prepared and waits for stage E.
 
-- [ ] Ship `assets/` in the npm package (then remove `public/assets/`)
-- [ ] Publish the TEDx required content constants (then remove `src/config/tedx.ts`)
-- [ ] Mark interactive components with `"use client"` (then remove `src/components/design-system.ts`)
+### A. Guardrails (now)
+
+- [ ] Branch ruleset on `main` turned on (see Maintainer actions), without required approvals: GitHub does not let the only maintainer approve their own pull requests
+- [ ] `CODEOWNERS` in both repositories, with the maintainer as the only owner for now: the design system, and `*.css` and `src/components/` here. It requests reviews but blocks nothing until code owner review is required (stage E)
+- [ ] A conformance test that fails on raw colors, pixel values outside borders and breakpoints, `!important` and inline styles in this repository
+- [ ] Design system 1.3.0, which removes the three workarounds in this repository:
+  - [ ] Ship `assets/` in the npm package (then remove `public/assets/`)
+  - [ ] Publish the TEDx required content constants (then remove `src/config/tedx.ts`)
+  - [ ] Mark interactive components with `"use client"`, per component, so components without state stay server components and ship no JavaScript (then remove `src/components/design-system.ts`)
 - [ ] Add a Facebook icon to `SocialLink`
 - [ ] Give logo images explicit `width` and `height` (Lighthouse flags them as unsized)
+
+### B. Patterns move into the design system (trigger: a pattern used twice)
+
+- [ ] `PageHero`: the title and intro block, now copied in `src/app/speakers/page.module.css` and `src/app/events/page.module.css`
+- [ ] A card grid, when partners or pioneers need the speaker grid
+- [ ] Build these from the prototypes in `ui_kits/website/` as real components with stories
+- Track the lines of CSS in `src/` (521 in October 2026): they should fall while pages are added
+
+### C. Close the escape hatches (trigger: before launch, or when more volunteers join)
+
+- [ ] Design system 2.0: no `style` prop on components, `className` only for placement, and layout primitives (stack, grid, container) so pages need no layout CSS
+- [ ] Ship the adherence lint rules (`_adherence.oxlintrc.json`) in the package as errors, generated from component props, and extend them here
+- [ ] Visual regression tests on the design system's Storybook
+
+### D. Editors compose from approved blocks (trigger: the CMS migration, phase 7)
+
+- [ ] Model page content in the new CMS as blocks that map to design system sections; fixed structure for collection pages, blocks only where a page needs flexibility
+
+### E. A second reviewer (trigger: the end of the proof of concept)
+
+Prepared in stage A, turned on when a second person joins. Before that, these would block the only maintainer.
+
+- [ ] Add the second person as owner of the GitHub organisation and to `CODEOWNERS` in both repositories
+- [ ] Ruleset on `main` in both repositories: one required approval and "Require review from Code Owners"
