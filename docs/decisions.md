@@ -119,3 +119,9 @@ No instruction files for other tools in advance (`GEMINI.md`, `.github/copilot-i
 An instruction file is a request, not enforcement: a contributor without an agent may never read it. Rules that can be checked belong in CI as well, which applies whatever tool someone uses; commit messages and branch names are the next candidates (roadmap, Design system stage A).
 
 Next.js 16 can write its own block into `AGENTS.md` when an agent runs `next dev`. That stays off (`agentRules: false` in `next.config.ts`): its one rule, to read the bundled Next.js docs, is already under "Stack", and the file stays written by people only.
+
+## 25. Commit messages and branch names are checked by a script, not commitlint (October 2026)
+
+CI checks every commit and the branch name of a pull request against "Git Workflow" in `AGENTS.md`, so the rules hold whatever tool or agent a contributor uses (decision 24). The check is `scripts/git-workflow.ts`, about 60 lines without dependencies, run by Node directly. commitlint would add two packages and their dependencies for a handful of rules, and its defaults differ from ours (a 100 character header against our 72), so it would need a config that repeats `AGENTS.md` anyway.
+
+It checks what a machine can: the type and scope format, a lowercase subject without a period, the 72 character limit, a blank line after the header, no unsquashed fixups, and the branch prefix. Whether a body explains why stays a review question. Only the commits of a pull request are checked, so older history on `main` does not fail it. If the rules grow beyond this, switching to commitlint is a reasonable new decision.
