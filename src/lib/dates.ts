@@ -10,3 +10,13 @@ export function amsterdamDay(date: Date): string {
   const part = (type: Intl.DateTimeFormatPartTypes) => dayParts.formatToParts(date).find((p) => p.type === type)?.value;
   return `${part("year")}-${part("month")}-${part("day")}`;
 }
+
+const longDate = new Intl.DateTimeFormat("en-GB", { timeZone: TIME_ZONE, weekday: "long", day: "numeric", month: "long", year: "numeric" });
+
+// "Thursday 12 November 2026", in Amsterdam time. Built from the parts,
+// because punctuation between them differs between ICU versions.
+export function formatLongDate(iso: string): string {
+  const parts = longDate.formatToParts(new Date(iso));
+  const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)?.value;
+  return `${part("weekday")} ${part("day")} ${part("month")} ${part("year")}`;
+}

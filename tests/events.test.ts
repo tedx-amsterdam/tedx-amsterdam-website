@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { splitEvents, type TedxEvent } from "@/content";
 import { fixtureSource } from "@/content/fixtures";
 import { sortEvents } from "@/content/sort";
+import { formatLongDate } from "@/lib/dates";
 
 const event = (slug: string, startsAt: string): TedxEvent => ({ slug, title: slug, startsAt });
 
@@ -63,5 +64,13 @@ describe("fixture events", () => {
     expect(events.some((e) => !e.url)).toBe(true);
     expect(events.some((e) => e.image)).toBe(true);
     expect(events.some((e) => e.title.length > 60)).toBe(true);
+  });
+});
+
+describe("formatLongDate", () => {
+  it("writes the day in Amsterdam time, also when that is the next day in UTC terms", () => {
+    expect(formatLongDate("2026-11-12T13:00:00.000Z")).toBe("Thursday 12 November 2026");
+    // 22:30 UTC on 11 October is 00:30 on 12 October in Amsterdam.
+    expect(formatLongDate("2026-10-11T22:30:00.000Z")).toBe("Monday 12 October 2026");
   });
 });
