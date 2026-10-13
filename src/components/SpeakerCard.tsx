@@ -7,11 +7,15 @@ type SpeakerCardProps = {
   // Cards in the first row are visible on load; loading them lazily would
   // delay the largest contentful paint.
   eager?: boolean;
+  // The first photo is the largest contentful paint on phones, where it is
+  // the only one visible; without a hint it shares bandwidth with the rest
+  // of the first row.
+  priority?: boolean;
 };
 
 // Overview card that links to the speaker page. The portrait has alt="":
 // the link text already names the speaker, so the name would be read twice.
-export function SpeakerCard({ speaker, eager = false }: SpeakerCardProps) {
+export function SpeakerCard({ speaker, eager = false, priority = false }: SpeakerCardProps) {
   return (
     <a className={styles.card} href={`/speakers/${speaker.slug}`}>
       {speaker.photo ? (
@@ -27,7 +31,8 @@ export function SpeakerCard({ speaker, eager = false }: SpeakerCardProps) {
           alt=""
           width={400}
           height={500}
-          loading={eager ? "eager" : "lazy"}
+          loading={eager || priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : undefined}
           decoding="async"
         />
       ) : (
