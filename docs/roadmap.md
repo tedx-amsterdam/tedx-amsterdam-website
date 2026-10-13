@@ -8,11 +8,11 @@ How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly i
 
 Update this section in every pull request that changes the state of the project.
 
-**State (13 October 2026)**: phases 0 and 1 are on `main`: the content layer, the Webflow adapter and the speaker pages (#19 to #22), checked by the `content-layer-reviewer` agent. Phase 2 has started: events are in the content layer (#23) and on the `/events` page (#24). The design system workflow is on `main` (#25, decision 23), and moving the rules for coding agents to `AGENTS.md` is in review (decision 24). That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the rules for every coding agent are in `AGENTS.md` (decision 24), the Claude Code agents and the `/next` and `/ship` commands are described in `CLAUDE.md`, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
+**State (13 October 2026)**: phases 0 and 1 are on `main`: the content layer, the Webflow adapter and the speaker pages (#19 to #22), checked by the `content-layer-reviewer` agent. Phase 2 has started: events are in the content layer (#23) and on the `/events` page (#24). The design system workflow is on `main` (#25, decision 23), the rules for coding agents are in `AGENTS.md` (#26, decision 24), and the guardrails from stage A under "Design system" are in review: a style conformance test, commit and branch checks in CI (decision 25) and `CODEOWNERS`. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the rules for every coding agent are in `AGENTS.md` (decision 24), the Claude Code agents and the `/next` and `/ship` commands are described in `CLAUDE.md`, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
 
 #4, #5, #9 and #10 were merged into stacked base branches instead of `main`; #8 and #11 restored their commits unchanged. GitHub now allows only rebase merging and deletes head branches on merge, so stacking is safe again (decision 18). Older history on `main` contains merge commits and one commit pushed directly; do not copy them.
 
-**Next**: the CSS conformance test from stage A under "Design system" (the maintainer does the ruleset and `CODEOWNERS`; design system 1.3.0 happens in its own repository), then partners, pioneers, past talks and the blog, one collection per pull request (decision 20).
+**Next**: the maintainer turns on the ruleset on `main`; design system 1.3.0 and `CODEOWNERS` there happen in its own repository. Then partners, pioneers, past talks and the blog, one collection per pull request (decision 20).
 
 ## Open decisions
 
@@ -169,10 +169,12 @@ The design system enforces the design and the website only composes it (decision
 
 ### A. Guardrails (now)
 
-- [ ] Check commit messages and branch names in CI (commitlint), so the Git Workflow rules hold for every tool (decision 24)
+- [x] Check commit messages and branch names in CI, so the Git Workflow rules hold for every tool (decisions 24 and 25)
 - [ ] Branch ruleset on `main` turned on (see Maintainer actions), without required approvals: GitHub does not let the only maintainer approve their own pull requests
-- [ ] `CODEOWNERS` in both repositories, with the maintainer as the only owner for now: the design system, and `*.css` and `src/components/` here. It requests reviews but blocks nothing until code owner review is required (stage E)
-- [ ] A conformance test that fails on raw colors, pixel values outside borders and breakpoints, `!important` and inline styles in this repository
+- `CODEOWNERS` with the maintainer as the only owner for now. It requests reviews but blocks nothing until code owner review is required (stage E)
+  - [x] Here: `*.css` and `src/components/`
+  - [ ] In the design system repository
+- [x] A conformance test that fails on raw colors, pixel values outside borders and breakpoints, `!important` and inline styles in this repository (`tests/styles.test.ts`)
 - [ ] Design system 1.3.0, which removes the three workarounds in this repository:
   - [ ] Ship `assets/` in the npm package (then remove `public/assets/`)
   - [ ] Publish the TEDx required content constants (then remove `src/config/tedx.ts`)
