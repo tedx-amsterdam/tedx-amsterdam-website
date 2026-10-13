@@ -72,10 +72,9 @@ public/assets/        Design system logos and icons (temporary, see public/asset
 
 ### Design system workarounds
 
-The published design system (1.3.0) has two gaps. Each has exactly one workaround in this repo, listed in `docs/roadmap.md` under "Design system follow ups". Remove the workaround when the design system fixes the gap.
+The published design system (1.3.0) has one gap. Each has exactly one workaround in this repo, listed in `docs/roadmap.md` under "Design system follow ups". Remove the workaround when the design system fixes the gap.
 
 - **Assets not in the npm package.** Logos and icons are copied into `public/assets/`. Components receive `base="/"` so they resolve `/assets/...` on every route.
-- **TEDx required texts not exported.** They live in `src/config/tedx.ts` until the package exports them.
 
 ### The content layer is the core rule
 
@@ -262,7 +261,7 @@ Lighthouse runs against the Cloudflare deployment of every pull request and of e
 
 ## TEDx brand rules
 
-- The license disclaimer (`TEDX_DISCLAIMER`) appears on every page through the site footer. The About page includes `TEDX_ABOUT_TEDX` and `TEDX_ABOUT_TED`. Always import these constants (currently from `src/config/tedx.ts`); never retype the text.
+- The license disclaimer (`TEDX_DISCLAIMER`) appears on every page through the site footer. The About page includes `TEDX_ABOUT_TEDX` and `TEDX_ABOUT_TED`. Always import these constants from `tedx-amsterdam-design-system`; never retype the text.
 - Always write "TEDx" and "TEDxAmsterdam": lowercase x, attached.
 - Sponsor logos are always smaller than the TEDxAmsterdam logo.
 - No TED logo and no imagery from TED conferences.
