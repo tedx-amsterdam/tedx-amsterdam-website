@@ -23,13 +23,13 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [lang on html](https://specification.website/spec/foundations/html-lang/) | Required | Done | `en` in the root layout; tested on every page |
 | [meta charset](https://specification.website/spec/foundations/meta-charset/) | Required | Done | Rendered by Next.js; tested on every page |
 | [meta viewport](https://specification.website/spec/foundations/meta-viewport/) | Required | Done | Rendered by Next.js; tested on every page |
-| [title](https://specification.website/spec/foundations/title/) | Required | Partial | Tested to be present on every page. Speaker pages have their own title; other pages get theirs as they are built |
-| [meta description](https://specification.website/spec/foundations/meta-description/) | Recommended | Partial | Speaker pages, tested; the rest in phase 4 |
-| [Canonical URL](https://specification.website/spec/foundations/canonical-url/) | Recommended | Partial | Speaker pages, tested; the rest in phase 4 |
+| [title](https://specification.website/spec/foundations/title/) | Required | Partial | Tested to be present on every page. Speaker pages and `/events` have their own title; other pages get theirs as they are built |
+| [meta description](https://specification.website/spec/foundations/meta-description/) | Recommended | Partial | Speaker pages and `/events`, tested; the rest in phase 4 |
+| [Canonical URL](https://specification.website/spec/foundations/canonical-url/) | Recommended | Partial | Speaker pages and `/events`, tested; the rest in phase 4 |
 | [Favicons](https://specification.website/spec/foundations/favicons/) | Recommended | Phase 4 | None yet |
 | [theme-color](https://specification.website/spec/foundations/theme-color/) | Recommended | Phase 4 | Black, matching the dark first design |
 | [color-scheme](https://specification.website/spec/foundations/color-scheme/) | Recommended | Phase 4 | `dark` |
-| [Open Graph](https://specification.website/spec/foundations/open-graph/) | Recommended | Partial | Speaker pages: title, description, URL, type and site name, tested. A speaker's image is the 1080 pixel Webflow variant, portrait shaped and without `og:image:width`/`height`; `/speakers` has no image yet. The rest, and a share image, in phase 4 |
+| [Open Graph](https://specification.website/spec/foundations/open-graph/) | Recommended | Partial | Speaker pages and `/events`: title, description, URL, type and site name, tested. A speaker's image is the 1080 pixel Webflow variant, portrait shaped and without `og:image:width`/`height`; `/speakers` and `/events` have no image yet. The rest, and a share image, in phase 4 |
 | [Feed discovery](https://specification.website/spec/foundations/feed-discovery/), [feed hygiene](https://specification.website/spec/foundations/feed-hygiene/) | Recommended | Phase 2 | With the blog, once it has content |
 | [Popover API](https://specification.website/spec/foundations/popover-api/), [anchor positioning](https://specification.website/spec/foundations/anchor-positioning/), [text-wrap](https://specification.website/spec/foundations/text-wrap/), [container queries](https://specification.website/spec/foundations/container-queries/) | Recommended | Design system | Component level CSS |
 
@@ -47,7 +47,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [URL structure](https://specification.website/spec/seo/url-structure/) | Recommended | Phase 4 | Keep the existing Webflow URLs |
 | [Server side rendering](https://specification.website/spec/seo/server-side-rendering/) | Recommended | Done | Static export: every page is complete HTML |
 | [Internal linking](https://specification.website/spec/seo/internal-linking/) | Recommended | Partial | Header and footer navigation; grows with the pages |
-| [Structured data](https://specification.website/spec/seo/structured-data/) | Recommended | Partial | `ItemList` on `/speakers`, `Person` and `BreadcrumbList` on speaker pages; valid JSON-LD is tested. Events and partners in phase 2 |
+| [Structured data](https://specification.website/spec/seo/structured-data/) | Recommended | Partial | `ItemList` on `/speakers`, `Person` and `BreadcrumbList` on speaker pages, an `ItemList` of `Event` on `/events`; valid JSON-LD is tested. Events have a venue name but no address, which search engines need for event rich results (phase 4). Partners in phase 2 |
 | [Breadcrumbs](https://specification.website/spec/seo/breadcrumbs/) | Recommended | Done | Design system `Breadcrumb` and `BreadcrumbList` JSON-LD on speaker pages, tested to match; later detail pages follow the same pattern |
 
 ## Accessibility
@@ -55,14 +55,14 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
 | [Colour contrast](https://specification.website/spec/accessibility/color-contrast/) | Required | Design system | Verified in Storybook; Lighthouse checks every preview |
-| [Image alt text](https://specification.website/spec/accessibility/image-alt-text/) | Required | Partial | Webflow alt text is null on every speaker photo; the mapper falls back to "Portrait of {name}" (tested). Overview card portraits are decorative (`alt=""`): the link names the speaker. Every image in the build has an `alt` attribute (tested). Other pages follow |
+| [Image alt text](https://specification.website/spec/accessibility/image-alt-text/) | Required | Partial | Webflow alt text is null on every speaker photo; the mapper falls back to "Portrait of {name}" (tested). Overview card portraits are decorative (`alt=""`): the link names the speaker. Event images fall back to the event title when Webflow has no alt text. Every image in the build has an `alt` attribute (tested). Other pages follow |
 | [Form labels](https://specification.website/spec/accessibility/form-labels/) | Required | Phase 3 | Newsletter form |
 | [Accessible form errors](https://specification.website/spec/accessibility/form-errors/) | Required | Phase 3 | Newsletter form |
 | [Keyboard navigation](https://specification.website/spec/accessibility/keyboard-navigation/) | Required | Partial | Design system components are keyboard accessible; checked per page |
 | [Visible focus indicators](https://specification.website/spec/accessibility/focus-indicators/) | Required | Done | Global focus ring from the design system |
 | [Skip links](https://specification.website/spec/accessibility/skip-links/) | Required | Done | Every skip link has a target on every page (tested); fixed on the 404 page |
 | [Semantic HTML and landmarks](https://specification.website/spec/accessibility/semantic-html/) | Required | Partial | `header`, `nav`, `main`, `footer` in place; checked per page |
-| [Descriptive link text](https://specification.website/spec/accessibility/link-text/) | Required | Partial | Avoid "Learn more" without context, as used on the Webflow partners page |
+| [Descriptive link text](https://specification.website/spec/accessibility/link-text/) | Required | Partial | Repeated "Learn more" links on `/events` carry an `aria-label` naming the event, starting with the visible text (WCAG 2.5.3). Links in `main` with the same name must go to the same place (tested). Avoid "Learn more" without context, as used on the Webflow partners page |
 | [Document and parts language](https://specification.website/spec/accessibility/document-language/) | Required | Done | `lang="en"`; Dutch passages get `lang="nl"` |
 | [Reduced motion](https://specification.website/spec/accessibility/reduced-motion/) | Required | Done | Handled globally by the design system |
 | [Captions and transcripts](https://specification.website/spec/accessibility/captions-and-transcripts/) | Required | Phase 3 | Only if a video has meaningful audio; the hero video is decorative |
@@ -122,12 +122,12 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
 | [Core Web Vitals](https://specification.website/spec/performance/core-web-vitals/) | Required | Partial | Measured by Lighthouse on every preview; thresholds rise per phase |
-| [Image optimisation](https://specification.website/spec/performance/image-optimization/) | Required | Partial | Speaker photos have explicit dimensions (tested) and a `srcset` from Webflow's own variants (decisions 19 and 21). Modern formats (AVIF, WebP) are not covered until the CMS migration (phase 7), after launch: an open decision in the roadmap |
+| [Image optimisation](https://specification.website/spec/performance/image-optimization/) | Required | Partial | Speaker photos and event images have explicit dimensions (tested) and a `srcset` from Webflow's own variants (decisions 19 and 21). Modern formats (AVIF, WebP) are not covered until the CMS migration (phase 7), after launch: an open decision in the roadmap |
 | [Cache-Control](https://specification.website/spec/performance/cache-control/) | Required | Done | Hashed assets under `/_next/static/` are immutable for a year, tested |
 | [Compression](https://specification.website/spec/performance/compression/) | Required | Done | Cloudflare |
 | [HTTP/1.1 workarounds](https://specification.website/spec/performance/http1-workarounds/) | Avoid | Done | None used |
 | [HTTP/2 and HTTP/3](https://specification.website/spec/performance/http3/) | Recommended | Done | Cloudflare |
-| [Lazy loading](https://specification.website/spec/performance/lazy-loading/) | Recommended | Done | Speaker photos below the first row of the overview load lazily; the first content image on every page is never lazy (tested) |
+| [Lazy loading](https://specification.website/spec/performance/lazy-loading/) | Recommended | Done | Speaker photos below the first row of the overview and event images after the first load lazily; the first content image on every page is never lazy (tested) |
 | [Web font loading](https://specification.website/spec/performance/font-loading/) | Recommended | Phase 4 | Self host the fallback font instead of Google Fonts |
 | [Critical CSS](https://specification.website/spec/performance/critical-css/), [script loading](https://specification.website/spec/performance/script-loading/) | Recommended | Done | Handled by Next.js; Lighthouse watches regressions |
 | [Back/forward cache](https://specification.website/spec/performance/bfcache/) | Recommended | Done | Audited by Lighthouse on every preview |
@@ -165,6 +165,6 @@ The site is English only. Most requirements in this category apply to multilingu
 | --- | --- | --- | --- |
 | [lang on inline content](https://specification.website/spec/i18n/lang-attribute/) | Required | Partial | Dutch names and quotes get `lang="nl"` where they appear |
 | [Automatic IP-based language redirects](https://specification.website/spec/i18n/avoid-auto-geo-redirects/) | Avoid | Done | None used |
-| [Locale-aware content](https://specification.website/spec/i18n/locale-content/), [plural rules](https://specification.website/spec/i18n/plural-rules/) | Recommended | Phase 2 | Event dates through `Intl.DateTimeFormat`, counts through `Intl.PluralRules` |
+| [Locale-aware content](https://specification.website/spec/i18n/locale-content/), [plural rules](https://specification.website/spec/i18n/plural-rules/) | Recommended | Partial | Event dates through `Intl.DateTimeFormat` in Amsterdam time, in a `<time>` element with a machine readable `datetime` (tested). Counts through `Intl.PluralRules` when a page shows one |
 | [RTL and bidirectional text](https://specification.website/spec/i18n/rtl-support/) | Recommended | N/A | English only, no right to left content |
 | [hreflang](https://specification.website/spec/i18n/hreflang/), [international URLs](https://specification.website/spec/i18n/international-url-structure/), [language switcher](https://specification.website/spec/i18n/language-switcher/), [localised metadata](https://specification.website/spec/i18n/localised-metadata/) | Recommended | N/A | Single language |

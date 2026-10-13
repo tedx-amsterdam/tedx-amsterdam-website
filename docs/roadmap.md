@@ -8,11 +8,11 @@ How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly i
 
 Update this section in every pull request that changes the state of the project.
 
-**State (12 October 2026)**: phases 0 and 1 are on `main`: the content layer, the Webflow adapter and the speaker pages (#19 to #22), checked by the `content-layer-reviewer` agent. Phase 2 has started: events in the content layer are in review on `feature/webflow-events`. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the project agents and the `/next` and `/ship` commands are described in CLAUDE.md, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
+**State (13 October 2026)**: phases 0 and 1 are on `main`: the content layer, the Webflow adapter and the speaker pages (#19 to #22), checked by the `content-layer-reviewer` agent. Phase 2 has started: events are in the content layer (#23), and the `/events` page is in review (#24). That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the project agents and the `/next` and `/ship` commands are described in CLAUDE.md, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
 
 #4, #5, #9 and #10 were merged into stacked base branches instead of `main`; #8 and #11 restored their commits unchanged. GitHub now allows only rebase merging and deletes head branches on merge, so stacking is safe again (decision 18). Older history on `main` contains merge commits and one commit pushed directly; do not copy them.
 
-**Next**: the `/events` page on `feature/events-page`, stacked on `feature/webflow-events`. Then partners, pioneers, past talks and the blog, one collection per pull request (decision 20).
+**Next**: review and merge #24. Then partners, pioneers, past talks and the blog, one collection per pull request (decision 20).
 
 ## Open decisions
 
@@ -101,7 +101,7 @@ Done when: a build with `CONTENT_SOURCE=webflow` fetches the live speakers, ever
 
 ## Phase 2: Remaining collections
 
-- [ ] Events (`/events`)
+- [ ] Events (`/events`): content layer in #23, page in #24
 - [ ] Partners (`/partners`)
 - [ ] Impact Program pioneers (`/impact`)
 - [ ] Past talks
@@ -121,6 +121,7 @@ Most open requirements from [The Website Specification](website-spec.md) land in
 
 - [ ] Metadata and Open Graph on every page
 - [ ] JSON-LD on speaker pages
+- [ ] Event rich results: events have a venue name but no address; add one (CMS field or a venue lookup) so search engines accept the `Event` data on `/events`
 - [ ] `sitemap.xml` and `robots.txt`
 - [ ] Redirects for legacy URLs: `/old-home`, `/speakers-new`, `/partners-old`, `/speakers-copy/*`
 - [ ] 404 page
