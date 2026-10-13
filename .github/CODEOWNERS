@@ -1,0 +1,5 @@
+# Changes to the design layer request a review from the maintainer. This
+# blocks nothing until the ruleset requires code owner review, which waits
+# for a second reviewer (docs/roadmap.md, Design system stage E).
+*.css @julianaijal
+/src/components/ @julianaijal
