@@ -47,14 +47,13 @@ An inventory of www.tedxamsterdam.nl as built in Webflow, taken in October 2026.
 
 ## Design reference
 
-The target designs live in the design system repository, not in Webflow:
+The target designs are in busy.studio's Figma file (below), and the design system turns their styles into tokens and components. The designs were made for the 2025 edition: take the layout and styles from them, not that year's theme or copy, which come from the CMS or the maintainer. Build pages from design system components, CSS Modules and tokens.
 
-- `ui_kits/website/` in [tedx-amsterdam-design-system](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system) has page level prototypes: `Home.jsx` and `HomeSections.jsx`, `SpeakerPage.jsx`, `EventProgram.jsx`, `BlogPage.jsx`, `Pages.jsx` and `Pages2.jsx` (About, Impact, Partners, Team, Gallery), `Header.jsx` and `Footer.jsx`.
-- These prototypes use inline styles and hardcoded copy. Rebuild them with design system components, CSS Modules and tokens, and take copy from the CMS where it exists.
+The design system used to have a click-through prototype of these designs in `ui_kits/website/`; it was removed because it held the 2025 theme (tedx-amsterdam-design-system#31). It is still in that repository's git history.
 
 ### Figma
 
-busy.studio designed the site in 2025 in a Figma file named "TEDxAmsterdam: website". The design system's tokens and the UI kit were taken from it. The maintainer has a `.fig` export of October 2026 (441 MB); ask for it. Never commit it: it is too large for git and holds reference images and photography whose rights are not cleared.
+busy.studio designed the site in 2025 in a Figma file named "TEDxAmsterdam: website". The design system's tokens were taken from it. The maintainer has a `.fig` export of October 2026 (441 MB); ask for it. Never commit it: it is too large for git and holds reference images and photography whose rights are not cleared.
 
 What it contains, read from that export:
 
