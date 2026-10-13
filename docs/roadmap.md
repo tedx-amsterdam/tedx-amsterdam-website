@@ -205,6 +205,7 @@ The design system enforces the design and the website only composes it (decision
 - [ ] `PageHero`: the title and intro block, now copied in `src/app/speakers/page.module.css` and `src/app/events/page.module.css`
 - [ ] A card grid, when partners or pioneers need the speaker grid
 - [ ] Build these from the [Figma designs](current-site.md#figma) as real components with stories
+- [ ] Page stories in the design system's Storybook (`Pages/Home`, `Pages/Speakers`, and so on): each page from the Figma designs composed of the real components with neutral sample content, so there is a click-through example of every page again. They replace the removed `ui_kits/website/` prototype, which copied the components with inline styles and the 2025 theme (tedx-amsterdam-design-system#31). Add a page story when its sections move into the design system; the CI Storybook build and the a11y addon then check it
 - Track the lines of CSS in `src/` (521 in October 2026): they should fall while pages are added
 
 ### C. Close the escape hatches (trigger: before launch, or when more volunteers join)
