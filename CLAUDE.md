@@ -216,7 +216,7 @@ Follow [Conventional Branch](https://conventional-branch.github.io): `<type>/<de
 
 - **Named exports only**, except where Next.js requires a default export (`page.tsx`, `layout.tsx`, `not-found.tsx`).
 - **Server components by default.** Add `"use client"` only for real interactivity, as low in the tree as possible.
-- Use design system components before writing new ones, imported from `@/components/design-system`. If a new component is generic, propose it for the design system instead of building it here.
+- Use design system components before writing new ones, imported from `@/components/design-system`. The design system owns the design (decision 23): if a new component is generic, propose it for the design system instead of building it here, and when a pattern appears a second time in this repository, move it into the design system instead of copying it.
 - Styling via CSS Modules and design system tokens. No hardcoded colors, spacing or font sizes, no inline styles, no `!important`.
 - No `any`. Prefer types inferred from Zod schemas for raw API data.
 - Don't add npm dependencies without a clear reason. State the reason in the commit message.
