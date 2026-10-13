@@ -211,6 +211,10 @@ The design system enforces the design and the website only composes it (decision
 ### C. Close the escape hatches (trigger: before launch, or when more volunteers join)
 
 - [ ] Design system 2.0: no `style` prop on components, `className` only for placement, and layout primitives (stack, grid, container) so pages need no layout CSS
+  - Logos and icons as React components (inline SVG) instead of image files, so the `base` prop, `scripts/design-system-assets.ts` and `public/assets/` go away and a missed copy step can no longer serve broken images
+  - Clean up the design system repository root: remove what nothing uses (the CDN bundle `_ds_bundle.js`, `SKILL.md`, `vercel.json`, the generated `_ds_manifest.json`), after the open decision on the Vercel showcase
+- [ ] Test the design system as a consumer in its CI: install the output of `npm pack` in a small Next.js app and build it, so problems like the missing `"use client"` or assets show up before a release
+- [ ] Run the design system's tests on React 18 and React 19: its peer dependency promises both, CI tests only 18, and this site runs 19
 - [ ] Ship the adherence lint rules (`_adherence.oxlintrc.json`) in the package as errors, generated from component props, and extend them here
 - [ ] Visual regression tests on the design system's Storybook
 
