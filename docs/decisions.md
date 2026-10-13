@@ -97,3 +97,15 @@ Refines decision 19. The speaker photos are 1365 by 2048 pixel JPEGs of about 57
 ## 22. Upcoming and past events are split at build time (October 2026)
 
 The site is static, so "upcoming" is decided when it is built: an event moves to "past events" only on the next build after its day ends. Days are counted in Amsterdam time, whatever the time zone of the build machine, and an event stays upcoming for the whole day it takes place. Rebuilding on every CMS publish is not enough on its own, because a quiet week has no publishes; a scheduled daily rebuild keeps the split current (roadmap phase 5). Splitting in the browser instead would need client side JavaScript on a page that is otherwise plain HTML.
+
+## 23. The design system enforces the design (October 2026)
+
+Design decisions live in the design system; the website only composes them. As more volunteers contribute, review alone cannot keep the design consistent: the right thing has to be the easy thing, and the wrong thing has to fail in CI. The target split:
+
+- **Design system**: tokens, components and page sections (such as a page hero or a card grid), plus lint rules that ship in the npm package so they always match the installed version.
+- **Website**: routes that combine data from `@/content` with design system sections. Its own CSS is limited to layout with tokens, and checked in CI.
+- **CMS** (after the migration, phase 7): editors compose pages from blocks that map to design system sections, never free layout.
+
+The work is staged by trigger, not by date, because the project is young and has one maintainer (see the roadmap, "Design system"). A pattern moves into the design system the second time the website needs it, so the design system grows from real pages instead of guesses.
+
+Two repositories, linked through npm releases (decision 6), stay for now: the design system has its own Storybook, CI and release flow, and a pinned version means a design system change never reaches the site unreviewed. The cost is a release step for every visual change. Revisit with a monorepo (npm workspaces) if most website pull requests turn out to need a design system release first.
