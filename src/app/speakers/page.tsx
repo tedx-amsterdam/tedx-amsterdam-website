@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Tag } from "@/components/design-system";
+import { Tag } from "tedx-amsterdam-design-system";
 import { JsonLd } from "@/components/JsonLd";
 import { SpeakerCard } from "@/components/SpeakerCard";
 import { OPEN_GRAPH_DEFAULTS, SITE_URL } from "@/config/site";

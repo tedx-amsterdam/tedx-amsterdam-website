@@ -53,7 +53,6 @@ The tree shows the target layout. The other domain types arrive with their colle
 ```
 src/app/              Routes. Pages only compose components and call the content layer.
 src/components/       Site specific components that are not generic enough for the design system.
-  design-system.ts    The only entry point for design system components (see below).
 src/config/           Site settings: navigation, external links, legal text.
 src/content/
   types.ts            Domain types (Speaker, TedxEvent, Partner, Pioneer, Talk, BlogPost).
@@ -73,9 +72,8 @@ public/assets/        Design system logos and icons (temporary, see public/asset
 
 ### Design system workarounds
 
-The published design system (1.2.1) has three gaps. Each has exactly one workaround in this repo, listed in `docs/roadmap.md` under "Design system follow ups". Remove the workaround when the design system fixes the gap.
+The published design system (1.3.0) has two gaps. Each has exactly one workaround in this repo, listed in `docs/roadmap.md` under "Design system follow ups". Remove the workaround when the design system fixes the gap.
 
-- **No `"use client"` directive.** Importing the package in a server component crashes the build. Always import from `@/components/design-system`, which re-exports the components behind a client boundary. A lint rule blocks direct imports; type only imports are allowed.
 - **Assets not in the npm package.** Logos and icons are copied into `public/assets/`. Components receive `base="/"` so they resolve `/assets/...` on every route.
 - **TEDx required texts not exported.** They live in `src/config/tedx.ts` until the package exports them.
 
@@ -213,7 +211,7 @@ Follow [Conventional Branch](https://conventional-branch.github.io): `<type>/<de
 
 - **Named exports only**, except where Next.js requires a default export (`page.tsx`, `layout.tsx`, `not-found.tsx`).
 - **Server components by default.** Add `"use client"` only for real interactivity, as low in the tree as possible.
-- Use design system components before writing new ones, imported from `@/components/design-system`. The design system owns the design (decision 23): if a new component is generic, propose it for the design system instead of building it here, and when a pattern appears a second time in this repository, move it into the design system instead of copying it.
+- Use design system components before writing new ones, imported from `tedx-amsterdam-design-system`. It marks its interactive components as client components, so pages and server components import it directly. The design system owns the design (decision 23): if a new component is generic, propose it for the design system instead of building it here, and when a pattern appears a second time in this repository, move it into the design system instead of copying it.
 - Styling via CSS Modules and design system tokens. No hardcoded colors, spacing or font sizes, no inline styles, no `!important`; `tests/styles.test.ts` fails on them. Pixels are allowed in breakpoints and border widths only.
 - No `any`. Prefer types inferred from Zod schemas for raw API data.
 - Don't add npm dependencies without a clear reason. State the reason in the commit message.

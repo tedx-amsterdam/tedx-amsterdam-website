@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowLink } from "@/components/design-system";
+import { ArrowLink } from "tedx-amsterdam-design-system";
 import styles from "./not-found.module.css";
 
 export const metadata: Metadata = {

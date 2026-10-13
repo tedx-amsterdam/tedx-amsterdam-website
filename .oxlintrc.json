@@ -36,13 +36,6 @@
     "no-restricted-imports": [
       "error",
       {
-        "paths": [
-          {
-            "name": "tedx-amsterdam-design-system",
-            "message": "Import from @/components/design-system so components render behind a client boundary.",
-            "allowTypeImports": true
-          }
-        ],
         "patterns": [
           {
             "group": [
@@ -71,30 +64,11 @@
     },
     {
       "files": [
-        "src/components/design-system.ts"
-      ],
-      "rules": {
-        "no-restricted-imports": "off"
-      }
-    },
-    {
-      "files": [
         "src/content/**",
         "tests/**"
       ],
       "rules": {
-        "no-restricted-imports": [
-          "error",
-          {
-            "paths": [
-              {
-                "name": "tedx-amsterdam-design-system",
-                "message": "Import from @/components/design-system so components render behind a client boundary.",
-                "allowTypeImports": true
-              }
-            ]
-          }
-        ]
+        "no-restricted-imports": "off"
       }
     }
   ],
