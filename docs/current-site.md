@@ -52,6 +52,20 @@ The target designs live in the design system repository, not in Webflow:
 - `ui_kits/website/` in [tedx-amsterdam-design-system](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system) has page level prototypes: `Home.jsx` and `HomeSections.jsx`, `SpeakerPage.jsx`, `EventProgram.jsx`, `BlogPage.jsx`, `Pages.jsx` and `Pages2.jsx` (About, Impact, Partners, Team, Gallery), `Header.jsx` and `Footer.jsx`.
 - These prototypes use inline styles and hardcoded copy. Rebuild them with design system components, CSS Modules and tokens, and take copy from the CMS where it exists.
 
+### Figma
+
+busy.studio designed the site in 2025 in a Figma file named "TEDxAmsterdam: website". The design system's tokens and the UI kit were taken from it. The maintainer has a `.fig` export of October 2026 (441 MB); ask for it. Never commit it: it is too large for git and holds reference images and photography whose rights are not cleared.
+
+What it contains, read from that export:
+
+- **Pages**: `prototype`, `work`, `review` (the latest designs, with done, in progress and review labels), `archive`, `ui kit`, `tools` and `cover`. `final` is empty, so no page is marked final.
+- **Page designs** at 1400 wide: home (`hero-desktop`, also `hero-mobile` at 375), speakers, speaker detail, team, partners, gallery, blog and impact program, plus event page sections ("Event page: latest version") and dated rounds (11.07, 23.07, "mvp — 6.08", "homepage — 7.08"). Only home has a mobile design.
+- **ui kit**: favicon (32), webclip (256), Open Graph image (1200 × 630) and the logo.
+- **Styles**: text styles for desktop and mobile in Helvetica Regular and Bold, the red `#EB0028`, the gradients and the neutrals. Almost nothing is a Figma component; the designs are plain frames.
+- **Fonts besides Helvetica Regular and Bold**: Helvetica Light and Helvetica Neue Condensed (Bold, Black) in a few frames; TT Norms, Inter and Montserrat only in early prototypes.
+
+The export is a zip with a binary `canvas.fig`. Coding agents can decode it with [`kiwi-schema`](https://www.npmjs.com/package/kiwi-schema) to read structure, text and styles, but cannot render frames. To compare a page visually, export the frame as PNG from Figma.
+
 ## Ownership and accounts
 
 | What | Where | Note |
