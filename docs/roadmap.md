@@ -189,7 +189,7 @@ The design system enforces the design and the website only composes it (decision
 - [ ] Add a Facebook icon to `SocialLink`
 - [x] Give logo images explicit `width` and `height` (Lighthouse flags them as unsized)
 - [ ] Give `SocialLink` icons explicit `width` and `height`, then check every image in `tests/output/`, not only those in `<main>`
-- [ ] Align the design system repository settings with this one: rebase merging only, delete branches on merge, a ruleset on `main`
+- [x] Align the design system repository settings with this one: rebase merging only, delete branches on merge, a ruleset on `main` with `ci` required
 
 ### B. Patterns move into the design system (trigger: a pattern used twice)
 
