@@ -22,10 +22,20 @@ jobs:
       CONTENT_SOURCE: fixtures
     steps:
       - uses: actions/checkout@v7
+        with:
+          # The commit check reads the pull request's commits from history.
+          fetch-depth: 0
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
+      - name: Check commit messages and branch name
+        if: github.event_name == 'pull_request'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+          BRANCH: ${{ github.head_ref }}
+        run: node scripts/git-workflow.ts "$BASE" "$HEAD" "$BRANCH"
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
