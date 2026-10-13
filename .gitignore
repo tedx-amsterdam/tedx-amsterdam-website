@@ -1,6 +1,9 @@
 # dependencies
 node_modules/
 
+# Design system logos and icons, copied from the package (scripts/design-system-assets.ts)
+public/assets/
+
 # Next.js build output
 .next/
 out/

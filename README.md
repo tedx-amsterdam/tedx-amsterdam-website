@@ -46,7 +46,7 @@ src/content/      Content layer: domain types, content sources (import only from
 src/lib/          Shared utilities: environment parsing, HTML sanitising
 public/           Static files
 tests/            Tests
-scripts/          Checks CI runs outside the tests
+scripts/          Node scripts for CI and the build
 docs/             Project documentation
 ```
 

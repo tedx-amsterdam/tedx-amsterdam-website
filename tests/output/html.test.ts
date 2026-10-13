@@ -69,8 +69,8 @@ describe.each(pages)("$path", ({ source, document }) => {
     }
   });
 
-  // Only images in <main>: the design system logo in the header has no
-  // dimensions yet (see "Design system follow ups" in the roadmap).
+  // Only images in <main>: the design system's SocialLink icons have no
+  // dimensions yet (roadmap, Design system stage A).
   it(`gives content images explicit dimensions (${SPEC}/performance/image-optimization/)`, () => {
     for (const img of document.querySelectorAll("main img")) {
       expect(img.getAttribute("width") && img.getAttribute("height"), `on ${img.getAttribute("src")?.slice(0, 80)}`).toBeTruthy();
@@ -80,6 +80,14 @@ describe.each(pages)("$path", ({ source, document }) => {
   it(`does not lazy load the first content image (${SPEC}/performance/lazy-loading/)`, () => {
     // The first image in <main> is the likely largest contentful paint.
     expect(document.querySelector("main img")?.getAttribute("loading") ?? "eager").not.toBe("lazy");
+  });
+
+  it("finds every design system image in the build", () => {
+    // scripts/design-system-assets.ts copies them from the package.
+    for (const img of document.querySelectorAll('img[src^="/assets/"]')) {
+      const src = img.getAttribute("src")!;
+      expect(outFileExists(src.slice(1)), src).toBe(true);
+    }
   });
 
   it("only sets sizes on images with a srcset", () => {
