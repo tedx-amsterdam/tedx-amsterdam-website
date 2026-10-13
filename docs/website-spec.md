@@ -9,7 +9,7 @@ How we apply it:
 - **Avoid**: must not appear in the site.
 - **Optional**: adopted when useful; not tracked here.
 
-This file maps each relevant requirement to its status. "Tested" means a test in `tests/headers.test.ts` (headers) or `tests/output/` (built HTML) fails if the requirement breaks. Update it in the same pull request that changes a status. The spec itself can be searched from Claude Code through the MCP server in `.mcp.json`.
+This file maps each relevant requirement to its status. "Tested" means a test in `tests/headers.test.ts` (headers) or `tests/output/` (built HTML) fails if the requirement breaks. Update it in the same pull request that changes a status. The spec can be searched at https://specification.website, or by agents through its MCP server (see "Quality reference" in `AGENTS.md`).
 
 **Status values**: **Done**, **Partial** (started, not complete), a roadmap phase (**Phase 1** to **Phase 6**), **Checks** (to be covered by automated checks), **Design system** (owned by the design system), **N/A** (does not apply, with reason).
 
@@ -71,7 +71,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [Empty links and buttons](https://specification.website/spec/accessibility/empty-links-buttons/) | Avoid | Done | Lighthouse fails the pull request if one appears |
 | [Accessibility overlays](https://specification.website/spec/accessibility/accessibility-overlays/) | Avoid | Done | Never add one |
 | [Forced colours](https://specification.website/spec/accessibility/forced-colors/), [focus not obscured](https://specification.website/spec/accessibility/focus-not-obscured/), [native interactive elements](https://specification.website/spec/accessibility/native-interactive-elements/), [status messages](https://specification.website/spec/accessibility/status-messages/) | Recommended | Design system | |
-| [ARIA: first rule of ARIA](https://specification.website/spec/accessibility/aria-usage/) | Recommended | Partial | Native elements first is a rule in CLAUDE.md; `a11y-reviewer` checks each change |
+| [ARIA: first rule of ARIA](https://specification.website/spec/accessibility/aria-usage/) | Recommended | Partial | Native elements first is a rule in AGENTS.md; the checklist in `.claude/agents/a11y-reviewer.md` covers each change |
 | [inert](https://specification.website/spec/accessibility/inert-attribute/), [hidden until found](https://specification.website/spec/accessibility/hidden-until-found/), [CSS state selectors](https://specification.website/spec/accessibility/css-state-selectors/) | Recommended | Design system | Overlays, collapsibles and form state live in components |
 | [Consistent help](https://specification.website/spec/accessibility/consistent-help/) | Recommended | Phase 3 | Contact and social links stay in the site footer on every page |
 | [Mobile-friendly form inputs](https://specification.website/spec/accessibility/mobile-form-inputs/) | Recommended | Phase 3 | Newsletter form: `type="email"`, `autocomplete`, input text at 16px or larger |

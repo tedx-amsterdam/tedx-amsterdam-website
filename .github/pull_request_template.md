@@ -25,7 +25,7 @@ Closes #
 
 ## Checklist
 
-- [ ] Branch name and title follow the conventions in `CLAUDE.md`
+- [ ] Branch name and title follow the conventions in `AGENTS.md`
 - [ ] Every commit is atomic and passes `npm run lint && npm run typecheck && npm test`
 - [ ] Fixups are squashed and the branch is rebased on `main`
 - [ ] Tests and documentation are updated with the change

@@ -32,7 +32,7 @@ The project runs on the maintainer's personal Cloudflare account for now and mov
 
 ## 6. The design system from npm, with temporary workarounds (October 2026)
 
-All UI comes from `tedx-amsterdam-design-system`. Version 1.2.1 has three gaps (no `"use client"`, no assets in the package, TEDx texts not exported). Each is worked around in exactly one place, listed in CLAUDE.md and the roadmap, and removed once the design system is fixed. Fixes belong in the design system, not here.
+All UI comes from `tedx-amsterdam-design-system`. Version 1.2.1 has three gaps (no `"use client"`, no assets in the package, TEDx texts not exported). Each is worked around in exactly one place, listed in AGENTS.md and the roadmap, and removed once the design system is fixed. Fixes belong in the design system, not here.
 
 ## 7. Tooling matches the design system (October 2026)
 
@@ -48,7 +48,7 @@ Lighthouse runs against the Cloudflare deployment of every pull request and ever
 
 ## 10. Git history is atomic and rebased (October 2026)
 
-Small commits in Conventional Commits format, one pull request per feature, bug fix or chore, merged with rebase and merge. Squashing is off because the atomic commits are the history. Details in CLAUDE.md.
+Small commits in Conventional Commits format, one pull request per feature, bug fix or chore, merged with rebase and merge. Squashing is off because the atomic commits are the history. Details in AGENTS.md.
 
 ## 11. Stacked pull requests merge bottom up (October 2026)
 
@@ -109,3 +109,13 @@ Design decisions live in the design system; the website only composes them. As m
 The work is staged by trigger, not by date, because the project is young and has one maintainer (see the roadmap, "Design system"). A pattern moves into the design system the second time the website needs it, so the design system grows from real pages instead of guesses.
 
 Two repositories, linked through npm releases (decision 6), stay for now: the design system has its own Storybook, CI and release flow, and a pinned version means a design system change never reaches the site unreviewed. The cost is a release step for every visual change. Revisit with a monorepo (npm workspaces) if most website pull requests turn out to need a design system release first.
+
+## 24. AGENTS.md holds the rules, for every tool (October 2026)
+
+Contributors rotate and will not all use the same coding agent. `AGENTS.md` is the file most agents read (Codex, Cursor, GitHub Copilot and others), so the rules live there. Claude Code reads `CLAUDE.md`, which imports `AGENTS.md` and only adds the Claude Code commands, agents and plugins in `.claude/`. This replaces the choice in #18 to keep the agent rules in `CLAUDE.md`. An import instead of a symlink, because symlinks break on Windows and in some editors.
+
+No instruction files for other tools in advance (`GEMINI.md`, `.github/copilot-instructions.md`, `.cursor/rules/`): most read `AGENTS.md` already, and copies of the rules drift apart. When someone uses a tool that does not, add a thin file like `CLAUDE.md` that points to `AGENTS.md` and holds only what is specific to that tool, or point the tool at `AGENTS.md` in its settings (Gemini CLI: `contextFileName`).
+
+An instruction file is a request, not enforcement: a contributor without an agent may never read it. Rules that can be checked belong in CI as well, which applies whatever tool someone uses; commit messages and branch names are the next candidates (roadmap, Design system stage A).
+
+Next.js 16 can write its own block into `AGENTS.md` when an agent runs `next dev`. That stays off (`agentRules: false` in `next.config.ts`): its one rule, to read the bundled Next.js docs, is already under "Stack", and the file stays written by people only.
