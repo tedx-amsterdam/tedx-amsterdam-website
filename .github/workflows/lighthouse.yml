@@ -62,6 +62,7 @@ jobs:
           # Add one URL per page type as pages are built.
           urls: |
             ${{ steps.preview.outputs.url }}/
+            ${{ steps.preview.outputs.url }}/events
             ${{ steps.preview.outputs.url }}/speakers
             ${{ steps.preview.outputs.url }}${{ steps.preview.outputs.speaker }}
           configPath: ./lighthouserc.json
