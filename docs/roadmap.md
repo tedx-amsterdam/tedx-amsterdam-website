@@ -8,11 +8,11 @@ How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly i
 
 Update this section in every pull request that changes the state of the project.
 
-**State (13 October 2026)**: phases 0 and 1 are on `main`: the content layer, the Webflow adapter and the speaker pages (#19 to #22), checked by the `content-layer-reviewer` agent. Phase 2 has started: events are in the content layer (#23) and on the `/events` page (#24). The design system workflow is on `main` (#25, decision 23), the rules for coding agents are in `AGENTS.md` (#26, decision 24), and the guardrails from stage A under "Design system" are on `main` (#27, decision 25), and the upgrade to design system 1.3.0 that removes the three workarounds is in review (decision 26). That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the rules for every coding agent are in `AGENTS.md` (decision 24), the Claude Code agents and the `/next` and `/ship` commands are described in `CLAUDE.md`, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
+**State (13 October 2026)**: phases 0 and 1 are on `main`: the content layer, the Webflow adapter and the speaker pages (#19 to #22), checked by the `content-layer-reviewer` agent. Phase 2 has started: events are in the content layer (#23) and on the `/events` page (#24). The design system workflow is on `main` (#25, decision 23), the rules for coding agents are in `AGENTS.md` (#26, decision 24), and the guardrails from stage A under "Design system" are on `main` (#27, decision 25), the upgrade to design system 1.3.0 removed the three workarounds (#28, decision 26), `/speakers` loads only its first photo eagerly to stay above the Lighthouse threshold (#30, #32), `npm run lighthouse` runs the same checks locally (#31), and the ruleset on `main` requires `ci` and `lighthouse` before every merge. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the rules for every coding agent are in `AGENTS.md` (decision 24), the Claude Code agents and the `/next` and `/ship` commands are described in `CLAUDE.md`, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
 
 #4, #5, #9 and #10 were merged into stacked base branches instead of `main`; #8 and #11 restored their commits unchanged. GitHub now allows only rebase merging and deletes head branches on merge, so stacking is safe again (decision 18). Older history on `main` contains merge commits and one commit pushed directly; do not copy them.
 
-**Next**: the maintainer turns on the ruleset on `main`. Then partners, pioneers, past talks and the blog, one collection per pull request (decision 20).
+**Next**: partners, pioneers, past talks and the blog, one collection per pull request (decision 20).
 
 ## Open decisions
 
@@ -41,7 +41,7 @@ Things outside the code that someone with admin access has to do.
 
 - [x] GitHub settings: only "Allow rebase merging", "Automatically delete head branches" on, "Allow GitHub Actions to create and approve pull requests" on (also at organisation level)
 - [x] Delete stale branches: `feat/project-setup`, `feature/project-setup`, `chore/website-spec`, `chore/lighthouse-ci`, `chore/project-context-docs`, `feature/spec-conformance-tests`, `chore/spec-watch`, `chore/restore-spec-conformance`, `chore/claude-agents`, `feature/content-layer`, `chore/restore-agents-and-content-layer`
-- [ ] Branch ruleset on `main` (pull request required, CI and Lighthouse must pass, no force push): recommended: CI and Lighthouse are not yet required before merging
+- [x] Branch ruleset `main` on the default branch, active without bypass: pull request with 0 approvals, rebase merging only, linear history, `ci` and `lighthouse` required, no force push or deletion. The classic branch protection rule is removed
 - [ ] Add a second owner to the GitHub organisation
 - [x] Cloudflare: set the build command to `npm run build`, `NODE_VERSION` to `22.23.3` and the content variables for production and preview. Until October 2026 it was still `npx next build` with `NODE_VERSION` `22`, which skips the `build` script in `package.json`; keep it `npm run build`, or the design system images are missing (decision 26)
 - [x] Run the Spec watch workflow once by hand to create the initial snapshot (#14)
@@ -177,7 +177,7 @@ The design system enforces the design and the website only composes it (decision
 ### A. Guardrails (now)
 
 - [x] Check commit messages and branch names in CI, so the Git Workflow rules hold for every tool (decisions 24 and 25)
-- [ ] Branch ruleset on `main` turned on (see Maintainer actions), without required approvals: GitHub does not let the only maintainer approve their own pull requests
+- [x] Branch ruleset on `main` turned on (see Maintainer actions), without required approvals: GitHub does not let the only maintainer approve their own pull requests
 - `CODEOWNERS` with the maintainer as the only owner for now. It requests reviews but blocks nothing until code owner review is required (stage E)
   - [x] Here: `*.css` and `src/components/`
   - [x] In the design system repository (tedx-amsterdam-design-system#20)
@@ -214,3 +214,4 @@ Prepared in stage A, turned on when a second person joins. Before that, these wo
 
 - [ ] Add the second person as owner of the GitHub organisation and to `CODEOWNERS` in both repositories
 - [ ] Ruleset on `main` in both repositories: one required approval and "Require review from Code Owners"
+- [ ] Revisit rebase merging (decision 18) with the people who join: it keeps every commit, but volunteers then have to write clean commits and squash fixups themselves. Squash merging needs only a correct pull request title; the commit check in CI would then check the title instead of each commit

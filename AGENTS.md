@@ -241,7 +241,7 @@ Lighthouse runs against the Cloudflare deployment of every pull request and of e
 
 - When adding a new page type, add one URL for it to the workflow.
 - Thresholds only go up. Lowering one needs a reason in the commit message.
-- Do not merge with a failing Lighthouse check, as with a failing test. GitHub does not enforce this yet (see "Maintainer actions" in the roadmap).
+- `ci` and `lighthouse` must pass before GitHub allows a merge (the ruleset on `main`). When Lighthouse fails on a slow response from the Webflow CDN rather than on the change, re-run it; when it fails twice, fix the page.
 - Before marking a pull request ready that changes pages, components, styles or images, run the same checks locally: `npm run build` with `CONTENT_SOURCE=webflow` if you have a token (fixture images are placeholders, so a fixture build scores too well), then `npm run lighthouse`. `npm run lighthouse -- <url>` tests a deployment instead, such as your branch preview. Scores vary with your machine and network: a local pass makes a pass in CI likely, not certain, and a page that scores within a few points of a threshold needs work before it fails.
 
 ## URLs and SEO
