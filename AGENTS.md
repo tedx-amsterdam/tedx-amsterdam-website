@@ -65,7 +65,7 @@ src/content/
 src/lib/              Small shared utilities (env parsing, HTML sanitising, formatting).
 tests/                Vitest tests. Recorded API responses go in tests/fixtures/webflow/
                       (not to be confused with the fixture source in src/content/fixtures/).
-scripts/              Node scripts: the commit and branch check in CI, the design system asset copy.
+scripts/              The commit and branch check in CI, the design system asset copy, local Lighthouse.
 docs/                 Roadmap, decisions, content model, current site inventory, spec status.
 public/assets/        Design system logos and icons, copied from the package on dev and build (not committed).
 ```
@@ -100,6 +100,7 @@ Setup: Node from `.nvmrc`, `npm ci`, and `CONTENT_SOURCE=fixtures` in `.env.loca
 - `npm run build`: production build (static export to `out/`)
 - `npm test`: run unit tests
 - `npm run test:output`: check the build in `out/` against the website specification (run after `npm run build`)
+- `npm run lighthouse`: run the Lighthouse thresholds from CI on the build in `out/`, or on a URL (needs Google Chrome; see "Lighthouse")
 - `npm run typecheck`: TypeScript check
 - `npm run lint`: lint with oxlint
 
@@ -241,6 +242,7 @@ Lighthouse runs against the Cloudflare deployment of every pull request and of e
 - When adding a new page type, add one URL for it to the workflow.
 - Thresholds only go up. Lowering one needs a reason in the commit message.
 - Do not merge with a failing Lighthouse check, as with a failing test. GitHub does not enforce this yet (see "Maintainer actions" in the roadmap).
+- Before marking a pull request ready that changes pages, components, styles or images, run the same checks locally: `npm run build` with `CONTENT_SOURCE=webflow` if you have a token (fixture images are placeholders, so a fixture build scores too well), then `npm run lighthouse`. `npm run lighthouse -- <url>` tests a deployment instead, such as your branch preview. Scores vary with your machine and network: a local pass makes a pass in CI likely, not certain, and a page that scores within a few points of a threshold needs work before it fails.
 
 ## URLs and SEO
 

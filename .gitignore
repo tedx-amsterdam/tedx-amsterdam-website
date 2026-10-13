@@ -17,6 +17,7 @@ next-env.d.ts
 
 # testing
 coverage/
+.lighthouseci/
 
 # OS and editor
 .DS_Store
