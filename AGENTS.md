@@ -1,6 +1,6 @@
 # AGENTS.md: TEDxAmsterdam Website
 
-Instructions for everyone who works on this repository: volunteers and AI coding agents alike (Codex, Claude Code, Cursor, GitHub Copilot and others). Tool specific setup lives next to it, such as `CLAUDE.md` and `.claude/` for Claude Code, and only adds convenience: the rules are here. CI checks lint, types, tests and the built output; the commit, branch and pull request rules in "Git Workflow" are yours to check (Claude Code's `/ship` does it for you). The review checklists in `.claude/agents/` are plain Markdown: without Claude Code, work through the ones that apply before asking for review.
+Instructions for everyone who works on this repository: volunteers and AI coding agents alike (Codex, Claude Code, Cursor, GitHub Copilot and others). Tool specific setup lives next to it, such as `CLAUDE.md` and `.claude/` for Claude Code, and only adds convenience: the rules are here. CI checks lint, types, tests, the built output, the styling rules, and commit messages and branch names; the rest of "Git Workflow", such as commit scope and pull request size, is yours to check (Claude Code's `/ship` does it for you). The review checklists in `.claude/agents/` are plain Markdown: without Claude Code, work through the ones that apply before asking for review.
 
 ## Project overview
 
@@ -66,6 +66,7 @@ src/content/
 src/lib/              Small shared utilities (env parsing, HTML sanitising, formatting).
 tests/                Vitest tests. Recorded API responses go in tests/fixtures/webflow/
                       (not to be confused with the fixture source in src/content/fixtures/).
+scripts/              Checks CI runs outside the test suite (commit messages, branch names).
 docs/                 Roadmap, decisions, content model, current site inventory, spec status.
 public/assets/        Design system logos and icons (temporary, see public/assets/README.md).
 ```
@@ -125,7 +126,7 @@ Run `npm run lint && npm run typecheck && npm test` before considering any chang
 
 ### Commit messages
 
-Follow [Conventional Commits 1.0](https://www.conventionalcommits.org), with the type list and rules of [commitlint config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional):
+Follow [Conventional Commits 1.0](https://www.conventionalcommits.org), with the type list and rules of [commitlint config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional). CI checks the format of every commit in a pull request and the branch name (`scripts/git-workflow.ts`, decision 25):
 
 ```
 type(scope): subject
@@ -213,7 +214,7 @@ Follow [Conventional Branch](https://conventional-branch.github.io): `<type>/<de
 - **Named exports only**, except where Next.js requires a default export (`page.tsx`, `layout.tsx`, `not-found.tsx`).
 - **Server components by default.** Add `"use client"` only for real interactivity, as low in the tree as possible.
 - Use design system components before writing new ones, imported from `@/components/design-system`. The design system owns the design (decision 23): if a new component is generic, propose it for the design system instead of building it here, and when a pattern appears a second time in this repository, move it into the design system instead of copying it.
-- Styling via CSS Modules and design system tokens. No hardcoded colors, spacing or font sizes, no inline styles, no `!important`.
+- Styling via CSS Modules and design system tokens. No hardcoded colors, spacing or font sizes, no inline styles, no `!important`; `tests/styles.test.ts` fails on them. Pixels are allowed in breakpoints and border widths only.
 - No `any`. Prefer types inferred from Zod schemas for raw API data.
 - Don't add npm dependencies without a clear reason. State the reason in the commit message.
 - Don't add comments that restate the code. Comment the *why*, especially around CMS quirks.
@@ -234,6 +235,7 @@ Requirements that can be checked mechanically are tested, and every test links t
 
 - `tests/headers.test.ts` checks `public/_headers` (security headers, caching, `noindex` on `pages.dev`).
 - `tests/output/` checks every HTML page in the build (doctype, language, title, one `h1`, skip link targets, mixed content, the 404 page).
+- `tests/styles.test.ts` checks the stylesheets and components for raw colors and lengths, `!important` and inline styles (decision 23).
 
 When a change meets a new requirement that can be checked this way, add a test for it in the same pull request.
 
