@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Breadcrumb, Tag } from "@/components/design-system";
+import { Breadcrumb, Tag } from "tedx-amsterdam-design-system";
 import { JsonLd } from "@/components/JsonLd";
 import { RichText } from "@/components/RichText";
 import { sizesFor, srcSet } from "@/components/src-set";

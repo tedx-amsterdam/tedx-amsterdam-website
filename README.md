@@ -40,7 +40,7 @@ To preview the production build locally, serve the `out/` folder with any static
 
 ```
 src/app/          Routes and pages
-src/components/   Site components, including the design system entry point
+src/components/   Site components
 src/config/       Site settings: navigation, links, legal text
 src/content/      Content layer: domain types, content sources (import only from @/content)
 src/lib/          Shared utilities: environment parsing, HTML sanitising
@@ -52,7 +52,7 @@ docs/             Project documentation
 
 Two rules matter most:
 
-1. **UI comes from the design system.** Import its components from `@/components/design-system`, never from the package directly. The lint setup enforces this; the file explains why.
+1. **UI comes from the design system.** Import its components from `tedx-amsterdam-design-system` and style with its tokens; `tests/styles.test.ts` fails on raw colors and lengths.
 2. **Pages never talk to a CMS directly.** Content goes through the content layer in `src/content/` (`import { getSpeakers } from "@/content"`), so the CMS can change without rewriting pages. A lint rule enforces this.
 
 The full set of conventions, including the reasoning behind them, is in [AGENTS.md](AGENTS.md). It is written for both human contributors and AI coding agents, whichever tool they use; [CLAUDE.md](CLAUDE.md) only adds the Claude Code tooling. `.claude/` and `.mcp.json` are optional tooling; without Claude Code you can ignore them.

@@ -1,6 +1,6 @@
 import type { TedxEvent } from "@/content";
 import { formatLongDate } from "@/lib/dates";
-import { ArrowLink, Tag } from "@/components/design-system";
+import { ArrowLink, Tag } from "tedx-amsterdam-design-system";
 import { sizesFor, srcSet } from "./src-set";
 import styles from "./EventCard.module.css";
 
