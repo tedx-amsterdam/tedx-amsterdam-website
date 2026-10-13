@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 
 export default async function SpeakersPage() {
   const speakers = await getSpeakers();
+  const prioritySlug = speakers.find((speaker) => speaker.photo)?.slug;
 
   return (
     <main id="main-content" className={styles.main}>
@@ -46,7 +47,7 @@ export default async function SpeakersPage() {
       <ul className={styles.grid}>
         {speakers.map((speaker, index) => (
           <li key={speaker.slug}>
-            <SpeakerCard speaker={speaker} eager={index < FIRST_ROW} />
+            <SpeakerCard speaker={speaker} eager={index < FIRST_ROW} priority={speaker.slug === prioritySlug} />
           </li>
         ))}
       </ul>

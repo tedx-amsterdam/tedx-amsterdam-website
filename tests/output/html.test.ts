@@ -145,6 +145,13 @@ describe("speaker pages", () => {
     }
   });
 
+  it(`fetch the first overview photo first (${SPEC}/performance/lazy-loading/)`, () => {
+    // The largest contentful paint on phones, where it is the only photo in view.
+    const photos = [...overview!.document.querySelectorAll("main img")];
+    expect(photos[0]?.getAttribute("fetchpriority")).toBe("high");
+    expect(photos.slice(1).filter((img) => img.getAttribute("fetchpriority") === "high")).toEqual([]);
+  });
+
   it(`use srcset for photos with variants (${SPEC}/performance/image-optimization/)`, () => {
     expect(speakerPages.some(({ document }) => document.querySelector("main img[srcset][sizes]"))).toBe(true);
   });
