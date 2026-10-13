@@ -149,7 +149,8 @@ describe("speaker pages", () => {
     // The largest contentful paint on phones, where it is the only photo in view.
     const photos = [...overview!.document.querySelectorAll("main img")];
     expect(photos[0]?.getAttribute("fetchpriority")).toBe("high");
-    expect(photos.slice(1).filter((img) => img.getAttribute("fetchpriority") === "high")).toEqual([]);
+    // The others load lazily, so they do not compete with it for bandwidth.
+    expect(photos.slice(1).filter((img) => img.getAttribute("loading") !== "lazy")).toEqual([]);
   });
 
   it(`use srcset for photos with variants (${SPEC}/performance/image-optimization/)`, () => {

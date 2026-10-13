@@ -8,8 +8,6 @@ import styles from "./page.module.css";
 
 // Same copy as the Webflow speakers page.
 const INTRO = "TEDxAmsterdam invites speakers to inspire with powerful stories. Each year, a new theme sparks inspiration and ideas.";
-// The grid shows four cards per row on wide screens.
-const FIRST_ROW = 4;
 
 export const metadata: Metadata = {
   title: "Speakers",
@@ -45,9 +43,9 @@ export default async function SpeakersPage() {
         </div>
       </header>
       <ul className={styles.grid}>
-        {speakers.map((speaker, index) => (
+        {speakers.map((speaker) => (
           <li key={speaker.slug}>
-            <SpeakerCard speaker={speaker} eager={index < FIRST_ROW} priority={speaker.slug === prioritySlug} />
+            <SpeakerCard speaker={speaker} priority={speaker.slug === prioritySlug} />
           </li>
         ))}
       </ul>
