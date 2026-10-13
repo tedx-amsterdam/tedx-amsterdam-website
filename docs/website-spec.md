@@ -93,7 +93,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [security.txt](https://specification.website/spec/security/security-txt/) | Recommended | Checks | Needs a contact address of the foundation |
 | [Mixed content](https://specification.website/spec/security/mixed-content/) | Recommended | Done | No plain HTTP resources, tested on every page |
 | [Cross-origin isolation](https://specification.website/spec/security/cross-origin-isolation/) | Recommended | Partial | COOP `same-origin`, tested; COEP would block CMS images from other origins |
-| [Subresource Integrity](https://specification.website/spec/security/subresource-integrity/) | Recommended | Phase 4 | Disappears as a concern once Google Fonts is self hosted |
+| [Subresource Integrity](https://specification.website/spec/security/subresource-integrity/) | Recommended | N/A | The site loads no scripts or stylesheets from other hosts; Arimo is self hosted since design system 1.3.1. Revisit when analytics or the newsletter add a third party (phase 3 and 4) |
 | [Reporting API](https://specification.website/spec/security/reporting-endpoints/), [Trusted Types](https://specification.website/spec/security/trusted-types/) | Recommended | Phase 4 | After CSP is in place |
 | [Fetch Metadata](https://specification.website/spec/security/fetch-metadata/) | Recommended | N/A | Needs server side request checks; the site is static |
 | [CAA records](https://specification.website/spec/security/caa-records/) | Recommended | Phase 6 | When the domain moves to the foundation Cloudflare account |
@@ -128,7 +128,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [HTTP/1.1 workarounds](https://specification.website/spec/performance/http1-workarounds/) | Avoid | Done | None used |
 | [HTTP/2 and HTTP/3](https://specification.website/spec/performance/http3/) | Recommended | Done | Cloudflare |
 | [Lazy loading](https://specification.website/spec/performance/lazy-loading/) | Recommended | Done | Speaker photos below the first row of the overview and event images after the first load lazily; the first content image on every page is never lazy (tested) |
-| [Web font loading](https://specification.website/spec/performance/font-loading/) | Recommended | Phase 4 | Self host the fallback font instead of Google Fonts |
+| [Web font loading](https://specification.website/spec/performance/font-loading/) | Recommended | Done | The design system self hosts Arimo as WOFF2 variable files (Latin and Latin Extended, `unicode-range`) with `font-display: swap`; no preload, since browsers with Helvetica never fetch it. Arimo matches Helvetica's metrics, so the swap does not shift the layout |
 | [Critical CSS](https://specification.website/spec/performance/critical-css/), [script loading](https://specification.website/spec/performance/script-loading/) | Recommended | Done | Handled by Next.js; Lighthouse watches regressions |
 | [Back/forward cache](https://specification.website/spec/performance/bfcache/) | Recommended | Done | Audited by Lighthouse on every preview |
 | [Conditional requests](https://specification.website/spec/performance/conditional-requests/) | Recommended | Partial | Cloudflare sends an ETag and answers 304 for static assets, but sends no validator for HTML pages |
@@ -142,7 +142,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | --- | --- | --- | --- |
 | [Privacy policy](https://specification.website/spec/privacy/privacy-policy/) | Required | Phase 3 | Missing on the Webflow site too; needed before the newsletter form goes live |
 | [Cookie consent](https://specification.website/spec/privacy/cookie-consent/) | Required | Phase 4 | Only needed if analytics sets cookies; cookieless analytics may avoid it |
-| [Third-party scripts](https://specification.website/spec/privacy/third-party-scripts/) | Recommended | Phase 4 | Google Fonts is loaded from Google today |
+| [Third-party scripts](https://specification.website/spec/privacy/third-party-scripts/) | Recommended | Done | No third party scripts or fonts: Arimo is self hosted since design system 1.3.1. Analytics (phase 4) and the newsletter (phase 3) must keep it that way or load only after consent |
 | [Privacy-respecting analytics](https://specification.website/spec/privacy/analytics-privacy/) | Recommended | Phase 4 | Compare cookieless options with the current GA4 setup |
 | [Global Privacy Control](https://specification.website/spec/privacy/global-privacy-control/), [data minimisation](https://specification.website/spec/privacy/data-minimization/) | Recommended | Phase 4 | |
 

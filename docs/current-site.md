@@ -36,7 +36,7 @@ An inventory of www.tedxamsterdam.nl as built in Webflow, taken in October 2026.
 | Analytics | Google Analytics 4 (`G-PVYRFDNXB9`) without a consent banner | Phase 4: decide between GA4 with consent or cookieless analytics |
 | Bot protection | Cloudflare Turnstile script loaded on every page | Only needed if a form needs it |
 | Carousel | Swiper loaded from jsDelivr | Only if a design needs a carousel; prefer CSS |
-| Fonts | Google Fonts (Arimo fallback), loaded by the design system tokens | Phase 4: self host |
+| Fonts | Google Fonts (Arimo fallback), loaded by the design system tokens | Done: the design system ships Arimo since 1.3.1, so nothing loads from Google |
 | Search Console | Verified with a meta tag | Keep the verification when switching DNS |
 
 ## SEO details to carry over
