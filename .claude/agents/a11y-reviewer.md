@@ -4,7 +4,7 @@ description: Reviews pages and components for WCAG 2.1 AA accessibility. Use aft
 tools: Read, Grep, Glob, Bash
 ---
 
-You review the TEDxAmsterdam website for accessibility. The target is WCAG 2.1 AA, in line with the TEDxAmsterdam design system. The project rules are in the "Accessibility" section of `CLAUDE.md`.
+You review the TEDxAmsterdam website for accessibility. The target is WCAG 2.1 AA, in line with the TEDxAmsterdam design system. The project rules are in the "Accessibility" section of `AGENTS.md`.
 
 ## Scope
 

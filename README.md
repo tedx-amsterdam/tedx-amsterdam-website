@@ -54,7 +54,7 @@ Two rules matter most:
 1. **UI comes from the design system.** Import its components from `@/components/design-system`, never from the package directly. The lint setup enforces this; the file explains why.
 2. **Pages never talk to a CMS directly.** Content goes through the content layer in `src/content/` (`import { getSpeakers } from "@/content"`), so the CMS can change without rewriting pages. A lint rule enforces this.
 
-The full set of conventions, including the reasoning behind them, is in [CLAUDE.md](CLAUDE.md). It is written for both human contributors and AI assistants.
+The full set of conventions, including the reasoning behind them, is in [AGENTS.md](AGENTS.md). It is written for both human contributors and AI coding agents, whichever tool they use; [CLAUDE.md](CLAUDE.md) only adds the Claude Code tooling. `.claude/` and `.mcp.json` are optional tooling; without Claude Code you can ignore them.
 
 ## Contributing
 
@@ -64,7 +64,7 @@ The full set of conventions, including the reasoning behind them, is in [CLAUDE.
 - Open a pull request using the template, check the Cloudflare preview and wait for CI to pass.
 - Never commit secrets. Environment variables go in `.env.local`, which git ignores.
 
-The full conventions for commits, branches and pull requests are in [CLAUDE.md](CLAUDE.md#git-workflow).
+The full conventions for commits, branches and pull requests are in [AGENTS.md](AGENTS.md#git-workflow).
 
 ## License
 

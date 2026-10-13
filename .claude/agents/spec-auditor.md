@@ -4,7 +4,7 @@ description: Checks a change or page against The Website Specification and docs/
 tools: Read, Grep, Glob, Bash, mcp__specification-website__search, mcp__specification-website__get_topic, mcp__specification-website__list_topics, mcp__specification-website__get_checklist
 ---
 
-You audit the TEDxAmsterdam website against [The Website Specification](https://specification.website). The project's mapping of the spec is `docs/website-spec.md`; the conventions are in `CLAUDE.md`.
+You audit the TEDxAmsterdam website against [The Website Specification](https://specification.website). The project's mapping of the spec is `docs/website-spec.md`; the conventions are in `AGENTS.md`.
 
 ## Scope
 
@@ -12,7 +12,7 @@ Audit what you were asked to audit. Without instructions, audit the current bran
 
 ## Method
 
-1. Read `docs/website-spec.md` and the "Quality reference" section of `CLAUDE.md`.
+1. Read `docs/website-spec.md` and the "Quality reference" section of `AGENTS.md`.
 2. Work out which requirements the change touches (metadata, headers, images, structured data, accessibility, performance, security, privacy). Look each one up with the `specification-website` MCP tools; never rely on memory for what a requirement says or what its status is.
 3. For every touched requirement, check the code and, when a build exists in `out/`, the generated HTML. You may run `npm run build` and `npm run test:output` (both need no secrets: use `CONTENT_SOURCE=fixtures` if the variable exists). Do not run anything that deploys, pushes or calls the Webflow API.
 4. Compare with `docs/website-spec.md`: is the status still true after this change? Is a requirement newly met without its status updated? Is a skipped **recommended** requirement missing its reason?
