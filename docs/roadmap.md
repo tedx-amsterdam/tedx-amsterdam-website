@@ -8,11 +8,11 @@ How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly i
 
 Update this section in every pull request that changes the state of the project.
 
-**State (13 October 2026)**: phases 0 and 1 are on `main`: the content layer, the Webflow adapter and the speaker pages (#19 to #22), checked by the `content-layer-reviewer` agent. Phase 2 has started: events are in the content layer (#23) and on the `/events` page (#24). The design system workflow is on `main` (#25, decision 23), the rules for coding agents are in `AGENTS.md` (#26, decision 24), and the guardrails from stage A under "Design system" are in review: a style conformance test, commit and branch checks in CI (decision 25) and `CODEOWNERS`. That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the rules for every coding agent are in `AGENTS.md` (decision 24), the Claude Code agents and the `/next` and `/ship` commands are described in `CLAUDE.md`, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
+**State (13 October 2026)**: phases 0 and 1 are on `main`: the content layer, the Webflow adapter and the speaker pages (#19 to #22), checked by the `content-layer-reviewer` agent. Phase 2 has started: events are in the content layer (#23) and on the `/events` page (#24). The design system workflow is on `main` (#25, decision 23), the rules for coding agents are in `AGENTS.md` (#26, decision 24), and the guardrails from stage A under "Design system" are on `main` (#27, decision 25), and the upgrade to design system 1.3.0 that removes the three workarounds is in review (decision 26). That covers The Website Specification (#2), Lighthouse on every deployment (#6), the project documents (#7), the conformance tests and spec watch (#8), and the Claude Code tooling and the content layer (#11). The official review plugins are enabled in `.claude/settings.json`; the rules for every coding agent are in `AGENTS.md` (decision 24), the Claude Code agents and the `/next` and `/ship` commands are described in `CLAUDE.md`, and `/ship` runs the plugin's code reviewers on code changes. The first spec watch snapshot (#14) is mapped in `docs/website-spec.md`.
 
 #4, #5, #9 and #10 were merged into stacked base branches instead of `main`; #8 and #11 restored their commits unchanged. GitHub now allows only rebase merging and deletes head branches on merge, so stacking is safe again (decision 18). Older history on `main` contains merge commits and one commit pushed directly; do not copy them.
 
-**Next**: the maintainer turns on the ruleset on `main`; design system 1.3.0 and `CODEOWNERS` there happen in its own repository. Then partners, pioneers, past talks and the blog, one collection per pull request (decision 20).
+**Next**: the maintainer turns on the ruleset on `main`. Then partners, pioneers, past talks and the blog, one collection per pull request (decision 20).
 
 ## Open decisions
 
@@ -32,6 +32,7 @@ Decisions that block or shape upcoming work. Record the outcome in [decisions.md
 
   Decide before stage B starts. First answer whether anything outside this site uses the design system: the Vercel showcase (Storybook, `ui_kits/`, `guidelines/`), the CDN bundle `_ds_bundle.js` or the Claude skill (`SKILL.md`). They can stay in a workspace too, but if nobody uses them, the move is simpler.
 - [ ] **Design source of truth**: Figma or the design system code? When a design changes, which one changes first, and who keeps the other in sync?
+- [ ] **npm package owner**: `tedx-amsterdam-design-system` belongs to the maintainer's personal npm account, and only GitHub Actions in `tedx-amsterdam/tedx-amsterdam-design-system` may publish it (trusted publishing). Move it to an npm organisation, or add a second maintainer, together with the second GitHub owner after the proof of concept?
 - [ ] **Design system 2.0** (stage C) is a breaking release: before launch, while this site is its only user, or after?
 
 ## Maintainer actions
@@ -179,14 +180,16 @@ The design system enforces the design and the website only composes it (decision
 - [ ] Branch ruleset on `main` turned on (see Maintainer actions), without required approvals: GitHub does not let the only maintainer approve their own pull requests
 - `CODEOWNERS` with the maintainer as the only owner for now. It requests reviews but blocks nothing until code owner review is required (stage E)
   - [x] Here: `*.css` and `src/components/`
-  - [ ] In the design system repository
+  - [x] In the design system repository (tedx-amsterdam-design-system#20)
 - [x] A conformance test that fails on raw colors, pixel values outside borders and breakpoints, `!important` and inline styles in this repository (`tests/styles.test.ts`)
-- [ ] Design system 1.3.0, which removes the three workarounds in this repository:
-  - [ ] Ship `assets/` in the npm package (then remove `public/assets/`)
-  - [ ] Publish the TEDx required content constants (then remove `src/config/tedx.ts`)
-  - [ ] Mark interactive components with `"use client"`, per component, so components without state stay server components and ship no JavaScript (then remove `src/components/design-system.ts`)
+- [x] Design system 1.3.0, which removes the three workarounds in this repository (decision 26):
+  - [x] Ship `assets/` in the npm package; `public/assets/` is now copied from it on dev and build
+  - [x] Publish the TEDx required content constants (`src/config/tedx.ts` removed)
+  - [x] Mark interactive components with `"use client"`, per component, so components without state stay server components and ship no JavaScript (`src/components/design-system.ts` removed)
 - [ ] Add a Facebook icon to `SocialLink`
-- [ ] Give logo images explicit `width` and `height` (Lighthouse flags them as unsized)
+- [x] Give logo images explicit `width` and `height` (Lighthouse flags them as unsized)
+- [ ] Give `SocialLink` icons explicit `width` and `height`, then check every image in `tests/output/`, not only those in `<main>`
+- [ ] Align the design system repository settings with this one: rebase merging only, delete branches on merge, a ruleset on `main`
 
 ### B. Patterns move into the design system (trigger: a pattern used twice)
 

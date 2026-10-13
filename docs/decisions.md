@@ -125,3 +125,9 @@ Next.js 16 can write its own block into `AGENTS.md` when an agent runs `next dev
 CI checks every commit and the branch name of a pull request against "Git Workflow" in `AGENTS.md`, so the rules hold whatever tool or agent a contributor uses (decision 24). The check is `scripts/git-workflow.ts`, about 60 lines without dependencies, run by Node directly. commitlint would add two packages and their dependencies for a handful of rules, and its defaults differ from ours (a 100 character header against our 72), so it would need a config that repeats `AGENTS.md` anyway.
 
 It checks what a machine can: the type and scope format, a lowercase subject without a period, the 72 character limit, a blank line after the header, no unsquashed fixups, and the branch prefix. Whether a body explains why stays a review question. Only the commits of a pull request are checked, so older history on `main` does not fail it. If the rules grow beyond this, switching to commitlint is a reasonable new decision.
+
+## 26. The design system workarounds are gone (October 2026)
+
+Design system 1.3.0 closes the three gaps from decision 6, so their workarounds are removed. Components are imported from `tedx-amsterdam-design-system` directly: the package marks its 13 interactive components with `"use client"` and builds one module per component, so the others render as server components. The TEDx texts come from the package. Logos and icons are copied from the package into `public/assets/` before every dev and build run (`scripts/design-system-assets.ts`) instead of being committed, so they always match the installed version.
+
+The client re-export file and its lint rule are gone too. Measured on the fixture build, a page loads about 2.5 kB less JavaScript before compression: most of it is the navigation bar and React itself, so the gain is correctness and one source of truth more than speed.
