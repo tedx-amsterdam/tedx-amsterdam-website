@@ -189,6 +189,15 @@ The design system enforces the design and the website only composes it (decision
 - [ ] Add a Facebook icon to `SocialLink`
 - [x] Give logo images explicit `width` and `height` (Lighthouse flags them as unsized)
 - [ ] Give `SocialLink` icons explicit `width` and `height`, then check every image in `tests/output/`, not only those in `<main>`
+- [ ] Align the design system with the Figma designs ([current-site.md](current-site.md#figma)). Found by comparing the tokens and components with what the frames on the `review` page use; confirm each against a PNG export of the frame before changing it. The designs are for the 2025 event: take the styles from them, not that year's theme or copy, so the design system works for every edition:
+  - Type: the display headline in the home hero is 115px with line height 0.9, `--fs-display` is 121px with 1. `Stat` numbers are Regular in Figma, Bold in the component. The intro and footer link text is Regular 24px, which has no token; neither have Bold 48px, 60px and 72px headings (72px exists as `--fs-h2-lg` but without a composite token), Helvetica Light (12 to 16px) or a Regular 14px text token. Tags use line height 1 in most frames, `--text-tag` 1.2
+  - `--text-h2` uses line height 1.2, the Figma `desktop/h2` style 1.1
+  - Missing mobile tokens: h4 16px, tag and button 12px and 14px, footer 16px, and the h1 line height 0.9 (only a comment now)
+  - Color: white at 70% and 50% opacity (secondary text), `#FFF5F7`, and the gradients orange `#FF7919` → red → black and `#505050` → black have no token. `--tedx-orange` (`#F36C21`) does not appear in the designs, which use `#FF7919` and `#FF9B19`. Colors in the styles without a token: `#121212`, `#CFCFCF` and graphite `#202B37` at 20%; add the ones the pages use, drop the rest
+  - Glows: Figma draws them as orange and red ellipses with a 100 to 200px layer blur; the tokens approximate them with gradients. The red glow shadow is `0 0 37px #EB0028` in Figma, `--shadow-glow-red` is `0 0 80px` at 45%
+  - Layout: a 12 column grid with 20px gutters and 160px side margins on desktop, and 6 columns with 15px gutters and margins on mobile. The tokens have `--gutter-wide` (160px) but no column gutter and no mobile values
+  - Button padding is 12px × 30px in Figma, the `Button` sizes are 12 × 24, 16 × 30 and 22 × 34; strokes are 1px or 2px, the ghost button border 1.5px
+  - Not in Figma, so the design system decided on its own: `Modal`, `Toast` and the form components, `--radius-card` (12px) and `--shadow-card`. Figma has no mobile design for any page but home
 - [x] Align the design system repository settings with this one: rebase merging only, delete branches on merge, a ruleset on `main` with `ci` required
 
 ### B. Patterns move into the design system (trigger: a pattern used twice)
