@@ -15,7 +15,8 @@
     "lint": "oxlint --deny-warnings",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:output": "vitest run --config vitest.output.config.ts"
+    "test:output": "vitest run --config vitest.output.config.ts",
+    "lighthouse": "bash scripts/lighthouse.sh"
   },
   "dependencies": {
     "next": "16.4.0",
