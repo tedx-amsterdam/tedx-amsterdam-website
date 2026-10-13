@@ -92,6 +92,17 @@ describe.each(pages)("$path", ({ source, document }) => {
     }
   });
 
+  it(`gives links to different places different names (${SPEC}/accessibility/link-text/)`, () => {
+    // Repeated "Learn more" links need a label that names their target.
+    const targets = new Map<string, Set<string>>();
+    for (const a of document.querySelectorAll("main a[href]")) {
+      const name = (a.getAttribute("aria-label") ?? a.textContent ?? "").trim();
+      targets.set(name, (targets.get(name) ?? new Set()).add(a.getAttribute("href")!));
+    }
+    const ambiguous = [...targets].filter(([, hrefs]) => hrefs.size > 1).map(([name]) => name);
+    expect(ambiguous).toEqual([]);
+  });
+
   it(`loads no resources over plain HTTP (${SPEC}/security/mixed-content/)`, () => {
     const insecure = [...document.querySelectorAll("[src], link[href]")]
       .map((element) => element.getAttribute("src") ?? element.getAttribute("href") ?? "")
@@ -131,7 +142,30 @@ describe("speaker pages", () => {
   });
 });
 
-describe.each(speakerPages)("$path", ({ path, document }) => {
+const eventsPage = pages.find((page) => page.path === "events.html");
+
+describe("events page", () => {
+  it("is built", () => {
+    expect(eventsPage).toBeDefined();
+  });
+
+  it(`marks up every event date as a machine readable time (${SPEC}/i18n/locale-content/)`, () => {
+    const times = [...eventsPage!.document.querySelectorAll("main time")];
+    expect(times.length).toBeGreaterThan(0);
+    for (const time of times) {
+      expect(Number.isNaN(Date.parse(time.getAttribute("datetime") ?? "")), time.textContent ?? "").toBe(false);
+    }
+  });
+
+  it(`describes every listed event as an Event (${SPEC}/seo/structured-data/)`, () => {
+    const list = jsonLd(eventsPage!.document).find((data) => data["@type"] === "ItemList");
+    const items: { "@type": string; name: string }[] = list?.itemListElement.map((element: { item: unknown }) => element.item) ?? [];
+    expect(items.map((item) => item["@type"])).toEqual(items.map(() => "Event"));
+    expect(items.map((item) => item.name)).toEqual([...eventsPage!.document.querySelectorAll("main article h3")].map((h) => h.textContent));
+  });
+});
+
+describe.each([...speakerPages, ...(eventsPage ? [eventsPage] : [])])("$path", ({ path, document }) => {
   const meta = (selector: string) => document.querySelector(selector)?.getAttribute("content") ?? "";
 
   it(`has a description (${SPEC}/foundations/meta-description/)`, () => {
