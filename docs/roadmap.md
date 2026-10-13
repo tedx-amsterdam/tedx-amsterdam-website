@@ -37,7 +37,7 @@ Things outside the code that someone with admin access has to do.
 - [x] Delete stale branches: `feat/project-setup`, `feature/project-setup`, `chore/website-spec`, `chore/lighthouse-ci`, `chore/project-context-docs`, `feature/spec-conformance-tests`, `chore/spec-watch`, `chore/restore-spec-conformance`, `chore/claude-agents`, `feature/content-layer`, `chore/restore-agents-and-content-layer`
 - [ ] Branch ruleset on `main` (pull request required, CI and Lighthouse must pass, no force push): recommended: CI and Lighthouse are not yet required before merging
 - [ ] Add a second owner to the GitHub organisation
-- [x] Cloudflare: set the build command to `npm run build`, `NODE_VERSION` to `22.23.3` and the content variables for production and preview
+- [x] Cloudflare: set the build command to `npm run build`, `NODE_VERSION` to `22.23.3` and the content variables for production and preview. Until October 2026 it was still `npx next build` with `NODE_VERSION` `22`, which skips the `build` script in `package.json`; keep it `npm run build`, or the design system images are missing (decision 26)
 - [x] Run the Spec watch workflow once by hand to create the initial snapshot (#14)
 - [x] Before phase 1b: create a Webflow site token with **CMS read** only for the site build, and add it to Cloudflare as a secret (see 1b)
 - [x] Before phase 1b: record the live speakers response unchanged into `tests/fixtures/webflow/speakers-live.json` (`GET /v2/collections/6874c72605e8d57abb48e751/items/live?limit=100`). It contains no secrets, so contributors without a token can build and test 1b from it
