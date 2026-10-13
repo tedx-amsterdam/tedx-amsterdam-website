@@ -30,7 +30,7 @@ Decisions that block or shape upcoming work. Record the outcome in [decisions.md
   - **One repository with npm workspaces** (recommended): the design system moves to `packages/design-system/` with its history, and the site imports the same package name from the workspace. A component and the page that uses it change in one pull request with one preview; `CODEOWNERS` on `packages/design-system/` keeps the design boundary. Costs about four pull requests: first align the design system's React 18, Vitest 2 and jsdom 25 with this repository, then import it with `git subtree` or `git filter-repo`, then CI, `CODEOWNERS` and docs (a new decision updating 23), then point Vercel at the subfolder and archive the old repository. The site can no longer pin an older design system version.
   - **Fold it into `src/`.** Simplest code, but Storybook, the showcase and the design boundary go.
 
-  Decide before stage B starts. First answer whether anything outside this site uses the design system: the Vercel showcase (Storybook, `ui_kits/`, `guidelines/`), the CDN bundle `_ds_bundle.js` or the Claude skill (`SKILL.md`). They can stay in a workspace too, but if nobody uses them, the move is simpler.
+  Decide before stage B starts. First answer whether anything outside this site uses the design system: the Vercel showcase (Storybook, `guidelines/`), the CDN bundle `_ds_bundle.js` or the Claude skill (`SKILL.md`). They can stay in a workspace too, but if nobody uses them, the move is simpler.
 - [ ] **Design source of truth**: Figma or the design system code? When a design changes, which one changes first, and who keeps the other in sync?
 - [ ] **npm package owner**: `tedx-amsterdam-design-system` belongs to the maintainer's personal npm account, and only GitHub Actions in `tedx-amsterdam/tedx-amsterdam-design-system` may publish it (trusted publishing). Move it to an npm organisation, or add a second maintainer, together with the second GitHub owner after the proof of concept?
 - [ ] **Design system 2.0** (stage C) is a breaking release: before launch, while this site is its only user, or after?
@@ -65,7 +65,7 @@ Things outside the code that someone with admin access has to do.
 
 ## Phase 1: Content layer and speakers
 
-Proves the architecture end to end with one collection. Three pull requests, stacked or in sequence. The data is described in [webflow-content-model.md](webflow-content-model.md); the target design is `SpeakerPage.jsx` in the design system's UI kit.
+Proves the architecture end to end with one collection. Three pull requests, stacked or in sequence. The data is described in [webflow-content-model.md](webflow-content-model.md); the target design is the `speaker-desktop` frame in the [Figma file](current-site.md#figma).
 
 ### 1a. Content layer with fixtures (`feature/content-layer`)
 
@@ -204,7 +204,7 @@ The design system enforces the design and the website only composes it (decision
 
 - [ ] `PageHero`: the title and intro block, now copied in `src/app/speakers/page.module.css` and `src/app/events/page.module.css`
 - [ ] A card grid, when partners or pioneers need the speaker grid
-- [ ] Build these from the prototypes in `ui_kits/website/` as real components with stories
+- [ ] Build these from the [Figma designs](current-site.md#figma) as real components with stories
 - Track the lines of CSS in `src/` (521 in October 2026): they should fall while pages are added
 
 ### C. Close the escape hatches (trigger: before launch, or when more volunteers join)

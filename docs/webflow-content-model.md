@@ -173,4 +173,4 @@ Fields: `name`, `slug`, `post-body` (RichText), `post-summary`, `main-image`, `t
 
 ## Content that is not in the CMS
 
-The homepage, After Growth, About Us and the top of Impact are typed directly into the Webflow Designer. The API only exposes them as loose text nodes, so they are rebuilt in code (phase 3). The design system's UI kit has the target designs for these pages (see `docs/current-site.md`).
+The homepage, After Growth, About Us and the top of Impact are typed directly into the Webflow Designer. The API only exposes them as loose text nodes, so they are rebuilt in code (phase 3). The Figma file has the target designs for these pages (see "Design reference" in `docs/current-site.md`).
