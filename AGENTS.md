@@ -65,16 +65,14 @@ src/content/
 src/lib/              Small shared utilities (env parsing, HTML sanitising, formatting).
 tests/                Vitest tests. Recorded API responses go in tests/fixtures/webflow/
                       (not to be confused with the fixture source in src/content/fixtures/).
-scripts/              Checks CI runs outside the test suite (commit messages, branch names).
+scripts/              Node scripts: the commit and branch check in CI, the design system asset copy.
 docs/                 Roadmap, decisions, content model, current site inventory, spec status.
-public/assets/        Design system logos and icons (temporary, see public/assets/README.md).
+public/assets/        Design system logos and icons, copied from the package on dev and build (not committed).
 ```
 
-### Design system workarounds
+### Design system assets
 
-The published design system (1.3.0) has one gap. Each has exactly one workaround in this repo, listed in `docs/roadmap.md` under "Design system follow ups". Remove the workaround when the design system fixes the gap.
-
-- **Assets not in the npm package.** Logos and icons are copied into `public/assets/`. Components receive `base="/"` so they resolve `/assets/...` on every route.
+`Logo`, `NavigationBar` and `SocialLink` load their images from `/assets/` (they receive `base="/"`). `npm run dev` and `npm run build` first copy them from the package into `public/assets/` (`scripts/design-system-assets.ts`), which is git ignored: never add images there by hand. Site specific images belong elsewhere in `public/`.
 
 ### The content layer is the core rule
 
