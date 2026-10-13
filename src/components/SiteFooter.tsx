@@ -1,6 +1,5 @@
-import { Logo, SocialLink, Tag } from "tedx-amsterdam-design-system";
+import { Logo, SocialLink, Tag, TEDX_DISCLAIMER } from "tedx-amsterdam-design-system";
 import { BUILD_YEAR, DESIGN_CREDIT, FOOTER_NAV, LEGAL_ENTITY, SOCIAL_LINKS } from "@/config/site";
-import { TEDX_DISCLAIMER } from "@/config/tedx";
 import styles from "./SiteFooter.module.css";
 
 export function SiteFooter() {

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { SiteFooter } from "@/components/SiteFooter";
-import { TEDX_DISCLAIMER } from "@/config/tedx";
+import { TEDX_DISCLAIMER } from "tedx-amsterdam-design-system";
 
 describe("SiteFooter", () => {
   it("shows the TEDx license disclaimer required on every page", () => {
