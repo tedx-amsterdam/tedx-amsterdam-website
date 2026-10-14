@@ -64,6 +64,9 @@ export function fileNotes(files: ChangedFile[]): string[] {
   if (workflows.length > 0) notes.push(`CI or GitHub settings changed: ${workflows.map((path) => `\`${path}\``).join(", ")}`);
   const rules = changed((path) => path === "AGENTS.md" || path === "CLAUDE.md" || path.startsWith(".claude/"));
   if (rules.length > 0) notes.push(`Rules for coding agents changed: ${rules.map((path) => `\`${path}\``).join(", ")}`);
+  // "Now" and the checklists must follow every change (AGENTS.md, "Start here").
+  const changesProject = paths.some((path) => !path.startsWith("docs/") && !path.endsWith(".md"));
+  if (changesProject && !paths.includes("docs/roadmap.md")) notes.push("`docs/roadmap.md` not updated: does \"Now\", \"Next\" or a checklist change with this pull request?");
   const removedTests = files.filter((file) => file.status.startsWith("D") && file.path.startsWith("tests/"));
   if (removedTests.length > 0) notes.push(`Tests removed: ${removedTests.map((file) => `\`${file.path}\``).join(", ")}`);
   return notes;
