@@ -11,8 +11,15 @@ type SpeakerCardProps = {
   priority?: boolean;
 };
 
+// The card's width in the grid of the speakers page: one column on phones
+// (15px gutters), two on tablets (gutters of 15px, then 40px), four in the
+// 1080px content column, where a card is 255px wide.
+const SIZES =
+  "(max-width: 479px) calc(100vw - 30px), (max-width: 767px) calc(50vw - 25px), (max-width: 1023px) calc(50vw - 50px), min(calc(25vw - 35px), 255px)";
+
 // Overview card that links to the speaker page. The portrait has alt="":
 // the link text already names the speaker, so the name would be read twice.
+
 export function SpeakerCard({ speaker, priority = false }: SpeakerCardProps) {
   return (
     <a className={styles.card} href={`/speakers/${speaker.slug}`}>
@@ -24,8 +31,7 @@ export function SpeakerCard({ speaker, priority = false }: SpeakerCardProps) {
           className={styles.photo}
           src={speaker.photo.url}
           srcSet={srcSet(speaker.photo)}
-          // One column on phones, two on tablets, four in the 1400px frame.
-          sizes={sizesFor(speaker.photo, "(max-width: 479px) 100vw, (max-width: 1023px) 50vw, 340px")}
+          sizes={sizesFor(speaker.photo, SIZES)}
           alt=""
           width={400}
           height={500}

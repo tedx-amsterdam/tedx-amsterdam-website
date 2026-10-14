@@ -23,8 +23,9 @@ export function EventCard({ event, eager = false }: EventCardProps) {
           className={styles.image}
           src={event.image.url}
           srcSet={srcSet(event.image)}
-          // Full width on phones, the left column of the 1400px frame beside the text.
-          sizes={sizesFor(event.image, "(max-width: 767px) 100vw, 440px")}
+          // Full width on phones (15px gutters); beside the text, the 1fr
+          // column of the 1080px content column, 344px at most.
+          sizes={sizesFor(event.image, "(max-width: 767px) calc(100vw - 30px), min(calc(33.3vw - 43px), 344px)")}
           alt={event.image.alt}
           width={800}
           height={450}
