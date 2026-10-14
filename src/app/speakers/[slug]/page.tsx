@@ -119,8 +119,13 @@ export default async function SpeakerPage({ params }: Props) {
                 className={styles.photo}
                 src={speaker.photo.url}
                 srcSet={srcSet(speaker.photo)}
-                // At most 480px wide above the text, 640px beside it in the frame.
-                sizes={sizesFor(speaker.photo, "(max-width: 1023px) min(100vw, 480px), 640px")}
+                // At most 480px wide above the text (15px gutters on phones,
+                // 40px on tablets); beside it, the 0.95fr column of the 1080px
+                // content column, 475px at most.
+                sizes={sizesFor(
+                  speaker.photo,
+                  "(max-width: 767px) min(calc(100vw - 30px), 480px), (max-width: 1023px) min(calc(100vw - 80px), 480px), min(calc(47.5vw - 76px), 475px)",
+                )}
                 alt={speaker.photo.alt}
                 width={600}
                 height={800}
