@@ -59,13 +59,19 @@ describe("fileNotes", () => {
       { status: "M", path: "AGENTS.md" },
       { status: "D", path: "tests/headers.test.ts" },
       { status: "M", path: "src/app/page.tsx" },
+      { status: "M", path: "docs/roadmap.md" },
     ]);
     expect(notes).toHaveLength(5);
     expect(notes.join("\n")).toMatch(/decisions\.md[\s\S]*_headers[\s\S]*new\.yml[\s\S]*AGENTS\.md[\s\S]*headers\.test\.ts/);
   });
 
-  it("stays quiet for ordinary changes", () => {
-    expect(fileNotes([{ status: "M", path: "src/components/SpeakerCard.tsx" }])).toEqual([]);
+  it("stays quiet for ordinary changes that update the roadmap", () => {
+    expect(fileNotes([{ status: "M", path: "src/components/SpeakerCard.tsx" }, { status: "M", path: "docs/roadmap.md" }])).toEqual([]);
+  });
+
+  it("asks about the roadmap when code changes without it", () => {
+    expect(fileNotes([{ status: "M", path: "src/components/SpeakerCard.tsx" }])).toEqual([expect.stringMatching(/roadmap\.md` not updated/)]);
+    expect(fileNotes([{ status: "M", path: "docs/current-site.md" }])).toEqual([]);
   });
 });
 
