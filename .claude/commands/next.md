@@ -15,7 +15,7 @@ Focus: $ARGUMENTS
    - Pull requests merged since "Now" was written: `gh pr list --state merged --limit 10 --json number,title,baseRefName`. Any merged into a branch other than `main` never reached `main`: report it as the first thing to fix.
 3. If "Now" and the real state disagree, say how, and include updating "Now" in the plan.
 4. Pick the next unit of work: one pull request, as described in the roadmap. If a focus was given above, use it. Skip work that is blocked by an open decision or a maintainer action, and say which one blocks it.
-5. Read what the task needs before planning: `docs/decisions.md` for architecture or tooling, `docs/webflow-content-model.md` for `src/content/`, `docs/current-site.md` for URLs and designs. Look up the spec requirements that apply with the `specification-website` MCP tools.
+5. Read what the task needs before planning: `docs/decisions.md` for architecture or tooling, `docs/webflow-content-model.md` for `src/content/`, `docs/current-site.md` for URLs and designs, `docs/design-audit.md` for pages and components. Look up the spec requirements that apply with the `specification-website` MCP tools.
 
 Reply in the language of the conversation with:
 
