@@ -141,3 +141,24 @@ Context: busy.studio's Figma file was the original design, and the design system
 Why: the Figma file belongs to busy.studio, the maintainer can only view and comment on it, it was made for the 2025 edition and nobody updates it. The design system is versioned, reviewed and tested, and every edition only changes theme and copy, which come from the CMS. Only styles carry over from the designs, never one edition's theme or copy.
 
 This closes the open decision on the design source of truth.
+
+## 28. Mobile layouts are derived in the design system, not designed in Figma (October 2026)
+
+There will be no new Figma designs, so no page gets its own mobile design. Mobile layouts follow from what the designs do give: the mobile design of home (`hero-mobile`), the mobile grid (6 columns, 15px gutters and margins) and the mobile type sizes, all already tokens in the design system. Each component decides its own mobile behaviour in the design system, with a story at 390px wide; pages here only arrange the components and use the same breakpoints.
+
+Breakpoints: 480px, 768px and 1024px, the ones this site already uses (`max-width: 479px`, `767px`, `1023px`). Below 768px is mobile, with the mobile grid and type.
+
+Derived does not mean improvised: mobile layouts follow these conventions, taken from primary sources checked in October 2026: WCAG 2.2 (W3C, updated 2026), Apple's Human Interface Guidelines (2025), Material Design 3, The Website Specification (2026), MDN (2026), web.dev and Nielsen Norman Group (2025):
+
+- **Tap targets**: every control at least 24 × 24 CSS px (WCAG 2.5.8, AA, required by the specification); controls used on touch aim for 44 × 44 (WCAG 2.5.5, AAA; Apple's guidelines, June 2025: 44 × 44pt by default and never under 28 × 28pt; Material Design 3: at least 48 × 48dp), with at least 8px between targets (Material Design 3). Links inside running text are exempt. Enlarge the hit area with padding rather than the visible element.
+- **Text**: body text 16px on mobile (the mobile tokens), so lines stay near 50 to 75 characters; form inputs never below 16px, or iOS zooms in on focus.
+- **Reflow and zoom**: no horizontal scrolling at 320px wide (WCAG 1.4.10), text that survives 200% zoom (1.4.4), both orientations (1.3.4), and never disable zoom in the viewport tag.
+- **Touch, not hover**: nothing only works on hover; use `@media (hover: none)` and `(pointer: coarse)` to adapt, not to hide controls.
+- **Navigation**: up to eight sections stay behind a menu button, but the primary call to action (tickets) stays visible outside it. Nielsen Norman Group (2025) finds the three-line icon recognised today, yet hiding navigation still costs a step: use the standard icon with the word "Menu", large and with clear contrast, and repeat key links in the page and footer. They find top left the most expected place; this site keeps the logo there and the menu on the right, which the label makes up for.
+- **Viewport**: full-height sections use `svh` (stable) or `dvh` (follows the browser bar), with `vh` only as a fallback. Safe area insets only apply with `viewport-fit=cover`, which this site does not use; if it ever does, fixed and sticky elements add `env(safe-area-inset-*)`.
+- **Performance**: Core Web Vitals are judged on mobile first (LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1); Lighthouse in CI already runs as a mid-range phone.
+
+Why: the Figma file belongs to busy.studio, it is view only for us, and the designer is not making more (decision 27). Deriving from home's mobile design keeps the look consistent without waiting for designs that will not come. The screenshots comment on every pull request shows each page at 390px, so a layout that breaks on mobile is seen before it is merged.
+
+This closes the open decision on mobile designs.
+
