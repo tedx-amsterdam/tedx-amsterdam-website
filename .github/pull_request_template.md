@@ -14,7 +14,7 @@ One pull request is one feature, one bug fix or one chore.
 - **Open on the preview**: <!-- a full link to every page this changes, e.g. https://BRANCH.tedx-amsterdam-website.pages.dev/speakers -->
 - **Judge**: <!-- the look of a change, a new component prop, a new dependency, a decision, a trade-off. Write "nothing beyond the checks" if so. -->
 
-The "PR attention" comment below lists dependencies, decisions, thresholds, headers and CI changes automatically.
+Two comments below fill in automatically: "PR attention" lists dependencies, decisions, thresholds, headers and CI changes, and "Screenshots" shows before and after for every page that visibly changed.
 
 ## What and why
 
