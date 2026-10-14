@@ -131,3 +131,13 @@ It checks what a machine can: the type and scope format, a lowercase subject wit
 Design system 1.3.0 closes the three gaps from decision 6, so their workarounds are removed. Components are imported from `tedx-amsterdam-design-system` directly: the package marks its 13 interactive components with `"use client"` and builds one module per component, so the others render as server components. The TEDx texts come from the package. Logos and icons are copied from the package into `public/assets/` before every dev and build run (`scripts/design-system-assets.ts`) instead of being committed, so they always match the installed version.
 
 The client re-export file and its lint rule are gone too. Measured on the fixture build, a page loads about 2.5 kB less JavaScript before compression: most of it is the navigation bar and React itself, so the gain is correctness and one source of truth more than speed.
+
+## 27. Figma leads until the design system matches it, then the code does (October 2026)
+
+Until the design system matches the designs, Figma is the reference: differences are fixed in the design system, not argued away. After that, the design system's code is the source of truth and Figma the original reference. New components, mobile layouts and later changes are designed in the design system and shown in its Storybook; whoever wants to design in Figma again first brings Figma up to date from the design system, not the other way around.
+
+Context: busy.studio's Figma file was the original design, and the design system was built from it. An audit in October 2026 found that the design system and this site have drifted from it: the content column, the navigation, type sizes, buttons and several components differ, and some patterns have no component yet (the design system's [Figma audit](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system/blob/main/docs/figma-audit.md), this repository's [design audit](design-audit.md)).
+
+Why: the Figma file belongs to busy.studio, the maintainer can only view and comment on it, it was made for the 2025 edition and nobody updates it. The design system is versioned, reviewed and tested, and every edition only changes theme and copy, which come from the CMS. Only styles carry over from the designs, never one edition's theme or copy.
+
+This closes the open decision on the design source of truth.

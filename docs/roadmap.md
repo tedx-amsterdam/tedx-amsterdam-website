@@ -12,7 +12,7 @@ Update this section in every pull request that changes the state of the project.
 
 #4, #5, #9 and #10 were merged into stacked base branches instead of `main`; #8 and #11 restored their commits unchanged. GitHub now allows only rebase merging and deletes head branches on merge, so stacking is safe again (decision 18). Older history on `main` contains merge commits and one commit pushed directly; do not copy them.
 
-**Next**: align the design system's foundations with the Figma designs (stage A under "Design system", [design-audit.md](design-audit.md)), then partners, pioneers, past talks and the blog, one collection per pull request (decision 20).
+**Next**: align the design system's foundations with the Figma designs (stage A under "Design system", decision 27), then partners, pioneers, past talks and the blog, one collection per pull request (decision 20).
 
 ## Open decisions
 
@@ -31,8 +31,7 @@ Decisions that block or shape upcoming work. Record the outcome in [decisions.md
   - **Fold it into `src/`.** Simplest code, but Storybook, the showcase and the design boundary go.
 
   The Figma alignment in stage A is the largest batch of design system changes so far: three pull requests, a release and an upgrade here. Merging first would save those cross repository steps; staying with two repositories makes it the test of whether they still work. Decide before stage B starts. First answer whether anything outside this site uses the design system: the Vercel showcase (Storybook, `guidelines/`), the CDN bundle `_ds_bundle.js` or the Claude skill (`SKILL.md`). They can stay in a workspace too, but if nobody uses them, the move is simpler.
-- [ ] **Mobile designs**: Figma has a mobile design for home only. Who designs the other pages for mobile, or do we derive them from home's mobile design and the 6 column mobile grid ([design-audit.md](design-audit.md))? Needed before the foundations work reaches the page layouts.
-- [ ] **Design source of truth**: Figma or the design system code? When a design changes, which one changes first, and who keeps the other in sync?
+- [ ] **Mobile designs**: Figma has a mobile design for home only. Who designs the other pages for mobile, or do we derive them from home's mobile design and the 6 column mobile grid? Either way they are designed in the design system (decision 27). Needed before the foundations work reaches the page layouts.
 - [ ] **npm package owner**: `tedx-amsterdam-design-system` belongs to the maintainer's personal npm account, and only GitHub Actions in `tedx-amsterdam/tedx-amsterdam-design-system` may publish it (trusted publishing). Move it to an npm organisation, or add a second maintainer, together with the second GitHub owner after the proof of concept?
 - [ ] **Design system 2.0** (stage C) is a breaking release: before launch, while this site is its only user, or after?
 
@@ -120,7 +119,7 @@ Done when: a build with `CONTENT_SOURCE=webflow` fetches the live speakers, ever
 
 ## Phase 3: Static pages
 
-Build the pages from their Figma frames and the patterns in [design-audit.md](design-audit.md). Home's footer gets the newsletter form, the full width logo and the glow from the designs.
+Build the pages from their Figma frames, the components and patterns in the design system's [Figma audit](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system/blob/main/docs/figma-audit.md), and [design-audit.md](design-audit.md). Home's footer gets the newsletter form, the full width logo and the glow from the designs.
 
 - [ ] Home
 - [ ] After Growth
@@ -192,11 +191,11 @@ The design system enforces the design and the website only composes it (decision
 - [ ] Add a Facebook icon to `SocialLink`
 - [x] Give logo images explicit `width` and `height` (Lighthouse flags them as unsized)
 - [ ] Give `SocialLink` icons explicit `width` and `height`, then check every image in `tests/output/`, not only those in `<main>`
-- [ ] Align the foundations with the Figma designs, following [design-audit.md](design-audit.md). **When: now, before the phase 2 pages.** These changes only alter the look of components this site already uses, this site is the design system's only user, and every page built on the current foundations would have to be redone. One design system release (1.4.0) in three pull requests, then one upgrade here:
+- [ ] Align the foundations with the Figma designs, following the design system's [Figma audit](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system/blob/main/docs/figma-audit.md) (decision 27). **When: now, before the phase 2 pages.** These changes only alter the look of components this site already uses, this site is the design system's only user, and every page built on the current foundations would have to be redone. One design system release (1.4.0) in three pull requests, then one upgrade here:
   - [ ] Tokens: the 1080px content column and the desktop and mobile grid, the display, page title, section heading and intro styles, Regular 14px and Light, white at 70% and 50%, and `#FF7919` instead of the unused `#F36C21`
   - [ ] Primitives: `Button` (heights from the grid, uppercase labels), `ArrowLink` (uppercase), `Tag` (white eyebrows, a neutral meta line with a red dot), `Badge` (square black label), `Tabs` (active tab red, no underline)
   - [ ] Composites: `NavigationBar` (link style, content column, optional button), `SectionHeader` (48px, a supported way to set words in red), `Stat`, `MediaCard` (a real `<img>` with alt text, and a `Badge`)
-  - [ ] Here: upgrade, put every page in the content column, add the edge glow, and bring `/speakers` and `/speakers/[slug]` in line with the audit
+  - [ ] Here: upgrade, put every page in the content column, add the edge glow, and bring `/speakers` and `/speakers/[slug]` in line with [design-audit.md](design-audit.md)
 - [x] Align the design system repository settings with this one: rebase merging only, delete branches on merge, a ruleset on `main` with `ci` required
 
 ### B. Patterns move into the design system (trigger: a pattern used twice)
@@ -206,7 +205,7 @@ The design system enforces the design and the website only composes it (decision
 - [ ] Person card (photo, name, role or description), with the pioneers (phase 2); the team page reuses it
 - [ ] CTA band (red section with a heading and the email form), with partners (phase 2) or the newsletter (phase 3), whichever comes first
 - [ ] Detail rows (label and value between lines) and carousel arrows, with the home page (phase 3)
-- [ ] Build each from the [Figma designs](current-site.md#figma) and [design-audit.md](design-audit.md) as real components with stories, and tick its row in the audit
+- [ ] Build each from the [Figma designs](current-site.md#figma) as real components with stories, and update its row in the design system's [Figma audit](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system/blob/main/docs/figma-audit.md)
 - [ ] Page stories in the design system's Storybook (`Pages/Home`, `Pages/Speakers`, and so on): each page from the Figma designs composed of the real components with neutral sample content, so there is a click-through example of every page again. They replace the removed `ui_kits/website/` prototype, which copied the components with inline styles and the 2025 theme (tedx-amsterdam-design-system#31). Add a page story when its sections move into the design system; the CI Storybook build and the a11y addon then check it
 - Track the lines of CSS in `src/` (521 in October 2026): they should fall while pages are added
 
