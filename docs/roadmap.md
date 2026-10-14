@@ -192,11 +192,19 @@ The design system enforces the design and the website only composes it (decision
 - [x] Give logo images explicit `width` and `height` (Lighthouse flags them as unsized)
 - [ ] Give `SocialLink` icons explicit `width` and `height`, then check every image in `tests/output/`, not only those in `<main>`
 - [ ] Align the foundations with the Figma designs, following the design system's [Figma audit](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system/blob/main/docs/figma-audit.md) (decision 27). **When: now, before the phase 2 pages.** These changes only alter the look of components this site already uses, this site is the design system's only user, and every page built on the current foundations would have to be redone. One design system release (1.4.0) in three pull requests, then one upgrade here:
-  - [ ] Tokens: the 1080px content column and the desktop and mobile grid, the display, page title, section heading and intro styles, Regular 14px and Light, white at 70% and 50%, and `#FF7919` instead of the unused `#F36C21`
+  - [x] Tokens (tedx-amsterdam-design-system#34): the 1080px content column and the desktop and mobile grid, the display, page title, section heading and intro styles, Regular 14px and Light, white at 70% and 50%, and `#FF7919` instead of the unused `#F36C21`
   - [ ] Primitives: `Button` (heights from the grid, uppercase labels), `ArrowLink` (uppercase), `Tag` (white eyebrows, a neutral meta line with a red dot), `Badge` (square black label), `Tabs` (active tab red, no underline)
   - [ ] Composites: `NavigationBar` (link style, content column, optional button), `SectionHeader` (48px, a supported way to set words in red), `Stat`, `MediaCard` (a real `<img>` with alt text, and a `Badge`)
   - [ ] Here: upgrade, put every page in the content column, add the edge glow, and bring `/speakers` and `/speakers/[slug]` in line with [design-audit.md](design-audit.md)
 - [x] Align the design system repository settings with this one: rebase merging only, delete branches on merge, a ruleset on `main` with `ci` required
+- [ ] A test in the design system that fails on raw palette colors and pixel values in its components, like `tests/styles.test.ts` here. Its own rules ask for semantic tokens, yet components use `--tedx-red` 30 times instead of `--accent` and contain 85 raw pixel values. Fix them while the components are aligned with Figma, then turn the test on
+- [ ] Upgrade the design system to Vitest 5 and Storybook 10 in one pull request, replacing Dependabot's tedx-amsterdam-design-system#18, #19 and #25: all three fail because the jest-dom matchers lose their types under Vitest 5. Storybook 10.3 brings the official MCP addon and components manifest, so coding agents can look up components and props; add it to `.mcp.json` here
+- [ ] Support Windows high contrast (`forced-colors`) in the design system: `Badge` and the checked states of `Checkbox` and `Radio` are drawn with background colors, which that mode removes
+- [ ] A status per component in the design system's readme (draft, stable), so a newcomer sees what is finished; a component is stable when it matches the Figma audit, has stories for its states and passes the axe sweep
+- [ ] A deprecation rule in the design system's readme: mark a token or prop as deprecated in a minor release with its replacement, remove it in the next major. First candidates: `--fs-mega` and `--fs-h2-lg`, which the designs no longer use
+- [ ] Breakpoints for the design system, after the open decision on mobile designs: a fixed set documented in the readme (custom properties cannot be used in media queries) and container queries for components. Today it has one media query (767px) and no other responsive behavior
+
+Compared with common design system practice in October 2026 (among others [Carbon's component checklist](https://carbondesignsystem.com/contributing/component-checklist), the [W3C design tokens format](https://w3c.github.io/cg-reports/design-tokens/CG-FINAL-format-20251028/) and [Storybook's AI docs](https://storybook.js.org/docs/ai)). Considered and left out for one website run by volunteers: tokens as DTCG JSON with Style Dictionary (worth it only with a second platform, such as an app), a third tier of component tokens, Changesets and codemods (one consumer), Figma Code Connect (we cannot edit the Figma file) and CSS cascade layers (until site overrides start to clash).
 
 ### B. Patterns move into the design system (trigger: a pattern used twice)
 
@@ -216,8 +224,9 @@ The design system enforces the design and the website only composes it (decision
   - Clean up the design system repository root: remove what nothing uses (the CDN bundle `_ds_bundle.js`, `SKILL.md`, `vercel.json`, the generated `_ds_manifest.json`), after the open decision on the Vercel showcase
 - [ ] Test the design system as a consumer in its CI: install the output of `npm pack` in a small Next.js app and build it, so problems like the missing `"use client"` or assets show up before a release
 - [ ] Run the design system's tests on React 18 and React 19: its peer dependency promises both, CI tests only 18, and this site runs 19
+- [ ] Let components pass a `ref` to their element: none of the 23 do, so under React 18 a site cannot focus an `Input` or `Button`. Either wrap them in `forwardRef`, or support only React 19, which passes `ref` as a prop, in 2.0
 - [ ] Ship the adherence lint rules (`_adherence.oxlintrc.json`) in the package as errors, generated from component props, and extend them here
-- [ ] Visual regression tests on the design system's Storybook
+- [ ] Visual regression tests on the design system's Storybook: screenshots of every story compared on each pull request (the Storybook test runner, or Chromatic's free tier). Worth starting during the Figma alignment if a component change surprises us
 
 ### D. Editors compose from approved blocks (trigger: the CMS migration, phase 7)
 
@@ -229,4 +238,5 @@ Prepared in stage A, turned on when a second person joins. Before that, these wo
 
 - [ ] Add the second person as owner of the GitHub organisation and to `CODEOWNERS` in both repositories
 - [ ] Ruleset on `main` in both repositories: one required approval and "Require review from Code Owners"
+- [ ] A `CONTRIBUTING.md` and a pull request template in the design system repository, like this one's
 - [ ] Revisit rebase merging (decision 18) with the people who join: it keeps every commit, but volunteers then have to write clean commits and squash fixups themselves. Squash merging needs only a correct pull request title; the commit check in CI would then check the title instead of each commit
