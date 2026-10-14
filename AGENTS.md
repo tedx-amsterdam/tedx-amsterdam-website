@@ -23,7 +23,7 @@ This file holds the conventions. The project's state and history live in `docs/`
 5. **`docs/website-spec.md`**: the status of every quality requirement.
 6. **`docs/design-audit.md`**: how the pages compare with the Figma designs; the design system's `docs/figma-audit.md` does the same for its tokens and components. Read them before building a page (decision 27).
 
-Keep these documents current in the same pull request as the change that affects them, especially "Now" in the roadmap.
+Keep these documents current in the same pull request as the change that affects them, especially "Now" and "Next" in the roadmap and the checklists below them. The roadmap also tracks the design system: a design system pull request that finishes or advances one of its items gets a matching update here the same day, in a small docs pull request if nothing else is open. The "PR attention" comment flags a pull request that changes code without touching the roadmap.
 
 When a rule in this file changes, check whether `CLAUDE.md` or a command or agent in `.claude/` repeats it, and update it in the same pull request.
 
