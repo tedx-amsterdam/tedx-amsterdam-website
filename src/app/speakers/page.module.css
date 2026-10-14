@@ -1,5 +1,6 @@
 .main {
-  max-width: var(--frame-max);
+  /* The 1080px content column from the designs, with the gutter around it */
+  max-width: var(--content-max);
   margin: 0 auto;
   padding: var(--space-16) var(--gutter) 0;
   display: flex;
@@ -12,14 +13,12 @@
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: var(--space-12);
   align-items: start;
-  padding-bottom: var(--space-12);
-  border-bottom: 1px solid var(--border-hairline);
 }
 
 .title {
   margin: 0;
   font: var(--text-h1);
-  letter-spacing: var(--ls-display);
+  letter-spacing: var(--ls-normal);
   text-transform: uppercase;
   overflow-wrap: anywhere;
 }
@@ -33,8 +32,8 @@
 
 .text {
   margin: 0;
-  font: var(--text-body);
-  color: var(--text-secondary);
+  font: var(--text-intro);
+  color: var(--text-primary);
 }
 
 .grid {
@@ -53,6 +52,10 @@
 }
 
 @media (max-width: 767px) {
+  .main {
+    padding-inline: var(--gutter-m);
+  }
+
   .hero {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-6);

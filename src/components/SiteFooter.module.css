@@ -6,7 +6,7 @@
 }
 
 .inner {
-  max-width: var(--frame-max);
+  max-width: var(--content-max);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -61,6 +61,10 @@
 }
 
 @media (max-width: 767px) {
+  .footer {
+    padding-inline: var(--gutter-m);
+  }
+
   .columns {
     grid-template-columns: minmax(0, 1fr);
   }

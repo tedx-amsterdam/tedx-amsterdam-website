@@ -1,5 +1,6 @@
 .main {
-  max-width: var(--frame-max);
+  /* The 1080px content column from the designs, with the gutter around it */
+  max-width: var(--content-max);
   margin: 0 auto;
   padding: var(--space-10) var(--gutter) 0;
   display: flex;
@@ -24,7 +25,7 @@
 .name {
   margin: 0;
   font: var(--text-h1);
-  letter-spacing: var(--ls-display);
+  letter-spacing: var(--ls-normal);
   text-transform: uppercase;
   color: var(--text-accent);
   overflow-wrap: anywhere;
@@ -137,6 +138,10 @@
 }
 
 @media (max-width: 767px) {
+  .main {
+    padding-inline: var(--gutter-m);
+  }
+
   .name {
     font-size: var(--fs-h1-m);
   }
