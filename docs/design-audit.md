@@ -31,7 +31,7 @@ There is no design for `/events`, About Us or Event Program in the latest round.
 
 | Route | Matches the design | Main differences |
 | --- | --- | --- |
-| `/speakers` | ⚠️ | Content column, header, title, intro and page glow match since design system 1.4.0. Still different: the card leads with the speaker's name, where Figma leads with the talk title and puts the name and role below it after a red dot |
+| `/speakers` | ⚠️ | Content column, header, title, intro and page glow match since design system 1.4.0. Still different: the photos have 20px gaps, where Figma sets them side by side without gaps; and the card leads with the speaker's name, where Figma leads with the talk title and puts the name and role below it after a red dot |
 | `/speakers/[slug]` | ⚠️ | Content column, header and page glow match since 1.4.0. Figma leads with a "Topic" eyebrow and the talk title (48px, words in red), then date and venue with red dots, the talk text, and "About" with the name (48px) and bio; the portrait carries the name in a black label, as on the site, with social links below it, and "Watch the talk" shows the video. The site leads with the speaker's name in red at 80px and adds a breadcrumb and previous and next links, which Figma does not have. Check first whether the CMS has talk titles for every speaker |
 | `/events` | — | No design; it follows the speakers page, in the content column with the page glow |
 | Footer on every page | ⚠️ | The site has the menu, social links, a small logo and the legal line. Figma adds the newsletter form (phase 3), sets the logo across the full column and puts the footer on a red to black glow |
