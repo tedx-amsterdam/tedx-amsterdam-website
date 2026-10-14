@@ -189,15 +189,19 @@ The design system enforces the design and the website only composes it (decision
 - [ ] Add a Facebook icon to `SocialLink`
 - [x] Give logo images explicit `width` and `height` (Lighthouse flags them as unsized)
 - [ ] Give `SocialLink` icons explicit `width` and `height`, then check every image in `tests/output/`, not only those in `<main>`
-- [ ] Align the design system with the Figma designs ([current-site.md](current-site.md#figma)). Found by comparing the tokens and components with what the frames on the `review` page use; confirm each against a PNG export of the frame before changing it. The designs are for the 2025 event: take the styles from them, not that year's theme or copy, so the design system works for every edition:
-  - Type: the display headline in the home hero is 115px with line height 0.9, `--fs-display` is 121px with 1. `Stat` numbers are Regular in Figma, Bold in the component. The intro and footer link text is Regular 24px, which has no token; neither have Bold 48px, 60px and 72px headings (72px exists as `--fs-h2-lg` but without a composite token), Helvetica Light (12 to 16px) or a Regular 14px text token. Tags use line height 1 in most frames, `--text-tag` 1.2
-  - `--text-h2` uses line height 1.2, the Figma `desktop/h2` style 1.1
-  - Missing mobile tokens: h4 16px, tag and button 12px and 14px, footer 16px, and the h1 line height 0.9 (only a comment now)
-  - Color: white at 70% and 50% opacity (secondary text), `#FFF5F7`, and the gradients orange `#FF7919` → red → black and `#505050` → black have no token. `--tedx-orange` (`#F36C21`) does not appear in the designs, which use `#FF7919` and `#FF9B19`. Colors in the styles without a token: `#121212`, `#CFCFCF` and graphite `#202B37` at 20%; add the ones the pages use, drop the rest
-  - Glows: Figma draws them as orange and red ellipses with a 100 to 200px layer blur; the tokens approximate them with gradients. The red glow shadow is `0 0 37px #EB0028` in Figma, `--shadow-glow-red` is `0 0 80px` at 45%
-  - Layout: a 12 column grid with 20px gutters and 160px side margins on desktop, and 6 columns with 15px gutters and margins on mobile. The tokens have `--gutter-wide` (160px) but no column gutter and no mobile values
-  - Button padding is 12px × 30px in Figma, the `Button` sizes are 12 × 24, 16 × 30 and 22 × 34; strokes are 1px or 2px, the ghost button border 1.5px
-  - Not in Figma, so the design system decided on its own: `Modal`, `Toast` and the form components, `--radius-card` (12px) and `--shadow-card`. Figma has no mobile design for any page but home
+- [ ] Align the design system and the site with the Figma designs ([current-site.md](current-site.md#figma)). Checked in October 2026 against the latest round on the `review` page (labelled "review", June 2025), counting only layers that are visible, and by comparing `/speakers` side by side. The designs are for the 2025 edition: take the styles, not that year's theme or copy, such as the condensed type in the mobile hero
+  - Layout: content sits in a 1080px column (12 columns, 20px gutters, 160px side margins at 1400px), header included; the site uses the full width with 40px gutters. Mobile: 6 columns, 15px gutters and margins. No tokens for columns or mobile yet
+  - Navigation: links in Helvetica Regular 14px, sentence case, the active one red, and no tickets button; `NavigationBar` uses Bold uppercase with wide tracking
+  - The display headline in the home hero is Bold 115px with line height 0.9 and −3%; `--fs-display` is 121px with line height 1
+  - Page titles ("SPEAKERS", "OUR TEAM") are Bold 80px with line height 1.1 and no tracking; `--text-h1` has line height 1 and −3%. Section headings are Bold 48px, line height 1.1, −3%: no token, and `--text-h2` (56px) is used nowhere in the latest designs. The detail page title (speaker name) is the same 48px style
+  - Intro and body text next to page titles is white Regular 20px with line height 1.2; the site uses `--text-body` (1.3) in `--text-secondary` (60%). `Stat` labels are white too, and stat numbers have no tracking (the component uses −3%)
+  - Buttons have a fixed size from the grid: 74 to 80px high on desktop and 66px on mobile, red, 10px radius, Bold 14px uppercase. `Button` sizes are about 38 to 60px high
+  - Speaker cards show the talk title (Bold 20px uppercase) with the speaker's name and role below it, behind a red dot, and the role in white at 40%; the site's card leads with the name
+  - Text colors without a token: white at 70% and 50%. `#F36C21` (`--tedx-orange`) is not used; the warm tone is `#FF7919`
+  - Glows are red and orange shapes with a 100 to 200px layer blur, among them 220px wide bars along both page edges; the tokens approximate them with gradients, and the site's pages have no edge glow yet
+  - Mobile sizes in use: title 55px with line height 0.9 (`--fs-h1-m`), section headings 30px, stat numbers 60px, names Bold 16px, small text Light 12px
+  - Matches already: the red, black and white, body 20px with line height 1.3 in long text, h3 32px and h4 20px, tags Bold 14px uppercase, footer fine print Regular 12px, the 10px button radius
+  - Not in Figma, so the design system decided on its own: `Modal`, `Toast` and the form components, `--radius-card` (12px) and `--shadow-card`
 - [x] Align the design system repository settings with this one: rebase merging only, delete branches on merge, a ruleset on `main` with `ci` required
 
 ### B. Patterns move into the design system (trigger: a pattern used twice)
