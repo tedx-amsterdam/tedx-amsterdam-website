@@ -49,7 +49,7 @@ An inventory of www.tedxamsterdam.nl as built in Webflow, taken in October 2026.
 
 The target designs are in busy.studio's Figma file (below), and the design system turns their styles into tokens and components. The designs were made for the 2025 edition: take the layout and styles from them, not that year's theme or copy, which come from the CMS or the maintainer. Build pages from design system components, CSS Modules and tokens.
 
-[design-audit.md](design-audit.md) compares the design system and this site's pages with the designs, component by component.
+The design system's [Figma audit](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system/blob/main/docs/figma-audit.md) compares its tokens and components with the designs, and [design-audit.md](design-audit.md) does the same for this site's pages. Figma leads until the design system matches it; after that the design system does (decision 27).
 
 The design system used to have a click-through prototype of these designs in `ui_kits/website/`; it was removed because it held the 2025 theme (tedx-amsterdam-design-system#31). It is still in that repository's git history.
 
