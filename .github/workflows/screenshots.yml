@@ -1,0 +1,99 @@
+name: Screenshots
+
+# Compares every page type of a pull request's Cloudflare preview with
+# production, desktop and mobile, and posts one comment with before and
+# after for each page that visibly changed (scripts/screenshots.ts). It
+# reports only and never fails the pull request, so it is not a required
+# check.
+#
+# Comments can only show images that are online, so the screenshots live
+# on the branch pr-screenshots, one folder per pull request. That branch
+# always holds a single commit, rewritten on every run, so the repository
+# does not grow; a pull request's folder is removed when it closes.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# One run at a time across pull requests: they all rewrite pr-screenshots.
+concurrency:
+  group: pr-screenshots
+  cancel-in-progress: false
+
+env:
+  PRODUCTION: https://tedx-amsterdam-website.pages.dev
+  STORAGE_BRANCH: pr-screenshots
+
+jobs:
+  screenshots:
+    # Pull requests from forks have no preview and a read-only token.
+    if: github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+
+      - name: Wait for Cloudflare deployment
+        id: preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          url="$(.github/scripts/cloudflare-preview-url.sh "$GITHUB_REPOSITORY" "$SHA")"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          # The same page types as lighthouse.yml: the first speaker the
+          # overview links to, since speakers come and go in the CMS.
+          html="$(curl -fsSL "$url/speakers")"
+          if [[ $html =~ href=\"(/speakers/[a-z0-9-]+)\" ]]; then
+            echo "speaker=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+          else
+            echo "No speaker detail link found on $url/speakers" >&2
+            exit 1
+          fi
+
+      - name: Take and compare screenshots
+        env:
+          PREVIEW: ${{ steps.preview.outputs.url }}
+          SPEAKER: ${{ steps.preview.outputs.speaker }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          base="https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$STORAGE_BRANCH/pr-$NUMBER"
+          node scripts/screenshots.ts "$PRODUCTION" "$PREVIEW" "$RUNNER_TEMP/shots" "$base" / /events /speakers "$SPEAKER" \
+            > "$RUNNER_TEMP/comment.md"
+
+      - name: Store the screenshots on the storage branch
+        env:
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: .github/scripts/store-screenshots.sh "pr-$NUMBER" "$RUNNER_TEMP/shots"
+
+      - name: Post or update the comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          id="$(gh api "repos/$GITHUB_REPOSITORY/issues/$NUMBER/comments" --paginate \
+            --jq '.[] | select(.body | startswith("<!-- pr-screenshots -->")) | .id' | head -n 1)"
+          if [ -n "$id" ]; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$id" -F body=@"$RUNNER_TEMP/comment.md" > /dev/null
+          else
+            gh pr comment "$NUMBER" --body-file "$RUNNER_TEMP/comment.md"
+          fi
+
+  clean-up:
+    if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Remove this pull request's screenshots
+        env:
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: .github/scripts/store-screenshots.sh "pr-$NUMBER"
