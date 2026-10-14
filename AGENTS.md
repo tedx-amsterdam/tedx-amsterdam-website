@@ -21,7 +21,7 @@ This file holds the conventions. The project's state and history live in `docs/`
 3. **`docs/webflow-content-model.md`**: collection IDs, fields and data quirks. Read it before working in `src/content/`.
 4. **`docs/current-site.md`**: the Webflow site being replaced, legacy URLs, integrations and where the target designs live.
 5. **`docs/website-spec.md`**: the status of every quality requirement.
-6. **`docs/design-audit.md`**: how the design system and the pages compare with the Figma designs. Read it before building a page or changing a component.
+6. **`docs/design-audit.md`**: how the pages compare with the Figma designs; the design system's `docs/figma-audit.md` does the same for its tokens and components. Read them before building a page (decision 27).
 
 Keep these documents current in the same pull request as the change that affects them, especially "Now" in the roadmap.
 
