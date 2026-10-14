@@ -2,7 +2,7 @@
 
 How this site's pages compare with busy.studio's Figma designs. The design system has its own [Figma audit](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system/blob/main/docs/figma-audit.md) for the tokens and components the pages are built from, and the patterns that still need a component; start there for anything that is not specific to one page. Update a row here in the pull request that changes the page.
 
-**Checked**: October 2026, design system 1.3.1, against the latest round of designs on the Figma page `review` (labelled "review", June 2025), looked at in Figma itself and side by side with the deployed pages. See [current-site.md](current-site.md#figma) for the file itself and decision 27 for which one leads.
+**Checked**: October 2026, design system 1.3.1; the layout rows updated for 1.4.0, against the latest round of designs on the Figma page `review` (labelled "review", June 2025), looked at in Figma itself and side by side with the deployed pages. See [current-site.md](current-site.md#figma) for the file itself and decision 27 for which one leads.
 
 **Scope**: styles and structure, not content. The designs carry the 2025 edition's theme and copy; those change every edition and are left out.
 
@@ -31,7 +31,7 @@ There is no design for `/events`, About Us or Event Program in the latest round.
 
 | Route | Matches the design | Main differences |
 | --- | --- | --- |
-| `/speakers` | ⚠️ | Full width instead of the 1080px column, navigation style, title tracking, intro in gray instead of white, card leads with the name, no page glow, divider line under the hero that Figma does not have |
-| `/speakers/[slug]` | ⚠️ | Same foundations. Figma leads with a "Topic" eyebrow and the talk title (48px, words in red), then date and venue with red dots, the talk text, and "About" with the name (48px) and bio; the portrait carries the name in a black label, as on the site, with social links below it, and "Watch the talk" shows the video. The site leads with the speaker's name in red at 80px and adds a breadcrumb and previous and next links, which Figma does not have. Check first whether the CMS has talk titles for every speaker |
-| `/events` | — | No design; follow the speakers page |
+| `/speakers` | ⚠️ | Content column, header, title, intro and page glow match since design system 1.4.0. Still different: the card leads with the speaker's name, where Figma leads with the talk title and puts the name and role below it after a red dot |
+| `/speakers/[slug]` | ⚠️ | Content column, header and page glow match since 1.4.0. Figma leads with a "Topic" eyebrow and the talk title (48px, words in red), then date and venue with red dots, the talk text, and "About" with the name (48px) and bio; the portrait carries the name in a black label, as on the site, with social links below it, and "Watch the talk" shows the video. The site leads with the speaker's name in red at 80px and adds a breadcrumb and previous and next links, which Figma does not have. Check first whether the CMS has talk titles for every speaker |
+| `/events` | — | No design; it follows the speakers page, in the content column with the page glow |
 | Footer on every page | ⚠️ | The site has the menu, social links, a small logo and the legal line. Figma adds the newsletter form (phase 3), sets the logo across the full column and puts the footer on a red to black glow |
