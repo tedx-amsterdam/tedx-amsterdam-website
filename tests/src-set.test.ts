@@ -13,6 +13,15 @@ describe("srcSet", () => {
     expect(sizesFor({ ...image, variants }, "100vw")).toBe("100vw");
   });
 
+  it("leaves out variants wider than maxWidth, keeping the smallest if none fits", () => {
+    const variants = [
+      { url: "https://cdn.example/a-500.jpg", width: 500 },
+      { url: "https://cdn.example/a-800.jpg", width: 800 },
+    ];
+    expect(srcSet({ ...image, variants }, 500)).toBe("https://cdn.example/a-500.jpg 500w");
+    expect(srcSet({ ...image, variants }, 300)).toBe("https://cdn.example/a-500.jpg 500w");
+  });
+
   it("leaves srcset and sizes out without variants", () => {
     for (const variants of [undefined, []]) {
       expect(srcSet({ ...image, variants })).toBeUndefined();

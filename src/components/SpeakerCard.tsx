@@ -5,9 +5,11 @@ import styles from "./SpeakerCard.module.css";
 type SpeakerCardProps = {
   speaker: Speaker;
   // The first photo is the largest contentful paint, and on a phone the only
-  // one in view. It loads eagerly with high priority; all others load
-  // lazily, so they do not compete with it for bandwidth. On wider screens
-  // the rest of the first row is in view and loads right after layout.
+  // one in view. It loads eagerly with high priority and may use every
+  // variant. The others load lazily, but the next few still start while it
+  // downloads, as they sit just below the fold; they stop at the 500px
+  // variant so they take less of its bandwidth. In these soft portraits,
+  // enlarged at most 1.4 times on a phone, the difference does not show.
   priority?: boolean;
 };
 
@@ -30,7 +32,7 @@ export function SpeakerCard({ speaker, priority = false }: SpeakerCardProps) {
         <img
           className={styles.photo}
           src={speaker.photo.url}
-          srcSet={srcSet(speaker.photo)}
+          srcSet={srcSet(speaker.photo, priority ? undefined : 500)}
           sizes={sizesFor(speaker.photo, SIZES)}
           alt=""
           width={400}
