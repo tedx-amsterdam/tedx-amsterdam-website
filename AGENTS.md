@@ -66,7 +66,8 @@ src/content/
 src/lib/              Small shared utilities (env parsing, HTML sanitising, formatting).
 tests/                Vitest tests. Recorded API responses go in tests/fixtures/webflow/
                       (not to be confused with the fixture source in src/content/fixtures/).
-scripts/              The commit and branch check in CI, the design system asset copy, local Lighthouse.
+scripts/              The commit and branch check in CI, the pull request attention list, the design system
+                      asset copy, local Lighthouse.
 docs/                 Roadmap, decisions, content model, current site inventory, spec status.
 public/assets/        Design system logos and icons, copied from the package on dev and build (not committed).
 ```
@@ -193,6 +194,8 @@ Follow [Conventional Branch](https://conventional-branch.github.io): `<type>/<de
 **Title**: same format as a commit subject, describing the whole change: `feat(speakers): add speaker overview and detail pages`. Mark breaking changes with `!`.
 
 **Description**: use the template in `.github/pull_request_template.md`. Explain what and why, how to test, add screenshots for visual changes, and link the issue with `Closes #123`. Keep the description about the change itself: leave out anything a reviewer does not need, such as tool, generator or session footers.
+
+**Review this**: right after the preview link, list a full preview link to every page the change affects and only what a person has to judge: how a change looks, a new component prop or dependency, a decision, a trade-off. Leave out what the checks cover. A workflow adds a "PR attention" comment that lists dependencies, decisions, lowered Lighthouse thresholds, `public/_headers`, CI and agent rule changes on its own (`scripts/pr-attention.ts`); it reports and never blocks.
 
 **Preview link**: every pull request description starts with a link to its Cloudflare preview, so reviewers test the real build instead of reading code only. Cloudflare deploys every branch to `https://<branch>.tedx-amsterdam-website.pages.dev`, where `<branch>` is the branch name in lowercase with `/` and other special characters replaced by `-` (`feature/speaker-pages` becomes `feature-speaker-pages`). Cloudflare shortens long branch names, so copy the branch preview URL from the Cloudflare bot comment on the pull request when in doubt. Update the link if the branch is renamed.
 
