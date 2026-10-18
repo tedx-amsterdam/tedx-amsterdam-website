@@ -67,7 +67,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [Reduced motion](https://specification.website/spec/accessibility/reduced-motion/) | Required | Done | Handled globally by the design system |
 | [Captions and transcripts](https://specification.website/spec/accessibility/captions-and-transcripts/) | Required | Phase 3 | Only if a video has meaningful audio; the hero video is decorative |
 | [Accessible data tables](https://specification.website/spec/accessibility/data-tables/) | Required | Phase 3 | Applies to the event timetable, if built as a table |
-| [Touch target size](https://specification.website/spec/accessibility/touch-target-size/) | Required | Design system | |
+| [Touch target size](https://specification.website/spec/accessibility/touch-target-size/) | Required | Partial | The header and its menu (design system 1.5.0) and the footer links (#46) are at least 44px on touch screens (decision 28). Not yet checked automatically: the screenshots workflow should report controls under 24px |
 | [Empty links and buttons](https://specification.website/spec/accessibility/empty-links-buttons/) | Avoid | Done | Lighthouse fails the pull request if one appears |
 | [Accessibility overlays](https://specification.website/spec/accessibility/accessibility-overlays/) | Avoid | Done | Never add one |
 | [Forced colours](https://specification.website/spec/accessibility/forced-colors/), [focus not obscured](https://specification.website/spec/accessibility/focus-not-obscured/), [native interactive elements](https://specification.website/spec/accessibility/native-interactive-elements/), [status messages](https://specification.website/spec/accessibility/status-messages/) | Recommended | Design system | |
