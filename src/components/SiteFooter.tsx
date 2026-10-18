@@ -26,14 +26,20 @@ export function SiteFooter() {
             <ul className={styles.list}>
               {SOCIAL_LINKS.map((social) => (
                 <li key={social.network}>
-                  <SocialLink network={social.network} label={social.label} href={social.href} base="/" />
+                  <SocialLink
+                    network={social.network}
+                    label={social.label}
+                    href={social.href}
+                    base="/"
+                    className={styles.social}
+                  />
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
-        <Logo href="/" base="/" />
+        <Logo href="/" base="/" className={styles.logo} />
 
         <ul className={styles.legal}>
           <li>{TEDX_DISCLAIMER}</li>
@@ -42,7 +48,7 @@ export function SiteFooter() {
           </li>
           <li>All Rights Reserved</li>
           <li>
-            <a href={DESIGN_CREDIT.href}>{DESIGN_CREDIT.label}</a>
+            <a href={DESIGN_CREDIT.href} className={styles.legalLink}>{DESIGN_CREDIT.label}</a>
           </li>
         </ul>
       </div>
