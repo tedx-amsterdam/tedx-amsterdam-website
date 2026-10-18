@@ -203,6 +203,7 @@ Follow [Conventional Branch](https://conventional-branch.github.io): `<type>/<de
 
 - Open a **draft** pull request early for work in progress; mark it ready when it is complete.
 - Before asking for review: rebase on `main`, squash fixups, review your own diff, check that CI and the Cloudflare preview are green, and open the preview link yourself.
+- When a pull request falls behind `main`, rebase it: locally, or with "Update with rebase" from the arrow next to GitHub's "Update branch" button. The button's default merges `main` into the branch, and CI rejects that merge commit.
 - Merge with **rebase and merge**. Do not squash: the atomic commits are the project history.
 - **Stacked pull requests** (one based on another's branch): merge the lowest first. GitHub deletes its branch on merge and retargets the next one to `main`. Check that the base is `main` before every merge.
 - Delete the branch after merging.
