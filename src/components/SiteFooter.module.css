@@ -60,6 +60,28 @@
   color: inherit;
 }
 
+/* On touch screens every footer link gets a tap area of at least 44px
+   (decision 28). The links are 18 to 23px high, so they grow vertically
+   and the lists drop the gaps the taller links now provide. */
+@media (pointer: coarse) {
+  .list {
+    gap: 0;
+  }
+
+  .link,
+  .social,
+  .logo,
+  .legalLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-target);
+  }
+
+  .logo {
+    align-self: flex-start;
+  }
+}
+
 @media (max-width: 767px) {
   .footer {
     padding-inline: var(--gutter-m);
