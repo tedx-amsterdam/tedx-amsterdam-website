@@ -13,11 +13,12 @@ type SpeakerCardProps = {
   priority?: boolean;
 };
 
-// The card's width in the grid of the speakers page: one column on phones
-// (15px gutters), two on tablets (gutters of 15px, then 40px), four in the
-// 1080px content column, where a card is 255px wide.
+// The card's width in the grid of the speakers page, where the photos sit
+// side by side without gaps: one column on phones (15px gutters), two on
+// tablets (gutters of 15px, then 40px), four in the 1080px content column,
+// where a card is 270px wide.
 const SIZES =
-  "(max-width: 479px) calc(100vw - 30px), (max-width: 767px) calc(50vw - 25px), (max-width: 1023px) calc(50vw - 50px), min(calc(25vw - 35px), 255px)";
+  "(max-width: 479px) calc(100vw - 30px), (max-width: 767px) calc(50vw - 15px), (max-width: 1023px) calc(50vw - 40px), min(calc(25vw - 20px), 270px)";
 
 // Overview card that links to the speaker page. The portrait has alt="":
 // the link text already names the speaker, so the name would be read twice.

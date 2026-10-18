@@ -16,6 +16,11 @@
   background: var(--grad-tile);
 }
 
+.name,
+.role {
+  padding-inline-end: var(--space-5);
+}
+
 .name {
   margin: var(--space-2) 0 0;
   font: var(--text-h4);
