@@ -153,6 +153,8 @@ Headers, transport, and policies that keep visitors safe.
 
 - [ ] [HTTPS and TLS](https://specification.website/spec/security/https-tls/) — Required
   Serve every page over HTTPS using TLS 1.2 or 1.3, redirect plain HTTP to HTTPS, and disable obsolete SSL and early TLS versions on every host you control.
+- [ ] [TLS configuration hardening](https://specification.website/spec/security/tls-configuration/) — Recommended
+  Beyond protocol versions and key exchange: TLS compression off, secure renegotiation only, no unsafe 0-RTT, Extended Main Secret on, server cipher order, SHA-2 signatures, and certificate keys of adequate size.
 - [ ] [HSTS (Strict-Transport-Security)](https://specification.website/spec/security/hsts/) — Required
   HSTS tells browsers to only ever use HTTPS for your domain. Send max-age with includeSubDomains — but skip the preload list, which its own operator now discourages.
 - [ ] [Mixed content and upgrade-insecure-requests](https://specification.website/spec/security/mixed-content/) — Recommended
@@ -189,8 +191,12 @@ Headers, transport, and policies that keep visitors safe.
   Clear-Site-Data lets a response tell the browser to wipe cookies, storage, and caches for your origin. Send it on logout so a shared device keeps nothing behind.
 - [ ] [DNS CAA records](https://specification.website/spec/security/caa-records/) — Recommended
   A CAA record tells certificate authorities which of them are allowed to issue certificates for your domain. Cheap to add, blocks a class of mis-issuance attacks.
+- [ ] [RPKI route origin validation](https://specification.website/spec/security/rpki/) — Recommended
+  Make sure the IP prefixes your web, name and mail servers live in are covered by Route Origin Authorisations, so networks that validate routes can reject hijacked announcements. Usually that means choosing a host that signs them.
 - [ ] [DNSSEC](https://specification.website/spec/security/dnssec/) — Optional
   DNSSEC cryptographically signs DNS records so resolvers can verify they have not been tampered with. Strong defence in depth, but only with full registrar and registry support.
+- [ ] [DANE for HTTPS](https://specification.website/spec/security/dane/) — Optional
+  A TLSA record at _443._tcp pins your HTTPS certificate or key in DNSSEC-signed DNS. No mainstream browser checks it, so for websites it is optional; its real home is SMTP.
 
 ## Well-Known URIs
 
@@ -266,7 +272,7 @@ Things that make a site legible to AI agents and crawlers.
 - [ ] [NLWeb — conversational interface discovery](https://specification.website/spec/agent-readiness/nlweb/) — Optional
   NLWeb is an emerging convention for exposing a site as a conversational AI endpoint. A site advertises an `/ask`-style endpoint via a `rel="nlweb"` link and serves an MCP-compatible JSON-RPC interface that agents can query in natural language.
 - [ ] [WebMCP — browser-native tools for agents](https://specification.website/spec/agent-readiness/webmcp/) — Optional
-  WebMCP lets a page register tools that an in-browser AI agent can call directly, using a `navigator.modelContext` JavaScript API. It turns a site into an agent surface without server-side MCP plumbing.
+  WebMCP lets a page register tools that an in-browser AI agent can call directly, using the `document.modelContext` JavaScript API. It turns a site into an agent surface without server-side MCP plumbing.
 - [ ] [Open Knowledge Format (OKF) bundle](https://specification.website/spec/agent-readiness/okf-bundle/) — Optional
   Publish your whole knowledge base as an Open Knowledge Format bundle — a tree of Markdown concept files with typed front matter — so an agent can ingest the entire corpus in one fetch instead of scraping page by page. Now at v0.2, which moves provenance and citations into front matter.
 - [ ] [Schemamap — discoverable JSON-LD endpoints per resource](https://specification.website/spec/agent-readiness/schemamap/) — Optional
@@ -368,6 +374,8 @@ Graceful failure — error pages, offline, redirects.
   When you retire an endpoint, announce it in machine-readable form: the Deprecation and Sunset response headers tell clients it is going away, when, and where to go next — so integrations migrate before anything breaks.
 - [ ] [Redirect-By header](https://specification.website/spec/resilience/redirect-by/) — Recommended
   The Redirect-By response header names the software that issued a redirect, so anyone debugging a redirect chain can see at a glance which system to fix. It is deployed today under the legacy name X-Redirect-By.
+- [ ] [IPv6 reachability](https://specification.website/spec/resilience/ipv6/) — Recommended
+  Publish AAAA records for the web server and the authoritative name servers, make sure every IPv6 address actually answers, and serve the same site over IPv6 as over IPv4.
 
 ## Internationalisation
 
