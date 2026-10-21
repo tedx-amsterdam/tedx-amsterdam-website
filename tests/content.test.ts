@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { getEvents, getSpeaker, getSpeakers, type Speaker } from "@/content";
+import { getEvents, getImageFile, getImageFiles, getSpeaker, getSpeakers, type Speaker } from "@/content";
 import { fixtureSource } from "@/content/fixtures";
 import { sortEvents, sortSpeakers } from "@/content/sort";
 import { createWebflowSource } from "@/content/webflow";
@@ -9,12 +9,11 @@ import { eventItemSchema, itemsPageSchema, speakerItemSchema } from "@/content/w
 import liveEvents from "./fixtures/webflow/events-live.json";
 import broken from "./fixtures/webflow/speakers-broken.json";
 import live from "./fixtures/webflow/speakers-live.json";
+import { webflowFetch } from "./support/images";
 
 const webflowItems = itemsPageSchema(speakerItemSchema).parse(live).items;
 const eventItems = itemsPageSchema(eventItemSchema).parse(liveEvents).items;
-// Tests never reach the network: image variant checks find nothing.
-const noVariants = async () => [];
-// Requests to the Webflow API, leaving out image variant checks on the CDN.
+// Requests to the Webflow API, leaving out image downloads from the CDN.
 const apiCalls = (fetch: { mock: { calls: unknown[][] } }) =>
   fetch.mock.calls.filter(([url]) => String(url).startsWith("https://api.webflow.com/")).length;
 
@@ -76,8 +75,28 @@ describe("@/content", () => {
 
   it("reads from the fixture source when CONTENT_SOURCE=fixtures", async () => {
     vi.stubEnv("CONTENT_SOURCE", "fixtures");
-    expect(await getSpeakers()).toEqual(await fixtureSource.getSpeakers());
-    expect(await getSpeaker("lin-chen")).toEqual(await fixtureSource.getSpeaker("lin-chen"));
+    // Equal to the fixtures apart from the image copies added on top.
+    const withoutCopies = (s: Speaker | undefined) => s && { ...s, photo: s.photo && { url: s.photo.url, alt: s.photo.alt } };
+    expect((await getSpeakers()).map(withoutCopies)).toEqual((await fixtureSource.getSpeakers()).map(withoutCopies));
+    expect(withoutCopies(await getSpeaker("lin-chen"))).toEqual(withoutCopies(await fixtureSource.getSpeaker("lin-chen")));
+  });
+
+  it("serves every image as copies made at build time (decision 29)", async () => {
+    vi.stubEnv("CONTENT_SOURCE", "fixtures");
+    const photos = (await getSpeakers()).flatMap((s) => (s.photo ? [s.photo] : []));
+    expect(photos.length).toBeGreaterThan(0);
+    for (const photo of photos) {
+      expect(photo.variants?.length).toBeGreaterThan(0);
+      expect(photo.shareUrl).toMatch(/^\/images\//);
+    }
+    const posters = (await getEvents()).flatMap((e) => (e.image ? [e.image] : []));
+    expect(posters.length).toBeGreaterThan(0);
+    for (const poster of posters) expect(poster.variants?.[0]?.url).toMatch(/^\/images\//);
+    const files = await getImageFiles();
+    for (const url of [...photos, ...posters].flatMap((image) => image.variants!.map((variant) => variant.url))) {
+      expect(files).toContain(url.slice("/images/".length));
+    }
+    expect((await getImageFile(files[0]!))?.contentType).toBe("image/webp");
   });
 
   it("fails with a clear error when CONTENT_SOURCE is missing", async () => {
@@ -88,7 +107,7 @@ describe("@/content", () => {
   it("reads from Webflow when CONTENT_SOURCE=webflow, fetching once for every page", async () => {
     vi.stubEnv("CONTENT_SOURCE", "webflow");
     vi.stubEnv("WEBFLOW_API_TOKEN", "token");
-    const fetch = vi.fn<typeof globalThis.fetch>(async () => new Response(JSON.stringify(live)));
+    const fetch = vi.fn(webflowFetch(() => live));
     vi.stubGlobal("fetch", fetch);
     const speakers = await getSpeakers();
     expect(speakers).toHaveLength(live.items.length);
@@ -106,11 +125,22 @@ describe("@/content", () => {
     await expect(getSpeaker("joe-wilson")).rejects.toThrow(/does not match the expected schema/);
   });
 
+  it("fails getSpeakers with the URL when a photo cannot be downloaded", async () => {
+    vi.stubEnv("CONTENT_SOURCE", "webflow");
+    vi.stubEnv("WEBFLOW_API_TOKEN", "missing-photo-token");
+    // A URL no other test uses: the pipeline keeps the photos it already made.
+    const missing = "https://cdn.prod.website-files.com/missing/photo.jpg";
+    const items = live.items.map((item, i) => (i === 0 ? { ...item, fieldData: { ...item.fieldData, photo: { ...item.fieldData.photo, url: missing } } } : item));
+    const photoFetch = webflowFetch(() => ({ ...live, items }));
+    vi.stubGlobal("fetch", vi.fn(async (url: string) => (url === missing ? new Response("Forbidden", { status: 403 }) : photoFetch(url))));
+    await expect(getSpeakers()).rejects.toThrow(`Image ${missing} could not be downloaded: HTTP 403`);
+  });
+
   it("reads events from Webflow when CONTENT_SOURCE=webflow", async () => {
     vi.stubEnv("CONTENT_SOURCE", "webflow");
     vi.stubEnv("WEBFLOW_API_TOKEN", "events-token");
     const byCollection = (url: string) => (url.includes(`/collections/${EVENTS_COLLECTION_ID}/`) ? liveEvents : live);
-    vi.stubGlobal("fetch", vi.fn(async (url: string) => new Response(JSON.stringify(byCollection(String(url))))));
+    vi.stubGlobal("fetch", vi.fn(webflowFetch(byCollection)));
     const events = await getEvents();
     expect(events).toHaveLength(liveEvents.items.length);
     expect(events).toEqual(sortEvents(events));
@@ -118,7 +148,7 @@ describe("@/content", () => {
 
   it("builds a new source when the token changes", async () => {
     vi.stubEnv("CONTENT_SOURCE", "webflow");
-    const fetch = vi.fn(async () => new Response(JSON.stringify(live)));
+    const fetch = vi.fn(webflowFetch(() => live));
     vi.stubGlobal("fetch", fetch);
     vi.stubEnv("WEBFLOW_API_TOKEN", "token-a");
     await getSpeakers();
@@ -132,50 +162,34 @@ describe("Webflow source", () => {
   const client = (items = webflowItems): WebflowClient => ({ getLiveItems: vi.fn(async () => items) as WebflowClient["getLiveItems"] });
 
   it("returns speakers in display order, lowest order first", async () => {
-    const speakers = await createWebflowSource(client(), noVariants).getSpeakers();
+    const speakers = await createWebflowSource(client()).getSpeakers();
     expect(speakers.map((s) => s.order)).toEqual(webflowItems.map((i) => i.fieldData.order).toSorted((a, b) => a! - b!));
   });
 
   it("finds a speaker by slug and returns undefined for an unknown one", async () => {
-    const source = createWebflowSource(client(), noVariants);
+    const source = createWebflowSource(client());
     expect((await source.getSpeaker("joe-wilson"))?.name).toBe("Joe Wilson");
     expect(await source.getSpeaker("nobody")).toBeUndefined();
   });
 
   it("tries again after a failed fetch instead of keeping the error", async () => {
     const getLiveItems = vi.fn().mockRejectedValueOnce(new Error("offline")).mockResolvedValueOnce(webflowItems);
-    const source = createWebflowSource({ getLiveItems } as unknown as WebflowClient, noVariants);
+    const source = createWebflowSource({ getLiveItems } as unknown as WebflowClient);
     await expect(source.getSpeakers()).rejects.toThrow("offline");
     expect(await source.getSpeakers()).toHaveLength(webflowItems.length);
   });
 
-  it("adds the image variants Webflow has for each photo", async () => {
-    const findVariants = vi.fn(async (url: string) => [{ url: url.replace(/\.jpg$/, "-p-500.jpg"), width: 500 }]);
-    const joe = await createWebflowSource(client(), findVariants).getSpeaker("joe-wilson");
-    expect(joe?.photo?.variants).toEqual([{ url: joe!.photo!.url.replace(/\.jpg$/, "-p-500.jpg"), width: 500 }]);
-    expect(findVariants).toHaveBeenCalledTimes(webflowItems.filter((i) => i.fieldData.photo).length);
-  });
-
   it("returns events earliest first, fetched once", async () => {
     const getLiveItems = vi.fn(async (id: string) => (id === EVENTS_COLLECTION_ID ? eventItems : webflowItems));
-    const source = createWebflowSource({ getLiveItems } as unknown as WebflowClient, noVariants);
+    const source = createWebflowSource({ getLiveItems } as unknown as WebflowClient);
     const [events] = await Promise.all([source.getEvents(), source.getEvents()]);
     expect(events.map((e) => e.startsAt)).toEqual(eventItems.map((i) => new Date(i.fieldData["event-date"]).toISOString()).toSorted());
     expect(getLiveItems.mock.calls.filter(([id]) => id === EVENTS_COLLECTION_ID)).toHaveLength(1);
   });
 
-  it("adds image variants to event images too", async () => {
-    const withImage = { ...eventItems[0]!, fieldData: { ...eventItems[0]!.fieldData, image: { url: "https://cdn.example/poster.jpg", alt: null } } };
-    const getLiveItems = vi.fn(async (id: string) => (id === EVENTS_COLLECTION_ID ? [withImage] : webflowItems));
-    const findVariants = vi.fn(async () => [{ url: "https://cdn.example/poster-p-500.jpg", width: 500 }]);
-    const [event] = await createWebflowSource({ getLiveItems } as unknown as WebflowClient, findVariants).getEvents();
-    expect(event?.image?.variants).toEqual([{ url: "https://cdn.example/poster-p-500.jpg", width: 500 }]);
-    expect(findVariants).toHaveBeenCalledExactlyOnceWith("https://cdn.example/poster.jpg");
-  });
-
   it("fetches the collection once and shares it", async () => {
     const webflow = client();
-    const source = createWebflowSource(webflow, noVariants);
+    const source = createWebflowSource(webflow);
     await Promise.all([source.getSpeakers(), source.getSpeaker("joe-wilson"), source.getSpeaker("fieke-opdam")]);
     expect(webflow.getLiveItems).toHaveBeenCalledOnce();
   });

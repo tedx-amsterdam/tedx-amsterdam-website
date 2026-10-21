@@ -10,8 +10,8 @@ const nextConfig: NextConfig = {
   // stays written by people only.
   agentRules: false,
   images: {
-    // next/image optimisation needs a server. CMS images are served as is
-    // from the Webflow CDN until the CMS migration (decision 19).
+    // next/image optimisation needs a server. CMS images are resized at
+    // build time by src/app/images/ instead (decision 29).
     unoptimized: true,
   },
 };

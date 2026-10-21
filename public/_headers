@@ -22,6 +22,11 @@
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Image copies made at build time carry a hash of their source and
+# settings in the name (decision 29), so they can be cached the same way.
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
 # Keep every pages.dev address out of search engines: the production alias
 # (tedx-amsterdam-website.pages.dev) and all branch and commit previews.
 # Only the real domain should be indexed, otherwise Google sees duplicate

@@ -5,7 +5,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { RichText } from "@/components/RichText";
 import { sizesFor, srcSet } from "@/components/src-set";
 import { OPEN_GRAPH_DEFAULTS, SITE_URL } from "@/config/site";
-import { getSpeaker, getSpeakers, type Image, type Speaker } from "@/content";
+import { getSpeaker, getSpeakers, type Speaker } from "@/content";
 import { toPlainText, truncate } from "@/lib/plain-text";
 import styles from "./page.module.css";
 
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: path,
       type: "profile",
-      images: speaker.photo ? [{ url: shareImage(speaker.photo), alt: speaker.photo.alt }] : undefined,
+      images: speaker.photo ? [{ url: speaker.photo.shareUrl ?? speaker.photo.url, alt: speaker.photo.alt }] : undefined,
     },
   };
 }
@@ -163,10 +163,4 @@ export default async function SpeakerPage({ params }: Props) {
 function describe(speaker: Speaker): string {
   const text = [speaker.bio, speaker.sessionBlurb].map((html) => (html ? toPlainText(html) : "")).find(Boolean);
   return truncate(text ?? `${speaker.name}, speaker at TEDxAmsterdam.`, 160);
-}
-
-// Social previews download the image, and some drop anything over about
-// 300 KB, so a 1080 pixel variant is preferred over the original.
-function shareImage(photo: Image): string {
-  return photo.variants?.find((variant) => variant.width === 1080 && variant.url !== photo.url)?.url ?? photo.url;
 }
