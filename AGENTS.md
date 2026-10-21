@@ -61,6 +61,8 @@ src/content/
   index.ts            Selects the active source. The only import pages may use.
   sort.ts             Display order shared by every source.
   events.ts           Splits events into upcoming and past, in Amsterdam time.
+  images.ts           Resizes every CMS image into WebP copies at build time (decision 29),
+                      served by the route in src/app/images/.
   webflow/            Webflow adapter: API client, Zod schemas, mappers.
   fixtures/           Fixture source with static data for tests, CI and offline development.
 src/lib/              Small shared utilities (env parsing, HTML sanitising, formatting).
