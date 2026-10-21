@@ -12,7 +12,7 @@ Update this section in every pull request that changes the state of the project.
 
 #4, #5, #9 and #10 were merged into stacked base branches instead of `main`; #8 and #11 restored their commits unchanged. GitHub now allows only rebase merging and deletes head branches on merge, so stacking is safe again (decision 18). Older history on `main` contains merge commits and one commit pushed directly; do not copy them.
 
-**Next**: partners, pioneers, past talks and the blog, one collection per pull request (decision 20). The speaker card with the talk title first waits for content: no 2026 speaker has a talk title in the CMS (checked 21 October 2026).
+**Next**: the `/partners` page, now that partners are in the content layer (`feature/webflow-partners`). Then pioneers, past talks and the blog, one collection per pull request (decision 20). The speaker card with the talk title first waits for content: no 2026 speaker has a talk title in the CMS (checked 21 October 2026).
 
 ## Open decisions
 
@@ -111,7 +111,7 @@ Done when: a build with `CONTENT_SOURCE=webflow` fetches the live speakers, ever
 ## Phase 2: Remaining collections
 
 - [x] Events (`/events`): content layer in #23, page in #24
-- [ ] Partners (`/partners`)
+- [ ] Partners (`/partners`): content layer in `feature/webflow-partners`, page next
 - [ ] Impact Program pioneers (`/impact`)
 - [ ] Past talks
 - [ ] Blog (`/blog`), once it has content

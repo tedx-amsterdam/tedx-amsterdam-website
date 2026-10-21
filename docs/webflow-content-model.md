@@ -124,17 +124,25 @@ Shown on `/partners` as a list and two logo marquees.
 | --- | --- |
 | Collection ID | `68ee2b4f5c07668c00af87d7` |
 | Collection slug | `partners` |
-| Items | 17 |
+| Items | 39 published: 22 current, 17 past |
 
 | Webflow field | Type | Domain field | Notes |
 | --- | --- | --- | --- |
 | `name` | PlainText, required | `name` | |
 | `slug` | PlainText, required | `slug` | No detail pages |
-| `image` | Image | `logo` | Alt text fallback: partner name |
+| `image` | Image | `logo` | Alt text fallback: "{name} logo" |
 | `description` | PlainText | `description` | |
 | `website` | Link | `url` | |
-| `partner-status` | Option: `Current`, `Past` | `status` | Map to `"current"` or `"past"` |
+| `partner-status` | Option: `Current`, `Past` | `status` | Sent as the option id; map to `"current"` or `"past"` |
 | `order` | Number | `order` | Lower number shows higher |
+
+**Quirks**
+
+- Status: the API sends an Option field as the option's id, not its name: `ae25899025683fce5ec6cef47b02f470` is Current and `1dfa59a092239bd83aaecdcf410892ff` is Past (from `GET /v2/collections/68ee2b4f5c07668c00af87d7`). A partner without a status, or with a new option, fails the build.
+- Order: several partners share a number (11, 13 and 37 twice), so ties sort by name. Past partners have no order and no website.
+- Logos are small PNG or WebP files, mostly 132 by 98 or 130 by 130 pixels, some already Webflow's own `-p-130x130q80` copies; `alt` is `null` on the newest ones. They are raster images, so they go through the build time pipeline (decision 29).
+- Some names carry editing slips that only Webflow can fix: "Holie’s pizza," ends in a comma and "Jeroen van der MOST" is in capitals. The mapper trims names but does not change them.
+- Recorded responses: `partners-live.json` (21 October 2026, 39 partners) and `partners-broken.json`, a two item excerpt in which one partner has a status option that does not exist.
 
 ### Pioneers
 
