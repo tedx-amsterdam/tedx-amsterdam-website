@@ -29,7 +29,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [Favicons](https://specification.website/spec/foundations/favicons/) | Recommended | Phase 4 | None yet |
 | [theme-color](https://specification.website/spec/foundations/theme-color/) | Recommended | Phase 4 | Black, matching the dark first design |
 | [color-scheme](https://specification.website/spec/foundations/color-scheme/) | Recommended | Phase 4 | `dark` |
-| [Open Graph](https://specification.website/spec/foundations/open-graph/) | Recommended | Partial | Speaker pages and `/events`: title, description, URL, type and site name, tested. A speaker's image is the 1080 pixel Webflow variant, portrait shaped and without `og:image:width`/`height`; `/speakers` and `/events` have no image yet. The rest, and a share image, in phase 4 |
+| [Open Graph](https://specification.website/spec/foundations/open-graph/) | Recommended | Partial | Speaker pages and `/events`: title, description, URL, type and site name, tested. A speaker's image is a JPEG copy of at most 1080 pixels made at build time (decision 29, tested), portrait shaped and without `og:image:width`/`height`; `/speakers` and `/events` have no image yet. The rest, and a share image, in phase 4 |
 | [Feed discovery](https://specification.website/spec/foundations/feed-discovery/), [feed hygiene](https://specification.website/spec/foundations/feed-hygiene/) | Recommended | Phase 2 | With the blog, once it has content |
 | [Popover API](https://specification.website/spec/foundations/popover-api/), [anchor positioning](https://specification.website/spec/foundations/anchor-positioning/), [text-wrap](https://specification.website/spec/foundations/text-wrap/), [container queries](https://specification.website/spec/foundations/container-queries/) | Recommended | Design system | Component level CSS |
 
@@ -122,8 +122,8 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
 | [Core Web Vitals](https://specification.website/spec/performance/core-web-vitals/) | Required | Partial | Measured by Lighthouse on every preview; thresholds rise per phase |
-| [Image optimisation](https://specification.website/spec/performance/image-optimization/) | Required | Partial | Speaker photos and event images have explicit dimensions (tested) and a `srcset` from Webflow's own variants (decisions 19 and 21). Modern formats (AVIF, WebP) are not covered until the CMS migration (phase 7), after launch: an open decision in the roadmap |
-| [Cache-Control](https://specification.website/spec/performance/cache-control/) | Required | Done | Hashed assets under `/_next/static/` are immutable for a year, tested |
+| [Image optimisation](https://specification.website/spec/performance/image-optimization/) | Required | Done | Speaker photos and event images have explicit dimensions (tested) and a `srcset` of WebP copies at 500 to 1600 pixels, made at build time with `sharp` and served from our own domain (decision 29); every speaker photo has one (tested). AVIF is left out: WebP already keeps `/speakers` near 210 KB |
+| [Cache-Control](https://specification.website/spec/performance/cache-control/) | Required | Done | Hashed assets under `/_next/static/` and image copies under `/images/` are immutable for a year, tested |
 | [Compression](https://specification.website/spec/performance/compression/) | Required | Done | Cloudflare |
 | [HTTP/1.1 workarounds](https://specification.website/spec/performance/http1-workarounds/) | Avoid | Done | None used |
 | [HTTP/2 and HTTP/3](https://specification.website/spec/performance/http3/) | Recommended | Done | Cloudflare |
