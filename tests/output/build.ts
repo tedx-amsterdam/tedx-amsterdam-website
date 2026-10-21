@@ -40,3 +40,9 @@ export function outFileExists(path: string): boolean {
   assertBuildExists();
   return existsSync(join(OUT_DIR, path));
 }
+
+// A file in the build, or an empty buffer when it is missing, so checks on
+// its bytes fail with the path instead of throwing.
+export function outFile(path: string): Buffer {
+  return outFileExists(path) ? readFileSync(join(OUT_DIR, path)) : Buffer.alloc(0);
+}

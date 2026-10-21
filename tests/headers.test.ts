@@ -60,8 +60,8 @@ describe("security headers on every response", () => {
 });
 
 describe("caching", () => {
-  it(`caches hashed Next.js assets for a year (${SPEC}/performance/cache-control/)`, () => {
-    const cacheControl = headersFor(rules, "/_next/static/*").get("cache-control") ?? "";
+  it.each(["/_next/static/*", "/images/*"])(`caches hashed files in %s for a year (${SPEC}/performance/cache-control/)`, (pattern) => {
+    const cacheControl = headersFor(rules, pattern).get("cache-control") ?? "";
     expect(cacheControl).toContain("immutable");
     expect(Number(cacheControl.match(/max-age=(\d+)/)?.[1])).toBeGreaterThanOrEqual(31536000);
   });
