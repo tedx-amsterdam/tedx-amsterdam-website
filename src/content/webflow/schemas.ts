@@ -16,6 +16,13 @@ const image = z.object({
   alt: z.string().nullish(),
 });
 
+// Trimmed like every text field; Webflow sends an empty string for a
+// cleared link.
+const optionalLink = z.preprocess(
+  (value) => (typeof value === "string" ? value.trim() || null : value),
+  z.url({ protocol: /^https?$/ }).nullish(),
+);
+
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "must be a lowercase URL segment");
 
 // Speakers collection (6874c72605e8d57abb48e751).
@@ -50,12 +57,7 @@ export const eventItemSchema = z.object({
     // The typo is Webflow's own field slug.
     descpiption: optionalText,
     location: optionalText,
-    // Trimmed like every text field; Webflow sends an empty string for a
-    // cleared link.
-    link: z.preprocess(
-      (value) => (typeof value === "string" ? value.trim() || null : value),
-      z.url({ protocol: /^https?$/ }).nullish(),
-    ),
+    link: optionalLink,
     tag: optionalText,
     image: image.nullish(),
   }),
