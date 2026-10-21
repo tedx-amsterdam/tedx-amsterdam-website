@@ -12,14 +12,13 @@ Update this section in every pull request that changes the state of the project.
 
 #4, #5, #9 and #10 were merged into stacked base branches instead of `main`; #8 and #11 restored their commits unchanged. GitHub now allows only rebase merging and deletes head branches on merge, so stacking is safe again (decision 18). Older history on `main` contains merge commits and one commit pushed directly; do not copy them.
 
-**Next**: the speaker card with the talk title first (check first that the CMS has a talk title for every speaker). Then partners, pioneers, past talks and the blog, one collection per pull request (decision 20).
+**Next**: Lighthouse on `main` fails since 19 October: every speaker photo in Webflow was replaced by a copy without the smaller variants that decision 21 relies on, so pages load the 560 KB originals. Decision 29 resizes and converts CMS images at build time instead (`feature/build-time-images`); it is fixed before other work. Then partners, pioneers, past talks and the blog, one collection per pull request (decision 20). The speaker card with the talk title first waits for content: no 2026 speaker has a talk title in the CMS (checked 21 October 2026).
 
 ## Open decisions
 
 Decisions that block or shape upcoming work. Record the outcome in [decisions.md](decisions.md) and remove the line here.
 
 - [ ] **Security contact** for `/.well-known/security.txt`: which foundation address (for example `security@tedxamsterdam.nl`)?
-- [ ] **Image formats at launch**: CMS images are JPEGs on the Webflow CDN until the CMS migration (phase 7), which is after launch. Responsive sizes are covered by Webflow's own variants (decision 21), but The Website Specification also requires modern formats (AVIF, WebP). Accept JPEG at launch on purpose (record why in `docs/website-spec.md`), or convert at build time before launch (phase 6), which adds `sharp` to the build.
 - [ ] **Copyright holder** in `LICENSE`: Stichting TEDxAmsterdam (current) or the maintainer, as in the design system?
 - [ ] **Past talks**: detail pages, or redirect `/speakers-copy/*` to `/speakers` (phase 2)?
 - [ ] **Analytics**: GA4 with a consent banner, or cookieless analytics without one (phase 4)?

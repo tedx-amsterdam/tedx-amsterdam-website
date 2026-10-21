@@ -162,3 +162,15 @@ Why: the Figma file belongs to busy.studio, it is view only for us, and the desi
 
 This closes the open decision on mobile designs.
 
+
+## 29. CMS images are resized and converted at build time (October 2026)
+
+Replaces decisions 19 and 21 for how images are delivered; images still come from the CMS. The build downloads every CMS image once and writes smaller copies at fixed widths (500, 800, 1080 and 1600 pixels, never wider than the original) in WebP with `sharp`. A static Route Handler, `/images/[file]`, generates them, so they land in `out/` like the pages and `next dev` serves them on request. File names hold a hash of the image's content and the encoding settings, not of its URL, so a changed image or setting gets a new URL even when a CMS keeps the old one, and the files can be cached for a year. `Image.variants` points at these copies, so components keep using `srcset` unchanged; `src` stays the original as a fallback. Every browser that Next.js 16 supports reads WebP. Open Graph images stay JPEG, which every link preview reads. An image that cannot be downloaded or decoded fails the build with its URL in the error, like any other bad CMS data.
+
+Context: on 18 October 2026 every speaker photo in Webflow was replaced by a copy of the same file under a new name, and Webflow made no smaller variants for the copies. The variant check of decision 21 found none, fell back to the 560 KB originals as designed, and Lighthouse performance on `/speakers` and the speaker pages dropped from above 0.9 to 0.74 to 0.81 on `main`. Nothing in this repository changed; the content did.
+
+Why: decision 21 depended on an undocumented Webflow habit that any editor action can break without anyone noticing, and decision 19 left modern formats, which The Website Specification requires, for after launch. `sharp` was the reason against: a native dependency that slows every build. It is already installed as an optional dependency of Next.js, works on Cloudflare Pages without configuration, and resizing a few dozen photos adds seconds to a build. In a prototype the 557 KB speaker photo became 31 KB at 800 pixels.
+
+Consequences: the pipeline works on domain images, not on Webflow, so it keeps working after the CMS migration (phase 7); a CMS with its own image API, such as Sanity, can replace it then. The copies are served from our own domain; only the `src` fallback still points at the Webflow CDN, which stops when the plan ends, so it moves to a local copy before then. The build downloads every CMS image on every run, a few megabytes today. AVIF is left out for now: it encodes much slower and WebP already brings the photos far below the budget. Vector images (SVG, likely for partner logos) and animations do not belong in this pipeline, which turns them into still bitmaps: the collection that brings them decides how to serve them.
+
+This closes the open decision on image formats at launch.
