@@ -23,15 +23,7 @@ export const FIXTURE_SPEAKERS: readonly Speaker[] = [
       "<p>What if the city itself could breathe? Amara shows how <strong>green corridors</strong> turn streets into ecosystems, and why growth does not have to mean more concrete.</p><p>‍</p>",
     ),
     bio: sanitizeHtml("<p><em>Amara studies how cities and nature share space.</em></p>"),
-    // Variants exercise srcset in the build; real ones come from the CMS.
-    photo: {
-      url: PORTRAIT,
-      alt: "Portrait of Amara Okafor",
-      variants: [
-        { url: PORTRAIT, width: 400 },
-        { url: PORTRAIT, width: 800 },
-      ],
-    },
+    photo: { url: PORTRAIT, alt: "Portrait of Amara Okafor" },
     order: 1,
   },
   {

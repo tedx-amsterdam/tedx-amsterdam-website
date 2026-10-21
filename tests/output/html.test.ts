@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { SITE_URL } from "@/config/site";
-import { htmlPages, outFileExists } from "./build";
+import { htmlPages, outFile, outFileExists } from "./build";
 
 // Each check links to its requirement in The Website Specification.
 // See docs/website-spec.md for the full mapping.
@@ -90,6 +90,20 @@ describe.each(pages)("$path", ({ source, document }) => {
     }
   });
 
+  it(`serves every CMS image as WebP copies made at build time (${SPEC}/performance/image-optimization/)`, () => {
+    // Fixture and CMS images all run through the pipeline (decision 29), so
+    // every image in main has a srcset whose files are in the build.
+    for (const img of document.querySelectorAll("main img")) {
+      const candidates = (img.getAttribute("srcset") ?? "").split(",").map((candidate) => candidate.trim().split(" ")[0]!);
+      expect(img.getAttribute("sizes"), img.outerHTML).toBeTruthy();
+      for (const url of candidates) {
+        expect(url, img.outerHTML).toMatch(/^\/images\/[0-9a-f]{16}-\d+\.webp$/);
+        // RIFF....WEBP: a real image, not an error page written under its name.
+        expect(outFile(url.slice(1)).subarray(8, 12).toString("latin1"), url).toBe("WEBP");
+      }
+    }
+  });
+
   it("only sets sizes on images with a srcset", () => {
     for (const img of document.querySelectorAll("img[sizes]")) expect(img.hasAttribute("srcset")).toBe(true);
   });
@@ -153,8 +167,14 @@ describe("speaker pages", () => {
     expect(photos.slice(1).filter((img) => img.getAttribute("loading") !== "lazy")).toEqual([]);
   });
 
-  it(`use srcset for photos with variants (${SPEC}/performance/image-optimization/)`, () => {
-    expect(speakerPages.some(({ document }) => document.querySelector("main img[srcset][sizes]"))).toBe(true);
+  it("share a JPEG copy of the photo in Open Graph", () => {
+    const shared = speakerPages.flatMap(({ document }) => [...document.querySelectorAll('meta[property="og:image"]')]);
+    expect(shared.length).toBeGreaterThan(0);
+    for (const meta of shared) {
+      const { pathname } = new URL(meta.getAttribute("content")!);
+      expect(pathname).toMatch(/^\/images\/[0-9a-f]{16}-\d+\.jpg$/);
+      expect(outFile(pathname.slice(1)).subarray(0, 2).toString("hex"), pathname).toBe("ffd8");
+    }
   });
 });
 

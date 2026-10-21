@@ -10,10 +10,12 @@ export type Image = {
   // Never empty: sources fall back to a meaningful description, such as the
   // speaker name, when the CMS has no alt text.
   alt: string;
-  // Versions of the image by width, for srcset: smaller copies from the CMS
-  // and, when its width can be bounded, url itself. Missing or empty when
-  // the CMS has none; url always works on its own.
+  // Copies of the image by width, for srcset, made at build time (decision
+  // 29). url always works on its own.
   variants?: readonly ImageVariant[];
+  // A JPEG copy for link previews, which do not all read WebP and some drop
+  // files over about 300 KB.
+  shareUrl?: string;
 };
 
 export type ImageVariant = {
