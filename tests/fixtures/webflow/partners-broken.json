@@ -1,0 +1,53 @@
+{
+  "items": [
+    {
+      "id": "68ee2f9922e8ef16e363291f",
+      "cmsLocaleId": "6874c72679138fea0389db24",
+      "lastPublished": "2026-10-18T12:22:45.468Z",
+      "lastUpdated": "2026-10-18T12:21:50.374Z",
+      "createdOn": "2025-10-14T11:10:17.568Z",
+      "isArchived": false,
+      "isDraft": false,
+      "fieldData": {
+        "image": {
+          "fileId": "6ad4b9de0699898de48c8751",
+          "url": "https://cdn.prod.website-files.com/6874c72679138fea0389db28/6ad4b9de0699898de48c8751_68ee2f966f627db243329451_68ed5800d47607af34eba30a_Zoku-p-130x130q80.png",
+          "alt": "Zoku logo"
+        },
+        "description": "Hybrid hotel offering home-office lofts for global nomads",
+        "website": "https://livezoku.com/",
+        "partner-status": "ae25899025683fce5ec6cef47b02f470",
+        "order": 12,
+        "name": "Zoku",
+        "slug": "zoku"
+      }
+    },
+    {
+      "id": "6a9177cfb18a9744f8cd15dc",
+      "cmsLocaleId": "6874c72679138fea0389db24",
+      "lastPublished": "2026-09-11T10:43:07.022Z",
+      "lastUpdated": "2026-09-11T10:43:07.022Z",
+      "createdOn": "2026-08-28T11:58:07.215Z",
+      "isArchived": false,
+      "isDraft": false,
+      "fieldData": {
+        "image": {
+          "fileId": "6a917a282e78222d4a4992eb",
+          "url": "https://cdn.prod.website-files.com/6874c72679138fea0389db28/6a917a282e78222d4a4992eb_6a917a008f9c70a4ccb273f1_Droog%2520132x98.png",
+          "alt": "Droog logo"
+        },
+        "description": "Design label turned cultural hub in a 17th-century canal house",
+        "website": "https://www.droog.com/",
+        "partner-status": "00000000000000000000000000000000",
+        "order": 32,
+        "name": "Droog",
+        "slug": "droog"
+      }
+    }
+  ],
+  "pagination": {
+    "limit": 100,
+    "offset": 0,
+    "total": 2
+  }
+}
