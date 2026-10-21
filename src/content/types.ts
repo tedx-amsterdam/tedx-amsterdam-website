@@ -42,6 +42,21 @@ export type Speaker = {
   order?: number;
 };
 
+export type Partner = {
+  // Identifies the partner; partners have no pages of their own.
+  slug: string;
+  name: string;
+  // Partner of the current edition, or of an earlier one.
+  status: "current" | "past";
+  // Plain text, not rich text: the CMS field is plain.
+  description?: string;
+  // The partner's own website.
+  url?: string;
+  logo?: Image;
+  // Lower shows first; partners without an order come last.
+  order?: number;
+};
+
 // Named TedxEvent, not Event, so it never shadows the DOM Event type.
 export type TedxEvent = {
   // Identifies the event; events have no pages of their own.

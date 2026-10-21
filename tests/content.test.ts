@@ -1,18 +1,22 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { getEvents, getImageFile, getImageFiles, getSpeaker, getSpeakers, type Speaker } from "@/content";
+import { getEvents, getImageFile, getImageFiles, getPartners, getSpeaker, getSpeakers, type Partner, type Speaker } from "@/content";
 import { fixtureSource } from "@/content/fixtures";
-import { sortEvents, sortSpeakers } from "@/content/sort";
+import { sortEvents, sortPartners, sortSpeakers } from "@/content/sort";
 import { createWebflowSource } from "@/content/webflow";
 import type { WebflowClient } from "@/content/webflow/client";
 import { EVENTS_COLLECTION_ID } from "@/content/webflow/events";
-import { eventItemSchema, itemsPageSchema, speakerItemSchema } from "@/content/webflow/schemas";
+import { PARTNERS_COLLECTION_ID } from "@/content/webflow/partners";
+import { eventItemSchema, itemsPageSchema, partnerItemSchema, speakerItemSchema } from "@/content/webflow/schemas";
 import liveEvents from "./fixtures/webflow/events-live.json";
+import livePartners from "./fixtures/webflow/partners-live.json";
+import brokenPartners from "./fixtures/webflow/partners-broken.json";
 import broken from "./fixtures/webflow/speakers-broken.json";
 import live from "./fixtures/webflow/speakers-live.json";
 import { webflowFetch } from "./support/images";
 
 const webflowItems = itemsPageSchema(speakerItemSchema).parse(live).items;
 const eventItems = itemsPageSchema(eventItemSchema).parse(liveEvents).items;
+const partnerItems = itemsPageSchema(partnerItemSchema).parse(livePartners).items;
 // Requests to the Webflow API, leaving out image downloads from the CDN.
 const apiCalls = (fetch: { mock: { calls: unknown[][] } }) =>
   fetch.mock.calls.filter(([url]) => String(url).startsWith("https://api.webflow.com/")).length;
@@ -32,7 +36,26 @@ describe("sortSpeakers", () => {
   });
 });
 
+describe("sortPartners", () => {
+  const partner = (name: string, order?: number): Partner => ({ slug: name.toLowerCase(), name, status: "current", order });
+
+  it("sorts by order, partners without an order last, ties by name", () => {
+    const sorted = sortPartners([partner("Zoku"), partner("Droog", 11), partner("Busy"), partner("Dentsu", 11), partner("Zoku Two", 10)]);
+    expect(sorted.map((p) => p.name)).toEqual(["Zoku Two", "Dentsu", "Droog", "Busy", "Zoku"]);
+  });
+});
+
 describe("fixture source", () => {
+  it("covers the partner cases pages must handle", async () => {
+    const partners = await fixtureSource.getPartners();
+    expect(partners).toEqual(sortPartners(partners));
+    expect(new Set(partners.map((p) => p.status))).toEqual(new Set(["current", "past"]));
+    expect(partners.some((p) => !p.logo)).toBe(true);
+    expect(partners.some((p) => !p.url)).toBe(true);
+    expect(partners.some((p) => p.order === undefined)).toBe(true);
+    expect(new Set(partners.map((p) => p.order)).size).toBeLessThan(partners.length);
+  });
+
   it("returns speakers in display order", async () => {
     const speakers = await fixtureSource.getSpeakers();
     expect(speakers.length).toBeGreaterThan(0);
@@ -89,11 +112,14 @@ describe("@/content", () => {
       expect(photo.variants?.length).toBeGreaterThan(0);
       expect(photo.shareUrl).toMatch(/^\/images\//);
     }
+    const logos = (await getPartners()).flatMap((p) => (p.logo ? [p.logo] : []));
+    expect(logos.length).toBeGreaterThan(0);
+    for (const logo of logos) expect(logo.variants?.[0]?.url).toMatch(/^\/images\//);
     const posters = (await getEvents()).flatMap((e) => (e.image ? [e.image] : []));
     expect(posters.length).toBeGreaterThan(0);
     for (const poster of posters) expect(poster.variants?.[0]?.url).toMatch(/^\/images\//);
     const files = await getImageFiles();
-    for (const url of [...photos, ...posters].flatMap((image) => image.variants!.map((variant) => variant.url))) {
+    for (const url of [...photos, ...posters, ...logos].flatMap((image) => image.variants!.map((variant) => variant.url))) {
       expect(files).toContain(url.slice("/images/".length));
     }
     expect((await getImageFile(files[0]!))?.contentType).toBe("image/webp");
@@ -134,6 +160,24 @@ describe("@/content", () => {
     const photoFetch = webflowFetch(() => ({ ...live, items }));
     vi.stubGlobal("fetch", vi.fn(async (url: string) => (url === missing ? new Response("Forbidden", { status: 403 }) : photoFetch(url))));
     await expect(getSpeakers()).rejects.toThrow(`Image ${missing} could not be downloaded: HTTP 403`);
+  });
+
+  it("reads partners from Webflow with copies of every logo", async () => {
+    vi.stubEnv("CONTENT_SOURCE", "webflow");
+    vi.stubEnv("WEBFLOW_API_TOKEN", "partners-token");
+    vi.stubGlobal("fetch", vi.fn(webflowFetch((url) => (url.includes(`/collections/${PARTNERS_COLLECTION_ID}/`) ? livePartners : live))));
+    const partners = await getPartners();
+    expect(partners).toHaveLength(livePartners.items.length);
+    for (const partner of partners) expect(partner.logo?.variants?.[0]?.url).toMatch(/^\/images\//);
+  });
+
+  it("fails getPartners and the image list with a readable error when Webflow sends a broken partners response", async () => {
+    vi.stubEnv("CONTENT_SOURCE", "webflow");
+    vi.stubEnv("WEBFLOW_API_TOKEN", "broken-partners-token");
+    const byCollection = (url: string) => (url.includes(`/collections/${PARTNERS_COLLECTION_ID}/`) ? brokenPartners : url.includes(`/collections/${EVENTS_COLLECTION_ID}/`) ? liveEvents : live);
+    vi.stubGlobal("fetch", vi.fn(webflowFetch(byCollection)));
+    await expect(getPartners()).rejects.toThrow(/does not match the expected schema[\s\S]*items\.1\.fieldData\.partner-status/);
+    await expect(getImageFiles()).rejects.toThrow(/partner-status/);
   });
 
   it("reads events from Webflow when CONTENT_SOURCE=webflow", async () => {
@@ -185,6 +229,18 @@ describe("Webflow source", () => {
     const [events] = await Promise.all([source.getEvents(), source.getEvents()]);
     expect(events.map((e) => e.startsAt)).toEqual(eventItems.map((i) => new Date(i.fieldData["event-date"]).toISOString()).toSorted());
     expect(getLiveItems.mock.calls.filter(([id]) => id === EVENTS_COLLECTION_ID)).toHaveLength(1);
+  });
+
+  it("returns partners in display order, fetched once", async () => {
+    const getLiveItems = vi.fn(async (id: string) => (id === PARTNERS_COLLECTION_ID ? partnerItems : webflowItems));
+    const source = createWebflowSource({ getLiveItems } as unknown as WebflowClient);
+    const [partners] = await Promise.all([source.getPartners(), source.getPartners()]);
+    expect(partners).toHaveLength(partnerItems.length);
+    expect(partners).toEqual(sortPartners(partners));
+    // Dentsu Lab and Foodmaker share order 11: ties go by name.
+    const slugs = partners.map((p) => p.slug);
+    expect(slugs.indexOf("foodmaker")).toBe(slugs.indexOf("dentsu-lab") + 1);
+    expect(getLiveItems.mock.calls.filter(([id]) => id === PARTNERS_COLLECTION_ID)).toHaveLength(1);
   });
 
   it("fetches the collection once and shares it", async () => {
