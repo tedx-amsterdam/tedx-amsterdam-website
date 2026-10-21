@@ -82,6 +82,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | Requirement | Level | Status | Notes |
 | --- | --- | --- | --- |
 | [HTTPS and TLS](https://specification.website/spec/security/https-tls/) | Required | Done | Cloudflare |
+| [TLS configuration hardening](https://specification.website/spec/security/tls-configuration/) | Recommended | Phase 6 | Inherited from Cloudflare, which terminates TLS. Check it with the Internet.nl website test on the production domain after the DNS switch |
 | [HSTS](https://specification.website/spec/security/hsts/) | Required | Partial | One year, tested; `includeSubDomains` and preload are decided at launch |
 | [X-Content-Type-Options](https://specification.website/spec/security/x-content-type-options/) | Required | Done | Header in `_headers`, tested |
 | [Clickjacking protection](https://specification.website/spec/security/frame-ancestors/) | Required | Done | `frame-ancestors 'none'` and `X-Frame-Options: DENY`, tested |
@@ -97,6 +98,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [Reporting API](https://specification.website/spec/security/reporting-endpoints/), [Trusted Types](https://specification.website/spec/security/trusted-types/) | Recommended | Phase 4 | After CSP is in place |
 | [Fetch Metadata](https://specification.website/spec/security/fetch-metadata/) | Recommended | N/A | Needs server side request checks; the site is static |
 | [CAA records](https://specification.website/spec/security/caa-records/) | Recommended | Phase 6 | When the domain moves to the foundation Cloudflare account |
+| [RPKI route origin validation](https://specification.website/spec/security/rpki/) | Recommended | Phase 6 | Cloudflare signs route origin authorisations for its prefixes. The name servers are at TransIP today: check their prefixes too when the DNS moves |
 
 ## Well-Known URIs
 
@@ -156,6 +158,7 @@ Links point to `https://specification.website/spec/<category>/<slug>/`.
 | [Monitoring and uptime](https://specification.website/spec/resilience/monitoring-uptime/) | Recommended | Phase 6 | |
 | [Maintenance pages](https://specification.website/spec/resilience/maintenance-pages/) | Recommended | N/A | Static deploys are atomic; there is no maintenance state |
 | [Redirect-By](https://specification.website/spec/resilience/redirect-by/) | Recommended | Phase 4 | With the redirects |
+| [IPv6 reachability](https://specification.website/spec/resilience/ipv6/) | Recommended | Phase 6 | The `pages.dev` previews have AAAA records and answer over IPv6. On Webflow the apex `tedxamsterdam.nl` has no AAAA record; check the apex, `www` and the name servers after the DNS switch |
 
 ## Internationalisation
 
