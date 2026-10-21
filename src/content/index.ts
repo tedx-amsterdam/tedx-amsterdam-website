@@ -2,14 +2,14 @@ import { getEnv } from "@/lib/env";
 import { fixtureSource } from "./fixtures";
 import { createImagePipeline, type ImageFile } from "./images";
 import type { ContentSource } from "./source";
-import type { TedxEvent, Speaker } from "./types";
+import type { Partner, TedxEvent, Speaker } from "./types";
 import { createWebflowClient, createWebflowSource } from "./webflow";
 
 // The only module pages and components import content from. Which source
 // is active is decided here, from CONTENT_SOURCE, and nowhere else.
 
 export { splitEvents } from "./events";
-export type { TedxEvent, Image, ImageVariant, SafeHtml, Speaker } from "./types";
+export type { TedxEvent, Image, ImageVariant, Partner, SafeHtml, Speaker } from "./types";
 
 // One Webflow source per build process, so its fetched collections are
 // shared by every page. Keyed by token, so a changed token is never served
@@ -43,6 +43,10 @@ async function withImageCopies(event: TedxEvent): Promise<TedxEvent> {
   return event.image ? { ...event, image: await images.process(event.image) } : event;
 }
 
+async function withLogoCopies(partner: Partner): Promise<Partner> {
+  return partner.logo ? { ...partner, logo: await images.process(partner.logo) } : partner;
+}
+
 export async function getSpeakers(): Promise<Speaker[]> {
   return Promise.all((await activeSource().getSpeakers()).map(withPhotoCopies));
 }
@@ -56,11 +60,15 @@ export async function getEvents(): Promise<TedxEvent[]> {
   return Promise.all((await activeSource().getEvents()).map(withImageCopies));
 }
 
+export async function getPartners(): Promise<Partner[]> {
+  return Promise.all((await activeSource().getPartners()).map(withLogoCopies));
+}
+
 // File names of every image copy, for the static image route. Loads every
 // collection with images first, so the list is complete in any build
 // process: add a collection here when it gets images.
 export async function getImageFiles(): Promise<string[]> {
-  await Promise.all([getSpeakers(), getEvents()]);
+  await Promise.all([getSpeakers(), getEvents(), getPartners()]);
   return images.files();
 }
 

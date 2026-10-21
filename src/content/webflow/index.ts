@@ -1,8 +1,9 @@
-import { sortEvents, sortSpeakers } from "@/content/sort";
+import { sortEvents, sortPartners, sortSpeakers } from "@/content/sort";
 import type { ContentSource } from "@/content/source";
 import type { WebflowClient } from "./client";
 import { EVENTS_COLLECTION_ID, mapEvent } from "./events";
-import { eventItemSchema, speakerItemSchema } from "./schemas";
+import { mapPartner, PARTNERS_COLLECTION_ID } from "./partners";
+import { eventItemSchema, partnerItemSchema, speakerItemSchema } from "./schemas";
 import { mapSpeaker, SPEAKERS_COLLECTION_ID } from "./speakers";
 
 export { createWebflowClient } from "./client";
@@ -23,12 +24,19 @@ export function createWebflowSource(client: WebflowClient): ContentSource {
       .then((items) => sortEvents(items.map(mapEvent))),
   );
 
+  const getPartners = cached(() =>
+    client
+      .getLiveItems(PARTNERS_COLLECTION_ID, partnerItemSchema)
+      .then((items) => sortPartners(items.map(mapPartner))),
+  );
+
   return {
     getSpeakers,
     async getSpeaker(slug) {
       return (await getSpeakers()).find((speaker) => speaker.slug === slug);
     },
     getEvents,
+    getPartners,
   };
 }
 

@@ -65,6 +65,36 @@ export const eventItemSchema = z.object({
 
 export type WebflowEventItem = z.infer<typeof eventItemSchema>;
 
+// Partners collection (68ee2b4f5c07668c00af87d7). Webflow sends an Option
+// field as the id of the chosen option; the ids and their names come from
+// GET /v2/collections/{id}.
+const partnerStatus = z.enum(["ae25899025683fce5ec6cef47b02f470", "1dfa59a092239bd83aaecdcf410892ff"], {
+  error: "must be the option id of Current or Past (see docs/webflow-content-model.md)",
+});
+
+export const PARTNER_STATUS_OPTIONS: Record<z.infer<typeof partnerStatus>, "current" | "past"> = {
+  ae25899025683fce5ec6cef47b02f470: "current",
+  "1dfa59a092239bd83aaecdcf410892ff": "past",
+};
+
+export const partnerItemSchema = z.object({
+  id: z.string(),
+  fieldData: z.object({
+    name: z.string().trim().min(1),
+    slug,
+    // Required, although Webflow allows it empty: without it a partner
+    // cannot be placed as current or past. A new option in Webflow fails
+    // the build too, until it is added above.
+    "partner-status": partnerStatus,
+    description: optionalText,
+    website: optionalLink,
+    image: image.nullish(),
+    order: z.number().nullish(),
+  }),
+});
+
+export type WebflowPartnerItem = z.infer<typeof partnerItemSchema>;
+
 // One page of GET /v2/collections/{id}/items/live.
 export function itemsPageSchema<Item extends z.ZodType>(item: Item) {
   return z.object({

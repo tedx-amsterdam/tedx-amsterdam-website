@@ -1,6 +1,7 @@
 import type { ContentSource } from "../source";
-import { sortEvents, sortSpeakers } from "../sort";
+import { sortEvents, sortPartners, sortSpeakers } from "../sort";
 import { FIXTURE_EVENTS } from "./events";
+import { FIXTURE_PARTNERS } from "./partners";
 import { FIXTURE_SPEAKERS } from "./speakers";
 
 export const fixtureSource: ContentSource = {
@@ -12,5 +13,8 @@ export const fixtureSource: ContentSource = {
   },
   async getEvents() {
     return sortEvents(FIXTURE_EVENTS);
+  },
+  async getPartners() {
+    return sortPartners(FIXTURE_PARTNERS);
   },
 };
