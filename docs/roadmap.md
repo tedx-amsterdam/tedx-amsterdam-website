@@ -208,6 +208,8 @@ The design system enforces the design and the website only composes it (decision
 - [ ] Support Windows high contrast (`forced-colors`) in the design system: `Badge` and the checked states of `Checkbox` and `Radio` are drawn with background colors, which that mode removes
 - [ ] A status per component in the design system's readme (draft, stable), so a newcomer sees what is finished; a component is stable when it matches the Figma audit, has stories for its states and passes the axe sweep
 - [ ] A deprecation rule in the design system's readme: mark a token or prop as deprecated in a minor release with its replacement, remove it in the next major. First candidates: `--fs-mega` and `--fs-h2-lg`, which the designs no longer use
+  - [x] The rule, with what the package's public API is and that class names are private (tedx-amsterdam-design-system#63)
+  - [ ] Deprecate `--fs-mega` and `--fs-h2-lg`
 - [ ] Breakpoints in the design system (decision 28): document 480px, 768px and 1024px in its readme (custom properties cannot be used in media queries), give every component a story at 390px wide, and use container queries where a component's width depends on its column rather than the screen. Today it has one media query (767px)
 - [ ] Mobile conventions (decision 28), from measuring production at 390px and 320px wide in October 2026. No horizontal scrolling at 320px and the viewport tag are fine already. To fix:
   - [x] In the design system (tedx-amsterdam-design-system#39): tap targets of at least 44px for the `NavigationBar` logo link (16px high) and menu button (40 × 34), and a larger hit area for `ArrowLink` (14px high) and `Breadcrumb` links (18px)
