@@ -154,7 +154,7 @@ Footer: value
 
 Visual changes are `feat` (new) or `fix` (broken), not `style`.
 
-**Scopes** are optional but preferred: the area of the codebase, short and lowercase. Current scopes: `layout`, `ui`, `content`, `speakers`, `events`, `partners`, `seo`, `config`, `hosting`, `github`, `lint`, `test`, `deps`, `readme`, `roadmap`, `spec`, `agents` (`AGENTS.md`), `claude` (`CLAUDE.md` and `.claude/`), `license`. Add a scope when a new area appears.
+**Scopes** are optional but preferred: the area of the codebase, short and lowercase. Current scopes: `layout`, `ui`, `content`, `speakers`, `events`, `partners`, `seo`, `analytics`, `config`, `hosting`, `github`, `lint`, `test`, `deps`, `readme`, `roadmap`, `spec`, `agents` (`AGENTS.md`), `claude` (`CLAUDE.md` and `.claude/`), `license`. Add a scope when a new area appears.
 
 **Subject**: imperative mood ("add", not "added" or "adds"), lowercase start, no trailing period. Keep the whole first line within 72 characters so it is readable in `git log --oneline` and on GitHub.
 
