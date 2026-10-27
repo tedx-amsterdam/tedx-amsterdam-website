@@ -2,7 +2,7 @@
 
 How we move tedxamsterdam.nl from Webflow to this codebase. Phases run roughly in order; within a phase, work is split into small pull requests.
 
-**Start here in a new session**: read [Now](#now), then the phase it points to. Background lives in [decisions.md](decisions.md) (why things are the way they are), [webflow-content-model.md](webflow-content-model.md) (the CMS data), [current-site.md](current-site.md) (the Webflow site we are replacing) and [website-spec.md](website-spec.md) (the quality bar).
+**Start here in a new session**: read [Now](#now), then the phase it points to. Background lives in [decisions.md](decisions.md) (why things are the way they are), [webflow-content-model.md](webflow-content-model.md) (the CMS data), [current-site.md](current-site.md) (the Webflow site we are replacing), [analytics.md](analytics.md) (what the live site measures and how to keep it at launch) and [website-spec.md](website-spec.md) (the quality bar).
 
 ## Now
 
@@ -21,7 +21,7 @@ Decisions that block or shape upcoming work. Record the outcome in [decisions.md
 - [ ] **Security contact** for `/.well-known/security.txt`: which foundation address (for example `security@tedxamsterdam.nl`)?
 - [ ] **Copyright holder** in `LICENSE`: Stichting TEDxAmsterdam (current) or the maintainer, as in the design system?
 - [ ] **Past talks**: detail pages, or redirect `/speakers-copy/*` to `/speakers` (phase 2)?
-- [ ] **Analytics**: GA4 with a consent banner, or cookieless analytics without one (phase 4)?
+- [ ] **Analytics**: since 26 October 2026 the live site loads GA4 through Google Tag Manager without a consent banner, with data sharing with Google and ads personalisation off ([analytics.md](analytics.md)). Keep that setup, add a consent banner, or move to cookieless analytics (phase 4)?
 - [ ] **AI crawlers** in `robots.txt`: allow or block (phase 4)?
 - [ ] **Design owner** (after the proof of concept): who approves design system changes next to the maintainer (decision 23)? Until then the maintainer is the only owner, and nothing that needs a second reviewer is turned on.
 - [ ] **One repository for the website and the design system?** Decision 23 keeps two repositories, linked through npm releases, and names the trigger to revisit. Stage B is that trigger: every pattern that moves into the design system (`PageHero`, a card grid) then takes four steps across two repositories (a design system pull request, a release pull request, a tag and npm publish, an upgrade pull request here), and a component cannot be tried on a real page before it is published. Options:
@@ -123,8 +123,8 @@ Build the pages from their Figma frames, the components and patterns in the desi
 - [ ] Home
 - [ ] After Growth
 - [ ] About Us, including the mandatory About TEDx and About TED texts
-- [ ] Newsletter signup (Mailchimp)
-- [ ] Privacy policy
+- [ ] Newsletter signup (Mailchimp), with the form ID `wf-form-EMAIL` or a `sign_up` event pushed by the form ([analytics.md](analytics.md))
+- [ ] Privacy policy: the live text is on Webflow at `/privacy-policy` since 26 October 2026
 
 ## Phase 4: SEO and parity with the Webflow site
 
@@ -138,7 +138,7 @@ Most open requirements from [The Website Specification](website-spec.md) land in
 - [ ] 404 page
 - [ ] Raise Lighthouse thresholds to best practices 1 (needs the favicon) and SEO 1 (needs meta descriptions)
 - [x] Self hosted fonts instead of Google Fonts (GDPR): the design system ships Arimo since 1.3.1
-- [ ] Analytics loaded only after cookie consent (GDPR)
+- [ ] Analytics: load the Tag Manager container on the production domain only, following the analytics decision, and replace the triggers that depend on Webflow markup (`speaker_profile_open`, `page_not_found`, the header `placement` of `ticket_click`); see [analytics.md](analytics.md)
 
 ## Phase 5: Hosting and deployment
 
@@ -155,7 +155,8 @@ Most open requirements from [The Website Specification](website-spec.md) land in
 
 - [ ] Page by page comparison with the Webflow site
 - [ ] Lighthouse and accessibility checks
-- [ ] DNS switch and Search Console update
+- [ ] Tracking parity: the launch checklist in [analytics.md](analytics.md), published in Tag Manager together with the DNS switch
+- [ ] DNS switch and Search Console update: keep the verification meta tag, submit the new `sitemap.xml`
 - [ ] Internet.nl website test on the production domain: TLS configuration, RPKI and IPv6 (see `docs/website-spec.md`)
 - [ ] Monitoring
 
