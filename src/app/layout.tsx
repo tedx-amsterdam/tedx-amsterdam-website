@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import "tedx-amsterdam-design-system/styles.css";
 import "tedx-amsterdam-design-system/index.css";
 import "./globals.css";
+import { AnalyticsEvents } from "@/components/AnalyticsEvents";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SITE_URL } from "@/config/site";
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <SiteHeader />
         {children}
         <SiteFooter />
+        <AnalyticsEvents />
       </body>
     </html>
   );
