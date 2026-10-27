@@ -22,20 +22,35 @@ What the live Webflow site measures, and what this site has to reproduce at laun
 | Event | Fires when | Depends on | On this site |
 | --- | --- | --- | --- |
 | `page_view` | Every page | The Google tag in the container | Works with the snippet |
-| `ticket_click` (key event) | A click on a link whose URL contains `eventbrite.` | The link URL. Its `placement` parameter is `header` inside `.navbar1_component`, `footer` inside `footer` or `.footer`, otherwise `content` | Works, but clicks in the header count as `content`: this site's header has no `.navbar1_component` |
+| `ticket_click` (key event) | A click on a link whose URL contains `eventbrite.` | The link URL. Its `placement` parameter is `header` inside `.navbar1_component`, `footer` inside `footer` or `.footer`, otherwise `content` | Pushed to the data layer, with `placement` read from the `header` and `footer` landmarks |
 | `sign_up` (key event) | The newsletter form is submitted | Form ID `wf-form-EMAIL` | Breaks unless the newsletter form (phase 3) uses that ID |
-| `application_click` | A click on a link to `docs.google.com/forms` | The link URL | Works |
-| `partner_contact` | A click on a `mailto:partners@` link | The link URL | Works |
+| `application_click` | A click on a link to `docs.google.com/forms` | The link URL | Pushed to the data layer |
+| `partner_contact` | A click on a `mailto:partners@` link | The link URL | Pushed to the data layer |
 | `speaker_profile_open` | A click on a speaker photo that opens the profile modal, with `speaker_name` | `.speaker-photo-button` and its `aria-label` "Open profile of {name}", made by the Webflow footer script | Breaks: this site has speaker pages instead of a modal. The speaker page views replace it |
-| `page_not_found` | The 404 page loads, with `referrer_url` | The page title equals "Not Found" | Breaks: this site's 404 title is "Page not found" |
+| `page_not_found` | The 404 page loads, with `referrer_url` | The page title equals "Not Found" | Pushed to the data layer by the 404 page, whose title here is "Page not found" |
 | `js_error` | A JavaScript error on the page | Nothing | Works |
 | `scroll_depth` | Scrolling past 25, 50 and 75% (GA4 sends 90% itself) | Nothing | Works |
 
 Visitors who open any page with `?tedx_internal=1` get a cookie for a year, and Tag Manager sends `traffic_type=internal` for them. GA4 leaves those visits out (the "Internal Traffic" data filter), so team members can browse without skewing the numbers. `?tedx_internal=0` removes the cookie. This keeps working after launch, because the cookie belongs to the domain.
 
-### Recommended for this site
+### The data layer on this site
 
-Rather than copying Webflow class names into this site, push the events from the components that cause them, for example `window.dataLayer.push({ event: "ticket_click", placement: "header" })` from the ticket button. Then switch the triggers in Tag Manager from clicks and selectors to custom events on the day of the DNS switch. Events no longer break when markup or class names change, and class names stay private to the design system.
+Instead of copying Webflow class names, this site pushes the events to `window.dataLayer` itself, with the same names and parameters as the live site. Events then survive changes to markup and class names, which stay private to the design system.
+
+- `src/lib/analytics.ts` holds `trackEvent`, the link rules and `placement`, read from the `header` and `footer` landmarks.
+- `AnalyticsEvents` in the root layout listens for clicks on the whole page and pushes `ticket_click`, `application_click` and `partner_contact` with `link_url`, `link_text`, `placement` and `page_location_path`.
+- `PageNotFoundEvent` on the 404 page pushes `page_not_found` with `page_location_path` and `referrer_url`.
+
+This site does not load Tag Manager yet (phase 4): until it does, the pushes stay in the page and reach nobody. On the day of the DNS switch, replace these triggers in Tag Manager with Custom Event triggers of the same names, and read the parameters with Data Layer Variables:
+
+| Trigger on the live site | Replace with |
+| --- | --- |
+| Click - Eventbrite ticket link | Custom Event `ticket_click` |
+| Click - Application form (Google Forms) | Custom Event `application_click` |
+| Click - Email partners@ | Custom Event `partner_contact` |
+| DOM Ready - 404 page | Custom Event `page_not_found` |
+
+`sign_up` follows with the newsletter form (phase 3). `speaker_profile_open` has no counterpart: this site has speaker pages instead of a modal.
 
 ## Settings in Google Analytics
 
@@ -54,7 +69,7 @@ These live in Google Analytics, not in the site, and carry over unchanged:
 
 - [ ] The Tag Manager snippet is in the layout, on the production domain only, and no `gtag.js` loads
 - [ ] The Search Console verification tag is on the home page
-- [ ] In Tag Manager's preview mode, every event in the table fires on the new site, or its trigger is replaced as recommended above
+- [ ] The triggers in Tag Manager are switched to the custom events above, and in Tag Manager's preview mode every event fires on the new site
 - [ ] Publish the Tag Manager changes and the DNS switch together, and add an annotation in GA4 for the day
 - [ ] The day after, page views and users per day are in line with the week before
 - [ ] Submit the new `sitemap.xml` in Search Console
