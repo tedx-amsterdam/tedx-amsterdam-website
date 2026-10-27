@@ -19,13 +19,14 @@ An inventory of www.tedxamsterdam.nl as built in Webflow, taken in October 2026.
 | `/old-home` | Leftover; in the sitemap but returns 404 | Redirect to `/` |
 | `/speakers-new` | Public draft page titled "Speakers New (draft)", duplicates `/speakers` | Redirect to `/speakers` |
 | `/partners-old` | Leftover, linked from the footer | Redirect to `/partners` |
+| `/privacy-policy` | Designer only, since 26 October 2026 | Phase 3 |
 
 ## Navigation
 
 - **Header**: After Growth, Impact Program, Events, Speakers, Partners, Blog, About Us, and a "Get tickets" button to Eventbrite. Rebuilt in `src/config/site.ts`.
 - **Footer menu** on Webflow links Impact Program to `/old-home` and Partners to `/partners-old`. The new footer links to the real pages.
 - **Socials**: Instagram, LinkedIn and Facebook. The design system has no Facebook icon yet, so the new footer leaves it out.
-- **Legal line**: the TEDx license disclaimer, "Copyright Stichting TEDxAmsterdam, {year}", "All Rights Reserved", a "Privacy policy" link that points to `#` (there is no privacy page), and "Design busy.studio".
+- **Legal line**: the TEDx license disclaimer, "Copyright Stichting TEDxAmsterdam, {year}", "All Rights Reserved", a "Privacy policy" link to `/privacy-policy` (until 26 October 2026 it pointed to `#`), and "Design busy.studio".
 
 ## Integrations
 
@@ -33,11 +34,11 @@ An inventory of www.tedxamsterdam.nl as built in Webflow, taken in October 2026.
 | --- | --- | --- |
 | Tickets | Plain link to Eventbrite | Link in `src/config/site.ts`; later from the featured event in the CMS |
 | Newsletter | Mailchimp embedded form in the footer (email field and a GDPR consent checkbox), posting to `list-manage.com` | Phase 3: same Mailchimp list, plus a privacy policy; extend the CSP `form-action` for Mailchimp |
-| Analytics | Google Analytics 4 (`G-PVYRFDNXB9`) without a consent banner | Phase 4: decide between GA4 with consent or cookieless analytics |
+| Analytics | Google Tag Manager (`GTM-M3V88B7H`) loads Google Analytics 4 (`G-PVYRFDNXB9`) and the site's events, without a consent banner; data sharing with Google and ads personalisation are off. Until 26 October 2026 a hardcoded `gtag.js` | Carry over as described in [analytics.md](analytics.md), following the analytics decision in the roadmap |
 | Bot protection | Cloudflare Turnstile script loaded on every page | Only needed if a form needs it |
 | Carousel | Swiper loaded from jsDelivr | Only if a design needs a carousel; prefer CSS |
 | Fonts | Google Fonts (Arimo fallback), loaded by the design system tokens | Done: the design system ships Arimo since 1.3.1, so nothing loads from Google |
-| Search Console | Verified with a meta tag | Keep the verification when switching DNS |
+| Search Console | Two owners: the foundation's Google account with a meta tag in the site's head code, and the maintainer's personal account with a DNS record. Linked to GA4 | Keep the meta tag on the home page ([analytics.md](analytics.md)) |
 
 ## SEO details to carry over
 
