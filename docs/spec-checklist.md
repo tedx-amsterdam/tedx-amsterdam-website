@@ -263,6 +263,8 @@ Things that make a site legible to AI agents and crawlers.
   The Model Context Protocol is an emerging way for sites to expose queryable tools to agents over JSON-RPC. Relevant whenever your content has structure worth filtering — even for a static reference site like this one.
 - [ ] [A2A agent cards](https://specification.website/spec/agent-readiness/a2a-agent-cards/) — Optional
   The Agent-to-Agent (A2A) protocol lets an autonomous agent find another autonomous agent and call it over JSON-RPC. Discovery hinges on a single well-known file: `/.well-known/agent-card.json`. Relevant whenever your service exposes agentic behaviour another agent might want to delegate to.
+- [ ] [Universal Commerce Protocol (/.well-known/ucp)](https://specification.website/spec/agent-readiness/universal-commerce-protocol/) — Optional
+  A store that wants AI agents to check out on a shopper's behalf publishes a Universal Commerce Protocol (UCP) business profile at `/.well-known/ucp`. The profile does not list products; it says which commerce capabilities the store supports, which protocol versions it speaks, and where the transactional endpoints live.
 - [ ] [Agent Skills discovery](https://specification.website/spec/agent-readiness/agent-skills-discovery/) — Recommended
   A well-known URI that lists Agent Skills — short, scoped instructions an AI agent can load to work better with your site. Emerging convention via a Cloudflare-led RFC; still draft, still cheap to ship.
 - [ ] [DNS for AI Discovery (DNS-AID)](https://specification.website/spec/agent-readiness/dns-aid/) — Optional
