@@ -123,7 +123,7 @@ Done when: a build with `CONTENT_SOURCE=webflow` fetches the live speakers, ever
 Build the pages from their Figma frames, the components and patterns in the design system's [Figma audit](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system/blob/main/docs/figma-audit.md), and [design-audit.md](design-audit.md). Home's footer gets the newsletter form, the full width logo and the glow from the designs.
 
 - [ ] Home
-- [ ] After Growth
+- [ ] After Growth: the schedule comes from the "Agenda items" collection and renders with `Agenda` from the design system
 - [ ] About Us, including the mandatory About TEDx and About TED texts
 - [ ] Newsletter signup (Mailchimp), with the form ID `wf-form-EMAIL` or a `sign_up` event pushed by the form ([analytics.md](analytics.md))
 - [ ] Privacy policy: the live text is on Webflow at `/privacy-policy` since 26 October 2026
@@ -238,6 +238,7 @@ Compared with common design system practice in October 2026 (among others [Carbo
 - [ ] Person card (photo, name, role or description), with the pioneers (phase 2); the team page reuses it
 - [ ] CTA band (red section with a heading and the email form), with partners (phase 2) or the newsletter (phase 3), whichever comes first
 - [ ] Detail rows (label and value between lines) and carousel arrows, with the home page (phase 3)
+- [x] `Agenda` for event schedules (tedx-amsterdam-design-system#66): time, title, optional description and label per item. Since 9 November 2026 it is live on the Webflow After Growth page from the "Agenda items" CMS collection, which references Upcoming events; this site uses it when it builds After Growth (phase 3)
 - [ ] Build each from the [Figma designs](current-site.md#figma) as real components with stories, and update its row in the design system's [Figma audit](https://github.com/tedx-amsterdam/tedx-amsterdam-design-system/blob/main/docs/figma-audit.md)
 - [ ] Page stories in the design system's Storybook (`Pages/Home`, `Pages/Speakers`, and so on): each page from the Figma designs composed of the real components with neutral sample content, so there is a click-through example of every page again. They replace the removed `ui_kits/website/` prototype, which copied the components with inline styles and the 2025 theme (tedx-amsterdam-design-system#31). Add a page story when its sections move into the design system; the CI Storybook build and the a11y addon then check it
 - Track the lines of CSS in `src/` (521 in October 2026): they should fall while pages are added
