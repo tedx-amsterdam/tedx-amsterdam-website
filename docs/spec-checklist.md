@@ -38,14 +38,20 @@ The HTML, head, and document basics every page needs.
   Replace ARIA-puzzled JavaScript modals, menus, and tooltips with a native top-layer primitive that the browser opens, closes, and accessibility-wires for you.
 - [ ] [WebSub — push notification for feeds](https://specification.website/spec/foundations/websub/) — Optional
   If you publish a feed, advertise a WebSub hub with rel="hub" and rel="self" so subscribers are pushed each update instead of polling for it. Cuts latency to seconds and removes most of the crawl traffic your feed attracts.
+- [ ] [The dialog element](https://specification.website/spec/foundations/dialog-element/) — Recommended
+  Use the native \<dialog\> element for modal and non-modal dialogs: showModal() supplies the top layer, inert background, focus handling, and Esc dismissal that hand-rolled overlays chronically get wrong.
 - [ ] [CSS anchor positioning](https://specification.website/spec/foundations/anchor-positioning/) — Recommended
   Tether tooltips, menus, and popovers to the element that triggers them with pure CSS — no JavaScript positioning library, and it works across overflow and stacking boundaries.
+- [ ] [Customizable select](https://specification.website/spec/foundations/customizable-select/) — Optional
+  Style a real \<select\> end to end — button, picker, options, rich content inside options — by opting into appearance: base-select, instead of rebuilding the control from divs and losing its behaviour.
 - [ ] [Balanced text wrapping](https://specification.website/spec/foundations/text-wrap/) — Recommended
   Let the browser break headings and body copy intelligently with text-wrap: balance and pretty — no orphaned words, no manual line breaks, no layout shift.
 - [ ] [CSS container queries](https://specification.website/spec/foundations/container-queries/) — Recommended
   Style a component by the space it is actually given with container-type and @container — responsive design that follows the container, not the viewport — and test a container's own custom properties with style queries.
 - [ ] [Invoker commands](https://specification.website/spec/foundations/invoker-commands/) — Optional
   Wire a button to open a popover, close a dialog, or run a custom action declaratively with command and commandfor — no click handler, no ARIA plumbing.
+- [ ] [Built-in AI APIs](https://specification.website/spec/foundations/built-in-ai/) — Optional
+  Use the browser's on-device AI APIs — Prompt, Summarizer, Translator, Language Detector — as a progressive enhancement: check availability first, gate model downloads on a user gesture, and always keep a server or manual path.
 - [ ] [_for-sale DNS records](https://specification.website/spec/foundations/for-sale-dns/) — Optional
   If a domain is genuinely for sale, say so in DNS. A TXT record at _for-sale.example.com advertises it to brokers and availability services without taking the site down or parking it.
 
@@ -124,6 +130,8 @@ WCAG-aligned rules so people of all abilities can use the site.
   Don't make people re-type information they already gave you in the same process. Auto-populate it, or let them pick it from what they entered a step ago.
 - [ ] [Consistent help](https://specification.website/spec/accessibility/consistent-help/) — Recommended
   If you offer help — a contact link, a phone number, a chat widget, an FAQ — put it in the same relative place on every page that has it. Moving it around is the failure.
+- [ ] [Autofill (autocomplete tokens)](https://specification.website/spec/accessibility/autofill/) — Recommended
+  Give every form field the correct WHATWG autocomplete token, in granular fields with section prefixes, so browsers and password managers can fill sign-in, address, payment, and one-time-code forms accurately.
 - [ ] [Document and parts language](https://specification.website/spec/accessibility/document-language/) — Required
   Set the page's primary language on \<html lang\> and mark any inline content in a different language with its own lang attribute, so screen readers pronounce it correctly.
 - [ ] [Reduced motion](https://specification.website/spec/accessibility/reduced-motion/) — Required
@@ -181,10 +189,14 @@ Headers, transport, and policies that keep visitors safe.
   SRI adds a cryptographic hash to every third-party script and stylesheet so the browser refuses to run modified files. Essential for any external JS or CSS you depend on.
 - [ ] [Digest Fields (Content-Digest, Repr-Digest and Unencoded-Digest)](https://specification.website/spec/security/digest-fields/) — Optional
   Digest Fields let clients check received bytes. Unencoded-Digest works after decompression, with limited browser support.
+- [ ] [Sanitizing untrusted HTML](https://specification.website/spec/security/sanitizer-api/) — Recommended
+  Any HTML you did not author must be sanitized before it reaches the DOM: with the native Sanitizer API (setHTML and explicit Sanitizer configurations) where available, and a maintained library such as DOMPurify everywhere else.
 - [ ] [Trusted Types](https://specification.website/spec/security/trusted-types/) — Recommended
   Trusted Types make the browser reject plain strings at DOM injection sinks like innerHTML, demanding a vetted typed value instead. Switched on with two CSP directives, it neutralises a whole class of DOM-based XSS.
 - [ ] [X-XSS-Protection](https://specification.website/spec/security/x-xss-protection/) — Avoid
   A dead header that roughly a third of major sites still send. No shipping browser reads it, it was never standardised, and the values people copy-paste were the dangerous ones. Stop sending it and rely on CSP.
+- [ ] [Passkeys (WebAuthn)](https://specification.website/spec/security/passkeys/) — Recommended
+  Offer passkeys as the primary sign-in: discoverable WebAuthn credentials that are phishing-resistant by construction, with Conditional UI autofill and server-side verification via a vetted FIDO2 library.
 - [ ] [Cookie attributes — Secure, HttpOnly, SameSite](https://specification.website/spec/security/cookie-attributes/) — Required
   Every cookie should be Secure, HttpOnly where possible, and have an explicit SameSite. Use __Host- and __Secure- prefixes for session cookies.
 - [ ] [Clear-Site-Data](https://specification.website/spec/security/clear-site-data/) — Optional
@@ -247,6 +259,8 @@ Things that make a site legible to AI agents and crawlers.
   Add Content-Signal directives to robots.txt to declare whether AI crawlers may search, ingest, or train on your content. An emerging IETF AI Preferences / IAB Tech Lab proposal that some validators already check.
 - [ ] [TDM reservation (TDMRep)](https://specification.website/spec/agent-readiness/tdmrep/) — Optional
   Declare in machine-readable form whether you reserve the right to object to text and data mining, using the `tdm-reservation` HTTP header, a `\<meta\>` element, or `/.well-known/tdmrep.json`. Its force is legal, not technical.
+- [ ] [Agent Name Service — verifiable agent identity](https://specification.website/spec/agent-readiness/agent-name-service/) — Optional
+  The Agent Name Service (ANS) gives each AI agent a versioned name anchored in a domain its operator controls, published in DNS and sealed in a transparency log, so a peer can verify who it is talking to before applying its own policy. Drafts under active development; a Linux Foundation project since November 2026.
 - [ ] [Web Bot Auth — verifiable bot identity](https://specification.website/spec/agent-readiness/web-bot-auth/) — Optional
   Web Bot Auth lets a bot prove who it is by signing each HTTP request with a key it controls. Sites can then allow or block specific bots without IP allow-lists, user-agent strings, or guesswork. Built on RFC 9421 HTTP Message Signatures.
 - [ ] [auth.md — agent registration instructions](https://specification.website/spec/agent-readiness/auth-md/) — Optional
@@ -263,6 +277,8 @@ Things that make a site legible to AI agents and crawlers.
   The Model Context Protocol is an emerging way for sites to expose queryable tools to agents over JSON-RPC. Relevant whenever your content has structure worth filtering — even for a static reference site like this one.
 - [ ] [A2A agent cards](https://specification.website/spec/agent-readiness/a2a-agent-cards/) — Optional
   The Agent-to-Agent (A2A) protocol lets an autonomous agent find another autonomous agent and call it over JSON-RPC. Discovery hinges on a single well-known file: `/.well-known/agent-card.json`. Relevant whenever your service exposes agentic behaviour another agent might want to delegate to.
+- [ ] [Universal Commerce Protocol (/.well-known/ucp)](https://specification.website/spec/agent-readiness/universal-commerce-protocol/) — Optional
+  A store that wants AI agents to check out on a shopper's behalf publishes a Universal Commerce Protocol (UCP) business profile at `/.well-known/ucp`. The profile does not list products; it says which commerce capabilities the store supports, which protocol versions it speaks, and where the transactional endpoints live.
 - [ ] [Agent Skills discovery](https://specification.website/spec/agent-readiness/agent-skills-discovery/) — Recommended
   A well-known URI that lists Agent Skills — short, scoped instructions an AI agent can load to work better with your site. Emerging convention via a Cloudflare-led RFC; still draft, still cheap to ship.
 - [ ] [DNS for AI Discovery (DNS-AID)](https://specification.website/spec/agent-readiness/dns-aid/) — Optional
@@ -284,6 +300,8 @@ Core Web Vitals, caching, images, fonts, network behaviour.
 
 - [ ] [Core Web Vitals (LCP, INP, CLS)](https://specification.website/spec/performance/core-web-vitals/) — Required
   Core Web Vitals measure loading, responsiveness, and visual stability. Hit LCP ≤ 2.5s, INP ≤ 200ms, and CLS ≤ 0.1 at the 75th percentile of real users.
+- [ ] [Long tasks](https://specification.website/spec/performance/long-tasks/) — Recommended
+  Keep main-thread tasks under the 50 ms long-task threshold: break up long work, yield with scheduler.yield(), offload heavy computation to a worker, and attribute what remains with Long Animation Frames in the field.
 - [ ] [Image optimisation](https://specification.website/spec/performance/image-optimization/) — Required
   Serve images in modern formats (AVIF, WebP), at the right size for the viewport, with explicit dimensions. Images are the largest payload on most pages.
 - [ ] [Lazy loading images, iframes, and video](https://specification.website/spec/performance/lazy-loading/) — Recommended
